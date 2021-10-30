@@ -1,6 +1,6 @@
 # GuardianStorageAPI
 
-[![](https://jitpack.io/v/MrUniverse44/GuardianStorageAPI.svg)](https://jitpack.io/#MrUniverse44/GuardianLIB)
+[![](https://jitpack.io/v/MrUniverse44/GuardianStorageAPI.svg)](https://jitpack.io/#MrUniverse44/GuardianStorageAPI)
 
 GuardianStorageAPI is a simple YAML Storage System to simplify developers
 creation of YAML's when you have some files at the same time.
