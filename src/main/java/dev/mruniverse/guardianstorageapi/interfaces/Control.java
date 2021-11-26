@@ -3,6 +3,7 @@ package dev.mruniverse.guardianstorageapi.interfaces;
 import java.io.File;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 @SuppressWarnings("unused")
 public interface Control {
@@ -72,4 +73,8 @@ public interface Control {
     boolean getStatus(String path,boolean def);
 
     void set(String path,Object value);
+
+    Set<String> getKeys(boolean deep);
+
+    Control getSection(String path);
 }

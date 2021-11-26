@@ -2,48 +2,37 @@ package dev.mruniverse.guardianstorageapi.builder;
 
 import dev.mruniverse.guardianstorageapi.interfaces.Control;
 import dev.mruniverse.guardianstorageapi.interfaces.GLogger;
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.config.Configuration;
+import net.md_5.bungee.config.ConfigurationProvider;
+import net.md_5.bungee.config.YamlConfiguration;
 
 import java.io.File;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@SuppressWarnings("unused")
-public class ControlSpigotBuilder implements Control {
+public class ControlBungeeSectionBuilder implements Control {
 
-    private final InputStream resource;
-
-    private final GLogger logs;
+    private final Configuration configuration;
 
     private final File file;
 
-    private FileConfiguration configuration;
+    private final GLogger logs;
 
+    private Configuration fileConfig;
 
-
-    public ControlSpigotBuilder(GLogger logs,File file,InputStream resource) {
-        this.file = file;
+    public ControlBungeeSectionBuilder(File file,GLogger logs,Configuration fileConfig,Configuration section) {
+        this.configuration = section;
         this.logs = logs;
-        this.resource = resource;
-        load();
+        this.fileConfig = fileConfig;
+        this.file = file;
     }
 
     @Override
     public File getFile() {
         return file;
-    }
-
-    public ControlSpigotBuilder(GLogger logs,File file) {
-        this.file = file;
-        this.logs = logs;
-        this.resource = null;
-        load();
     }
 
     @Override
@@ -76,7 +65,7 @@ public class ControlSpigotBuilder implements Control {
     @Override
     public void save() {
         try {
-            configuration.save(file);
+            ConfigurationProvider.getProvider(YamlConfiguration.class).save(fileConfig, file);
         }catch (Throwable throwable) {
             logs.error("Can't save file: " + file.getName());
             logs.error(throwable);
@@ -86,50 +75,11 @@ public class ControlSpigotBuilder implements Control {
     @Override
     public void reload() {
         try {
-            configuration = YamlConfiguration.loadConfiguration(file);
+            fileConfig = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
         }catch (Throwable throwable) {
             logs.error("Can't reload file: " + file.getName());
             logs.error(throwable);
         }
-    }
-
-    public void load() {
-        configuration = loadConfig(file);
-    }
-
-    public void saveConfig(File fileToSave) {
-        if (!fileToSave.getParentFile().exists()) {
-            boolean createFile = fileToSave.getParentFile().mkdirs();
-            if(createFile) logs.info("&7Folder created!!");
-        }
-
-        if (!fileToSave.exists()) {
-            try (InputStream in = resource) {
-                if(in != null) {
-                    Files.copy(in, fileToSave.toPath());
-                }
-            } catch (Throwable throwable) {
-                logs.error(String.format("A error occurred while copying the config %s to the plugin data folder. Error: %s", fileToSave.getName(), throwable));
-                logs.error(throwable);
-            }
-        }
-    }
-
-    private FileConfiguration loadConfig(File file) {
-        if (!file.exists()) {
-            saveConfig(file);
-        }
-
-        FileConfiguration cnf = null;
-        try {
-            cnf = YamlConfiguration.loadConfiguration(file);
-        } catch (Throwable throwable) {
-            logs.error("Can't load: " + file.getName() + ".!");
-            logs.error(throwable);
-        }
-
-        logs.info(String.format("&7File &e%s &7has been loaded", file.getName()));
-        return cnf;
     }
 
     @Override
@@ -150,15 +100,15 @@ public class ControlSpigotBuilder implements Control {
     @Override
     public List<String> getContent(String path, boolean getKeys) {
         List<String> rx = new ArrayList<>();
-        ConfigurationSection section = configuration.getConfigurationSection(path);
+        Configuration section = configuration.getSection(path);
         if(section == null) return rx;
-        rx.addAll(section.getKeys(getKeys));
+        rx.addAll(section.getKeys());
         return rx;
     }
 
     @Override
     public List<Integer> getIntList(String path) {
-        return configuration.getIntegerList(path);
+        return configuration.getIntList(path);
     }
 
     @Override
@@ -192,7 +142,7 @@ public class ControlSpigotBuilder implements Control {
 
     @Override
     public Control getSection(String path) {
-        return new ControlSpigotSectionBuilder(file,logs,configuration,configuration.getConfigurationSection(path));
+        return new ControlBungeeSectionBuilder(file,logs,fileConfig,configuration.getSection(path));
     }
 
     @Override
@@ -208,7 +158,7 @@ public class ControlSpigotBuilder implements Control {
     public List<Byte> getByteList(String path) { return configuration.getByteList(path); }
 
     @Override
-    public List<Character> getCharList(String path) { return configuration.getCharacterList(path); }
+    public List<Character> getCharList(String path) { return configuration.getCharList(path); }
     @Override
     public List<Float> getFloatList(String path) { return configuration.getFloatList(path); }
 
@@ -234,6 +184,8 @@ public class ControlSpigotBuilder implements Control {
 
     @Override
     public Set<String> getKeys(boolean deep) {
-        return configuration.getKeys(deep);
+        return new HashSet<>(configuration.getKeys());
     }
+
 }
+

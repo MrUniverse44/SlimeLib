@@ -8,42 +8,30 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@SuppressWarnings("unused")
-public class ControlSpigotBuilder implements Control {
+public class ControlSpigotSectionBuilder implements Control {
 
-    private final InputStream resource;
-
-    private final GLogger logs;
+    private final ConfigurationSection configuration;
 
     private final File file;
 
-    private FileConfiguration configuration;
+    private final GLogger logs;
 
+    private FileConfiguration fileConfig;
 
-
-    public ControlSpigotBuilder(GLogger logs,File file,InputStream resource) {
-        this.file = file;
+    public ControlSpigotSectionBuilder(File file,GLogger logs,FileConfiguration fileConfig,ConfigurationSection section) {
+        this.configuration = section;
         this.logs = logs;
-        this.resource = resource;
-        load();
+        this.fileConfig = fileConfig;
+        this.file = file;
     }
 
     @Override
     public File getFile() {
         return file;
-    }
-
-    public ControlSpigotBuilder(GLogger logs,File file) {
-        this.file = file;
-        this.logs = logs;
-        this.resource = null;
-        load();
     }
 
     @Override
@@ -76,7 +64,7 @@ public class ControlSpigotBuilder implements Control {
     @Override
     public void save() {
         try {
-            configuration.save(file);
+            fileConfig.save(file);
         }catch (Throwable throwable) {
             logs.error("Can't save file: " + file.getName());
             logs.error(throwable);
@@ -86,50 +74,11 @@ public class ControlSpigotBuilder implements Control {
     @Override
     public void reload() {
         try {
-            configuration = YamlConfiguration.loadConfiguration(file);
+            fileConfig = YamlConfiguration.loadConfiguration(file);
         }catch (Throwable throwable) {
             logs.error("Can't reload file: " + file.getName());
             logs.error(throwable);
         }
-    }
-
-    public void load() {
-        configuration = loadConfig(file);
-    }
-
-    public void saveConfig(File fileToSave) {
-        if (!fileToSave.getParentFile().exists()) {
-            boolean createFile = fileToSave.getParentFile().mkdirs();
-            if(createFile) logs.info("&7Folder created!!");
-        }
-
-        if (!fileToSave.exists()) {
-            try (InputStream in = resource) {
-                if(in != null) {
-                    Files.copy(in, fileToSave.toPath());
-                }
-            } catch (Throwable throwable) {
-                logs.error(String.format("A error occurred while copying the config %s to the plugin data folder. Error: %s", fileToSave.getName(), throwable));
-                logs.error(throwable);
-            }
-        }
-    }
-
-    private FileConfiguration loadConfig(File file) {
-        if (!file.exists()) {
-            saveConfig(file);
-        }
-
-        FileConfiguration cnf = null;
-        try {
-            cnf = YamlConfiguration.loadConfiguration(file);
-        } catch (Throwable throwable) {
-            logs.error("Can't load: " + file.getName() + ".!");
-            logs.error(throwable);
-        }
-
-        logs.info(String.format("&7File &e%s &7has been loaded", file.getName()));
-        return cnf;
     }
 
     @Override
@@ -192,7 +141,7 @@ public class ControlSpigotBuilder implements Control {
 
     @Override
     public Control getSection(String path) {
-        return new ControlSpigotSectionBuilder(file,logs,configuration,configuration.getConfigurationSection(path));
+        return new ControlSpigotSectionBuilder(file,logs,fileConfig,configuration.getConfigurationSection(path));
     }
 
     @Override
@@ -236,4 +185,5 @@ public class ControlSpigotBuilder implements Control {
     public Set<String> getKeys(boolean deep) {
         return configuration.getKeys(deep);
     }
+
 }

@@ -11,7 +11,9 @@ import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @SuppressWarnings("unused")
 public class ControlBungeeBuilder implements Control {
@@ -214,6 +216,16 @@ public class ControlBungeeBuilder implements Control {
     @Override
     public void set(String path, Object value) {
         configuration.set(path,value);
+    }
+
+    @Override
+    public Set<String> getKeys(boolean deep) {
+        return new HashSet<>(configuration.getKeys());
+    }
+
+    @Override
+    public Control getSection(String path) {
+        return new ControlBungeeSectionBuilder(file,logs,configuration,configuration.getSection(path));
     }
 
     @Override
