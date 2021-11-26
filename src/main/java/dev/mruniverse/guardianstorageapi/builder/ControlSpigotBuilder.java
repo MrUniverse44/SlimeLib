@@ -187,6 +187,26 @@ public class ControlSpigotBuilder implements Control {
     public Object get(String path, Object def) { return configuration.get(path,def); }
 
     @Override
+    public long getLong(String path,long def) { return configuration.getLong(path,def); }
+
+    @Override
+    public long getLong(String path) { return configuration.getLong(path); }
+
+    @Override
+    public List<Long> getLongList(String path) { return configuration.getLongList(path); }
+
+    @Override
+    public List<Boolean> getBooleanList(String path) { return configuration.getBooleanList(path); }
+
+    @Override
+    public List<Byte> getByteList(String path) { return configuration.getByteList(path); }
+
+    @Override
+    public List<Character> getCharList(String path) { return configuration.getCharacterList(path); }
+    @Override
+    public List<Float> getFloatList(String path) { return configuration.getFloatList(path); }
+
+    @Override
     public boolean getStatus(String path, boolean def) {
         return configuration.getBoolean(path,def);
     }

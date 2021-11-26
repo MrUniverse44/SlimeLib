@@ -41,6 +41,20 @@ public interface Control {
 
     void reload();
 
+    long getLong(String path,long def);
+
+    long getLong(String path);
+
+    List<Long> getLongList(String path);
+
+    List<Boolean> getBooleanList(String path);
+
+    List<Byte> getByteList(String path);
+
+    List<Character> getCharList(String path);
+
+    List<Float> getFloatList(String path);
+
     Object get(String path);
 
     Object get(String path,Object def);
