@@ -1,6 +1,5 @@
 package dev.mruniverse.guardianstorageapi.builder;
 
-import com.sun.istack.internal.Nullable;
 import dev.mruniverse.guardianstorageapi.interfaces.Control;
 import dev.mruniverse.guardianstorageapi.interfaces.GLogger;
 import org.bukkit.ChatColor;
@@ -185,7 +184,7 @@ public class ControlSpigotBuilder implements Control {
     public Object get(String path) { return configuration.get(path); }
 
     @Override
-    public Object get(String path, @Nullable Object def) { return configuration.get(path,def); }
+    public Object get(String path, Object def) { return configuration.get(path,def); }
 
     @Override
     public boolean getStatus(String path, boolean def) {

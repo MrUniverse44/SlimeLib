@@ -1,7 +1,5 @@
 package dev.mruniverse.guardianstorageapi.interfaces;
 
-import com.sun.istack.internal.Nullable;
-
 import java.io.File;
 import java.util.List;
 import java.util.Random;
@@ -45,7 +43,7 @@ public interface Control {
 
     Object get(String path);
 
-    Object get(String path, @Nullable Object def);
+    Object get(String path,Object def);
 
     void save();
 
