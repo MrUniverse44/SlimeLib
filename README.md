@@ -5,7 +5,7 @@
 GuardianStorageAPI is a simple YAML Storage System to simplify developers
 creation of YAML's when you have some files at the same time.
 
-Features:
+**Features**:
 * BungeeCord and Spigot Support
 * 1.8 - 1.17
 * InputResource Support
@@ -67,6 +67,7 @@ public class Tests extends JavaPlugin {
                 .setInputManager(new SpigotInputManager(this))
                 .createStorage(getDataFolder())
                 .setEnums(GuardianHelper.process(ExampleEnum.class));
+        usages();
     }
 
     @SuppressWarnings("unused")
@@ -102,6 +103,7 @@ public class TestsBungee extends Plugin {
                 .setInputManager(new BungeeInputManager(this))
                 .createStorage(getDataFolder())
                 .setEnums(GuardianHelper.process(ExampleEnum.class));
+        usages();
     }
 
     @SuppressWarnings("unused")
@@ -148,7 +150,7 @@ public enum ExampleEnum implements GuardianFiles {
         public boolean isInDifferentFolder() {
             return true;
         }
-    };
+    }
 }
 
 ```
