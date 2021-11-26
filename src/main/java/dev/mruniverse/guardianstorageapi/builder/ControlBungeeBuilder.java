@@ -1,5 +1,6 @@
 package dev.mruniverse.guardianstorageapi.builder;
 
+import com.sun.istack.internal.Nullable;
 import dev.mruniverse.guardianstorageapi.interfaces.Control;
 import dev.mruniverse.guardianstorageapi.interfaces.GLogger;
 import net.md_5.bungee.api.ChatColor;
@@ -12,12 +13,9 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @SuppressWarnings("unused")
 public class ControlBungeeBuilder implements Control {
-
-    private final Random random = new Random();
 
     private final InputStream resource;
 
@@ -35,9 +33,6 @@ public class ControlBungeeBuilder implements Control {
         this.resource = resource;
         load();
     }
-
-    @Override
-    public Random getRandom() { return random; }
 
     public ControlBungeeBuilder(GLogger logs,File file) {
         this.file = file;
@@ -72,6 +67,12 @@ public class ControlBungeeBuilder implements Control {
     public String getColoredString(String path,String def) {
         return ChatColor.translateAlternateColorCodes('&',configuration.getString(path,def));
     }
+
+    @Override
+    public Object get(String path) { return configuration.get(path); }
+
+    @Override
+    public Object get(String path, @Nullable Object def) { return configuration.get(path,def); }
 
     @Override
     public String getStringWithoutColors(String path) {

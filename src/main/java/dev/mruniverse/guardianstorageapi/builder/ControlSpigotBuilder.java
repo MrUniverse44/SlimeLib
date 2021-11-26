@@ -1,5 +1,6 @@
 package dev.mruniverse.guardianstorageapi.builder;
 
+import com.sun.istack.internal.Nullable;
 import dev.mruniverse.guardianstorageapi.interfaces.Control;
 import dev.mruniverse.guardianstorageapi.interfaces.GLogger;
 import org.bukkit.ChatColor;
@@ -12,7 +13,6 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @SuppressWarnings("unused")
 public class ControlSpigotBuilder implements Control {
@@ -20,8 +20,6 @@ public class ControlSpigotBuilder implements Control {
     private final InputStream resource;
 
     private final GLogger logs;
-
-    private final Random random = new Random();
 
     private final File file;
 
@@ -35,9 +33,6 @@ public class ControlSpigotBuilder implements Control {
         this.resource = resource;
         load();
     }
-
-    @Override
-    public Random getRandom() { return random; }
 
     @Override
     public File getFile() {
@@ -185,6 +180,12 @@ public class ControlSpigotBuilder implements Control {
     public boolean getStatus(String path) {
         return configuration.getBoolean(path);
     }
+
+    @Override
+    public Object get(String path) { return configuration.get(path); }
+
+    @Override
+    public Object get(String path, @Nullable Object def) { return configuration.get(path,def); }
 
     @Override
     public boolean getStatus(String path, boolean def) {

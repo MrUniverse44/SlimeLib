@@ -14,4 +14,12 @@ public interface GLogger {
     void info(String message);
 
     void sendMessage(String message);
+
+    GLogger setErrorPrefix(String errorPrefix);
+
+    GLogger setDebugPrefix(String debugPrefix);
+
+    GLogger setInfoPrefix(String infoPrefix);
+
+    GLogger setWarnPrefix(String warnPrefix);
 }

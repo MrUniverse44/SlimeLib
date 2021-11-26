@@ -16,6 +16,14 @@ public class BungeeLogs implements GLogger {
     private String pluginName = "GuardianStorageAPI";
     private String containIdentifier = "mruniverse";
 
+    private String errorPrefix = "&f[&cERROR &7| &f%plugin%] ";
+
+    private String debugPrefix = "&f[&9DEBUG &7| &f%plugin%] ";
+
+    private String infoPrefix = "&f[&bINFO &7| &f%plugin%] ";
+
+    private String warnPrefix = "&f[&eWARN &7| &f%plugin%] ";
+
     /**
      * Call the External Logger
      *
@@ -26,6 +34,26 @@ public class BungeeLogs implements GLogger {
         this.hidePackage = hidePackage;
         this.plugin = plugin;
         if(pluginName != null) this.pluginName = pluginName;
+    }
+
+    public GLogger setErrorPrefix(String errorPrefix) {
+        this.errorPrefix = errorPrefix;
+        return this;
+    }
+
+    public GLogger setDebugPrefix(String debugPrefix) {
+        this.debugPrefix = debugPrefix;
+        return this;
+    }
+
+    public GLogger setInfoPrefix(String infoPrefix) {
+        this.infoPrefix = infoPrefix;
+        return this;
+    }
+
+    public GLogger setWarnPrefix(String warnPrefix) {
+        this.warnPrefix = warnPrefix;
+        return this;
     }
 
     /**
@@ -54,48 +82,51 @@ public class BungeeLogs implements GLogger {
     }
 
     /**
-     * Send a error message to console.
+     * Send an error message to console.
      * @param message message to send.
      */
     public void error(String message) {
-        sendMessage("&f[&cERROR &7| &f" + pluginName + "] " + message);
+        String pr = errorPrefix.replace("%plugin%",pluginName);
+        sendMessage(pr + "" + message);
     }
     /**
-     * Send a error message to console.
+     * Send an error message to console.
      * @param throwable throwable to send.
      */
     public void error(Throwable throwable) {
         String location = throwable.getClass().getName();
         String error = throwable.getClass().getSimpleName();
-        sendMessage("&f[&cERROR &7| &f" + pluginName + "] -------------------------");
-        sendMessage("&f[&cERROR &7| &f" + pluginName + "] Location: &a" + location.replace("." + error,""));
-        sendMessage("&f[&cERROR &7| &f" + pluginName + "] Error: &a" + error);
+        String pr = errorPrefix.replace("%plugin%",pluginName);
+        sendMessage(pr + "-------------------------");
+        sendMessage(pr + "Location: &a" + location.replace("." + error,""));
+        sendMessage(pr + "Error: &a" + error);
         if(throwable.getStackTrace() != null) {
-            sendMessage("&f[&cERROR &7| &f" + pluginName + "] &6Internal - StackTrace: ");
+            sendMessage(pr + "&6Internal - StackTrace: ");
             List<StackTraceElement> other = new ArrayList<>();
             for(StackTraceElement line : throwable.getStackTrace()) {
                 if(line.toString().contains(containIdentifier)) {
-                    sendMessage("&f[&cERROR &7| &f" + pluginName + "] &b(Line: " + line.getLineNumber() + ") " + line.toString().replace("(" + line.getFileName() + ":" + line.getLineNumber() + ")","").replace(hidePackage,""));
+                    sendMessage(pr + "&b(Line: " + line.getLineNumber() + ") " + line.toString().replace("(" + line.getFileName() + ":" + line.getLineNumber() + ")","").replace(hidePackage,""));
                 } else {
                     other.add(line);
                 }
             }
-            sendMessage("&f[&cERROR &7| &f" + pluginName + "]  -------------------------");
-            sendMessage("&f[&cERROR &7| &f" + pluginName + "] &6External - StackTrace: ");
+            sendMessage(pr + " -------------------------");
+            sendMessage(pr + "&6External - StackTrace: ");
             for(StackTraceElement line : other) {
-                sendMessage("&f[&cERROR &7| &f" + pluginName + "] &b(Line: " + line.getLineNumber() + ") (Class: " + line.getFileName() + ") (Method: " + line.getMethodName() + ")".replace(".java",""));
+                sendMessage(pr + "&b(Line: " + line.getLineNumber() + ") (Class: " + line.getFileName() + ") (Method: " + line.getMethodName() + ")".replace(".java",""));
             }
 
         }
-        sendMessage("&f[&cERROR &7| &f" + pluginName + "]  -------------------------");
+        sendMessage(errorPrefix + " -------------------------");
     }
 
     /**
-     * Send a warn message to console.
+     * Send an advice message to console.
      * @param message message to send.
      */
     public void warn(String message) {
-        sendMessage("&f[&eWARN &7| &f" + pluginName + "] " + message);
+        String pr = warnPrefix.replace("%plugin%",pluginName);
+        sendMessage(pr + message);
     }
 
     /**
@@ -103,15 +134,17 @@ public class BungeeLogs implements GLogger {
      * @param message message to send.
      */
     public void debug(String message) {
-        sendMessage("&f[&9DEBUG &7| &f" + pluginName + "] " + message);
+        String pr = debugPrefix.replace("%plugin%",pluginName);
+        sendMessage(pr + message);
     }
 
     /**
-     * Send a info message to console.
+     * Send an info message to console.
      * @param message message to send.
      */
     public void info(String message) {
-        sendMessage("&f[&bINFO &7| &f" + pluginName + "] " + message);
+        String pr = infoPrefix.replace("%plugin%",pluginName);
+        sendMessage(pr + message);
     }
 
     /**
