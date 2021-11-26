@@ -26,7 +26,7 @@ Dependency:
             <artifactId>GuardianStorageAPI</artifactId>
             <version>TAG</version>
             <!-- TAG = latest version, for example:
-            <version>1.0.1</version>
+            <version>1.0.2</version>
             -->
         </dependency>
 ```
