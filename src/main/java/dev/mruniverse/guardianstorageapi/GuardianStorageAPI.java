@@ -2,6 +2,7 @@ package dev.mruniverse.guardianstorageapi;
 
 import dev.mruniverse.guardianstorageapi.builder.ControlBungeeBuilder;
 import dev.mruniverse.guardianstorageapi.builder.ControlSpigotBuilder;
+import dev.mruniverse.guardianstorageapi.builder.ControlVelocityBuilder;
 import dev.mruniverse.guardianstorageapi.builder.FileStorageBuilder;
 import dev.mruniverse.guardianstorageapi.enums.ControlType;
 import dev.mruniverse.guardianstorageapi.interfaces.*;
@@ -73,15 +74,16 @@ public final class GuardianStorageAPI {
         }
         if(manager == null) return null;
         if (type == ControlType.BUNGEECORD) return new ControlBungeeBuilder(logs, finalFile,manager.getInputStream(resource));
+        if (type == ControlType.VELOCITY) return new ControlVelocityBuilder(logs, finalFile,manager.getInputStream(resource));
         return new ControlSpigotBuilder(logs, finalFile,manager.getInputStream(resource));
     }
 
     public FileStorage createStorage(File dataFolder,GuardianFiles[] enums) {
-        return new FileStorageBuilder(logs,dataFolder,enums,manager);
+        return new FileStorageBuilder(logs,type,dataFolder,enums,manager);
     }
 
     public FileStorage createStorage(File dataFolder) {
-        return new FileStorageBuilder(logs,dataFolder,manager);
+        return new FileStorageBuilder(logs,type,dataFolder,manager);
     }
 
 }

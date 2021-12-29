@@ -5,5 +5,7 @@ public interface GuardianFiles {
 
     String getFolderName();
 
+    String getResourceFileName();
+
     boolean isInDifferentFolder();
 }

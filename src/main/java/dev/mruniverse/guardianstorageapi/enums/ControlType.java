@@ -2,6 +2,7 @@ package dev.mruniverse.guardianstorageapi.enums;
 
 public enum ControlType {
     SPIGOT,
+    VELOCITY,
     BUNGEECORD;
 
     @SuppressWarnings("unused")

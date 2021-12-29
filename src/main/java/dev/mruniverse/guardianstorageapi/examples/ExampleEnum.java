@@ -13,6 +13,10 @@ public enum ExampleEnum implements GuardianFiles {
             return "";
         }
         @Override
+        public String getResourceFileName() {
+            return "Tests.yml";
+        }
+        @Override
         public boolean isInDifferentFolder() {
             return false;
         }
@@ -25,6 +29,10 @@ public enum ExampleEnum implements GuardianFiles {
         @Override
         public String getFolderName() {
             return "Tests";
+        }
+        @Override
+        public String getResourceFileName() {
+            return "Tests.yml";
         }
         @Override
         public boolean isInDifferentFolder() {

@@ -1,5 +1,6 @@
 package dev.mruniverse.guardianstorageapi.builder;
 
+import dev.mruniverse.guardianstorageapi.enums.ControlType;
 import dev.mruniverse.guardianstorageapi.interfaces.*;
 
 import java.io.File;
@@ -17,20 +18,24 @@ public class FileStorageBuilder implements FileStorage {
 
     private final InputManager inputManager;
 
+    private final ControlType type;
+
     private GuardianFiles[] currentFiles;
 
-    public FileStorageBuilder(GLogger logs,File dataFolder,GuardianFiles[] enums, InputManager inputManager) {
+    public FileStorageBuilder(GLogger logs,ControlType type,File dataFolder,GuardianFiles[] enums, InputManager inputManager) {
         this.dataFolder = dataFolder;
         this.logs = logs;
         this.inputManager = inputManager;
         this.isBungee = inputManager.isBungee();
         this.currentFiles = enums;
+        this.type = type;
         load();
     }
 
-    public FileStorageBuilder(GLogger logs,File dataFolder, InputManager inputManager) {
+    public FileStorageBuilder(GLogger logs,ControlType type,File dataFolder, InputManager inputManager) {
         this.dataFolder = dataFolder;
         this.logs = logs;
+        this.type = type;
         this.inputManager = inputManager;
         this.isBungee = inputManager.isBungee();
     }
@@ -57,13 +62,20 @@ public class FileStorageBuilder implements FileStorage {
             if(isBungee) {
                 files.put(guardianFiles, new ControlBungeeBuilder(logs,
                         new File(mainFolder,guardianFiles.getFileName()),
-                        inputManager.getInputStream(guardianFiles.getFileName())
+                        inputManager.getInputStream(guardianFiles.getResourceFileName())
                 ));
             } else {
-                files.put(guardianFiles, new ControlSpigotBuilder(logs,
-                        new File(mainFolder, guardianFiles.getFileName()),
-                        inputManager.getInputStream(guardianFiles.getFileName())
-                ));
+                if(type == ControlType.SPIGOT) {
+                    files.put(guardianFiles, new ControlSpigotBuilder(logs,
+                            new File(mainFolder, guardianFiles.getFileName()),
+                            inputManager.getInputStream(guardianFiles.getResourceFileName())
+                    ));
+                } else if(type == ControlType.VELOCITY){
+                   files.put(guardianFiles,new ControlVelocityBuilder(logs,
+                           new File(mainFolder, guardianFiles.getFileName()),
+                           inputManager.getInputStream(guardianFiles.getResourceFileName())
+                   ));
+                }
             }
         }
     }
