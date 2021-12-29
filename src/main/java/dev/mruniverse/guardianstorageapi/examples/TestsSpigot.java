@@ -26,6 +26,7 @@ public class TestsSpigot extends JavaPlugin {
     public void usages() {
         storage.getControl(ExampleEnum.FILE1).reload();
         storage.getControl(ExampleEnum.FILE2).reload();
+        storage.getControl(ExampleEnum.FILE3).reload();
         new SpigotLogs("Test","dev.mruniverse.guardianstorageapi.examples.").debug(storage.getControl(ExampleEnum.FILE2).getColoredString("TestsSpigot","&cDefault"));
     }
 

@@ -26,6 +26,7 @@ public class TestsBungee extends Plugin {
     public void usages() {
         storage.getControl(ExampleEnum.FILE1).reload();
         storage.getControl(ExampleEnum.FILE2).reload();
+        storage.getControl(ExampleEnum.FILE3).reload();
         new BungeeLogs(this,"TestPlugin","dev.mruniverse.guardianstorageapi.examples.")
                 .debug(storage.getControl(ExampleEnum.FILE2).getColoredString("TestsSpigot","&cDefault"));
     }
