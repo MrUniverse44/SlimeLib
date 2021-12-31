@@ -6,7 +6,7 @@
 
     <groupId>dev.mruniverse.guardianstorage</groupId>
     <artifactId>GuardianStorageAPI</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <packaging>jar</packaging>
 
     <name>GuardianStorageAPI</name>
@@ -96,7 +96,7 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>RELEASE</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

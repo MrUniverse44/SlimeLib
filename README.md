@@ -5,6 +5,8 @@
 GuardianStorageAPI is a simple YAML Storage System to simplify developers
 creation of YAML's when you have some files at the same time.
 
+# NOTE: For Velocity use version 1.0.3
+
 **Features**:
 * BungeeCord and Spigot Support
 * 1.8 - 1.17
