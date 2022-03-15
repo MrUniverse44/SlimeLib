@@ -1,5 +1,6 @@
 package dev.mruniverse.slimelib;
 
+import dev.mruniverse.slimelib.loader.SlimeLoader;
 import dev.mruniverse.slimelib.logs.SlimeLogs;
 
 public interface SlimePlugin extends SlimePluginResource {
@@ -8,7 +9,7 @@ public interface SlimePlugin extends SlimePluginResource {
 
     SlimeLogs getSlimeLogs();
 
-    SlimeStorage getSlimeStorage();
+    SlimeLoader getSlimeLoader();
 
     void reload();
 }

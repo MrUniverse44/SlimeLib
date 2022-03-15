@@ -118,24 +118,26 @@ public class FileStorageBuilder implements FileStorage {
     }
 
     @Override
-    public void reloadFile(boolean reloadAll, SlimeFiles paramFile) {
-        if(reloadAll) {
-            for (SlimeFiles file : currentFiles) {
-                files.get(file).reload();
-            }
-            return;
-        }
+    public void reloadFile(SlimeFiles paramFile) {
         files.get(paramFile).reload();
     }
 
     @Override
-    public void save(boolean reloadAll, SlimeFiles paramFile) {
-        if(reloadAll) {
-            for (SlimeFiles file : currentFiles) {
-                files.get(file).reload();
-            }
-            return;
+    public void reloadFiles() {
+        for (SlimeFiles file : currentFiles) {
+            files.get(file).reload();
         }
+    }
+
+    @Override
+    public void save(SlimeFiles paramFile) {
         files.get(paramFile).reload();
+    }
+
+    @Override
+    public void saveFiles() {
+        for (SlimeFiles file : currentFiles) {
+            files.get(file).reload();
+        }
     }
 }

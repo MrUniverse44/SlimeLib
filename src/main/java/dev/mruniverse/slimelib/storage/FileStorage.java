@@ -16,7 +16,12 @@ public interface FileStorage {
 
     void init();
 
-    void reloadFile(boolean reloadAll, SlimeFiles file);
+    void reloadFile(SlimeFiles file);
 
-    void save(boolean reloadAll, SlimeFiles file);
+    void reloadFiles();
+
+    void saveFiles();
+
+    void save(SlimeFiles paramFile);
+
 }
