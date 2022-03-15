@@ -1,16 +1,15 @@
-# GuardianStorageAPI
+# SlimeLib
 
-[![](https://jitpack.io/v/MrUniverse44/GuardianStorageAPI.svg)](https://jitpack.io/#MrUniverse44/GuardianStorageAPI)
+[![](https://jitpack.io/v/MrUniverse44/SlimeLib.svg)](https://jitpack.io/#MrUniverse44/SlimeLib)
 
-GuardianStorageAPI is a simple YAML Storage System to simplify developers
-creation of YAML's when you have some files at the same time.
-
-# NOTE: For Velocity use version 1.0.3
+SlimeLib is a simple Library to simplify developers
+creation of multi-platform plugins.
 
 **Features**:
-* BungeeCord and Spigot Support
-* 1.8 - 1.17
-* InputResource Support
+* BungeeCord, Spigot and Velocity Support
+* 1.8.X - 1.18.X
+* Yaml Files
+* Logs
 * More Options
 
 Maven Usage (With jitpack):
@@ -25,10 +24,10 @@ Dependency:
 ```XML
         <dependency>
             <groupId>com.github.MrUniverse44</groupId>
-            <artifactId>GuardianStorageAPI</artifactId>
+            <artifactId>SlimeLib</artifactId>
             <version>TAG</version>
             <!-- TAG = latest version, for example:
-            <version>1.0.3</version>
+            <version>1.0.0</version>
             -->
         </dependency>
 ```
@@ -38,7 +37,7 @@ Dependency:
 ```XML
                             <relocations>
                                 <relocation>
-                                    <pattern>dev.mruniverse.guardianstorageapi</pattern>
+                                    <pattern>dev.mruniverse.slimelib</pattern>
                                     <shadedPattern>(Your Package)</shadedPattern>
                                 </relocation>
                             </relocations>
@@ -50,108 +49,66 @@ Dependency:
 Creating a storage:
 * Spigot:
 ```Java
-import dev.mruniverse.guardianstorageapi.GuardianStorageAPI;
-import dev.mruniverse.guardianstorageapi.enums.ControlType;
-import dev.mruniverse.guardianstorageapi.inputs.SpigotInputManager;
-import dev.mruniverse.guardianstorageapi.interfaces.FileStorage;
-import dev.mruniverse.guardianstorageapi.logs.SpigotLogs;
-import dev.mruniverse.guardianstorageapi.utils.GuardianHelper;
-import org.bukkit.plugin.java.JavaPlugin;
-
-public class Tests extends JavaPlugin {
+public class Storage {
 
     private FileStorage storage;
 
     @Override
-    public void onEnable() {
-        storage = new GuardianStorageAPI(ControlType.SPIGOT)
-                .setLogs(new SpigotLogs("TestPlugin", "TestPlugin.package."))
-                .setInputManager(new SpigotInputManager(this))
-                .createStorage(getDataFolder())
-                .setEnums(GuardianHelper.process(ExampleEnum.class));
-        usages();
+    public void load() {
+        //TODO: storage
     }
-
-    @SuppressWarnings("unused")
-    public void usages() {
-        storage.getControl(ExampleEnum.FILE1).reload();
-        storage.getControl(ExampleEnum.FILE2).reload();
-        new SpigotLogs("Test","dev.mruniverse.guardianstorageapi.examples.").debug(storage.getControl(ExampleEnum.FILE2).getColoredString("TestsSpigot","&cDefault"));
-    }
-
 }
 ```
 
 * BungeeCord:
 ```Java
-package dev.mruniverse.guardianstorageapi.examples;
-
-import dev.mruniverse.guardianstorageapi.GuardianStorageAPI;
-import dev.mruniverse.guardianstorageapi.enums.ControlType;
-import dev.mruniverse.guardianstorageapi.inputs.BungeeInputManager;
-import dev.mruniverse.guardianstorageapi.interfaces.FileStorage;
-import dev.mruniverse.guardianstorageapi.logs.BungeeLogs;
-import dev.mruniverse.guardianstorageapi.utils.GuardianHelper;
-import net.md_5.bungee.api.plugin.Plugin;
-
-public class TestsBungee extends Plugin {
+public class Storage {
 
     private FileStorage storage;
 
     @Override
-    public void onEnable() {
-        storage = new GuardianStorageAPI(ControlType.BUNGEECORD)
-                .setLogs(new BungeeLogs(this,"TestPlugin", "TestPlugin.package."))
-                .setInputManager(new BungeeInputManager(this))
-                .createStorage(getDataFolder())
-                .setEnums(GuardianHelper.process(ExampleEnum.class));
-        usages();
+    public void load() {
+        //TODO: storage
     }
+}
+```
 
-    @SuppressWarnings("unused")
-    public void usages() {
-        storage.getControl(ExampleEnum.FILE1).reload();
-        storage.getControl(ExampleEnum.FILE2).reload();
-        new BungeeLogs(this,"TestPlugin","dev.mruniverse.guardianstorageapi.examples.")
-                .debug(storage.getControl(ExampleEnum.FILE2).getColoredString("TestsSpigot","&cDefault"));
+* Velocity:
+```Java
+public class Storage {
+
+    private FileStorage storage;
+
+    @Override
+    public void load() {
+        //TODO: storage
     }
 }
 ```
 
 * Enum:
+
 ```Java
-package dev.mruniverse.guardianstorageapi.examples;
+package dev.mruniverse.slimelib.older.examples;
 
-import dev.mruniverse.guardianstorageapi.interfaces.GuardianFiles;
+import dev.mruniverse.slimelib.SlimeFiles;
 
-public enum ExampleEnum implements GuardianFiles {
-    FILE1 {
-        @Override
-        public String getFileName() {
-            return "Tests.yml";
-        }
-        @Override
-        public String getFolderName() {
-            return "";
-        }
-        @Override
-        public boolean isInDifferentFolder() {
-            return false;
-        }
-    },
-    FILE2 {
-        @Override
-        public String getFileName() {
-            return "Tests.yml";
-        }
-        @Override
-        public String getFolderName() {
-            return "Tests";
-        }
-        @Override
-        public boolean isInDifferentFolder() {
-            return true;
-        }
+public enum ExampleEnum implements SlimeFiles {
+    FILE1("Tests.yml", false),
+    FILE2("Tests.yml", "Tests");
+
+    private boolean customFile;
+    private String file;
+    private String folder;
+
+    ExampleEnum(String file, String folder) {
+        this.file = file;
+        this.folder = folder;
+    }
+
+    @Override
+    public void a() {
+
     }
 }
 
