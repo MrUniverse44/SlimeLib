@@ -6,7 +6,9 @@ public interface SlimePlugin extends SlimePluginResource {
 
     PluginMode getServerType();
 
-    SlimeLogs getLogs();
+    SlimeLogs getSlimeLogs();
+
+    SlimeStorage getSlimeStorage();
 
     void reload();
 }
