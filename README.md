@@ -89,26 +89,38 @@ public class Storage {
 * Enum:
 
 ```Java
-package dev.mruniverse.slimelib.older.examples;
+package dev.mruniverse.slimelib.examples;
 
 import dev.mruniverse.slimelib.SlimeFiles;
 
-public enum ExampleEnum implements SlimeFiles {
-    FILE1("Tests.yml", false),
-    FILE2("Tests.yml", "Tests");
+public enum SlimeFile implements SlimeFiles {
+    SETTINGS("settings.yml"),
+    MESSAGES("messages.yml");
 
-    private boolean customFile;
-    private String file;
-    private String folder;
+    private final String file;
 
-    ExampleEnum(String file, String folder) {
+    SlimeFile(String file) {
         this.file = file;
-        this.folder = folder;
     }
 
     @Override
-    public void a() {
+    public String getFileName() {
+        return file;
+    }
 
+    @Override
+    public String getResourceFileName() {
+        return file;
+    }
+
+    @Override
+    public String getFolderName() {
+        return "";
+    }
+
+    @Override
+    public boolean isInDifferentFolder() {
+        return false;
     }
 }
 
