@@ -1,15 +1,21 @@
 package dev.mruniverse.slimelib;
 
-import dev.mruniverse.slimelib.loader.SlimeLoader;
+import dev.mruniverse.slimelib.loader.BaseSlimeLoader;
 import dev.mruniverse.slimelib.logs.SlimeLogs;
 
-public interface SlimePlugin extends SlimePluginResource {
+/**
+ * Provides an interface to a plugin for access to the SlimePlugin
+ * @see SlimePluginResource to check where is your plugin directory.
+ */
+public interface SlimePlugin<T> extends SlimePluginResource {
 
     PluginMode getServerType();
 
-    SlimeLogs getSlimeLogs();
+    SlimeLogs getLogs();
 
-    SlimeLoader getSlimeLoader();
+    BaseSlimeLoader<T> getLoader();
+
+    T getPlugin();
 
     void reload();
 }

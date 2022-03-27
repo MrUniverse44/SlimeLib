@@ -6,19 +6,19 @@ import dev.mruniverse.slimelib.SlimeStorage;
 import dev.mruniverse.slimelib.input.InputManager;
 import dev.mruniverse.slimelib.utils.SlimeHelper;
 
-public class DefaultSlimeLoader extends SlimeLoader {
+public class DefaultSlimeLoader<T> extends BaseSlimeLoader<T> {
 
-    public DefaultSlimeLoader(SlimePlugin plugin, InputManager inputManager) {
+    public DefaultSlimeLoader(SlimePlugin<T> plugin, InputManager inputManager) {
         super(plugin);
 
         super.storage(new SlimeStorage(
                 plugin.getServerType(),
-                plugin.getSlimeLogs(),
+                plugin.getLogs(),
                 inputManager
         ));
     }
 
-    public <T extends Enum<T> & SlimeFiles> void setFiles(Class<T> clazz) {
+    public <O extends Enum<O> & SlimeFiles> void setFiles(Class<O> clazz) {
         fileStorage(getStorage().createStorage(getPlugin().getDataFolder())
                 .setEnums(SlimeHelper.process(clazz)));
     }

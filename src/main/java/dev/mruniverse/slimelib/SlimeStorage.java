@@ -9,7 +9,7 @@ import dev.mruniverse.slimelib.input.InputManager;
 
 import dev.mruniverse.slimelib.logs.SlimeLogs;
 import dev.mruniverse.slimelib.storage.FileStorage;
-import dev.mruniverse.slimelib.storage.FileStorageBuilder;
+import dev.mruniverse.slimelib.storage.DefaultFileStorage;
 
 import java.io.File;
 
@@ -98,11 +98,11 @@ public final class SlimeStorage {
     }
 
     public FileStorage createStorage(File dataFolder, SlimeFiles[] enums) {
-        return new FileStorageBuilder(logs,type,dataFolder,enums,manager);
+        return new DefaultFileStorage(logs,type,dataFolder,enums,manager);
     }
 
     public FileStorage createStorage(File dataFolder) {
-        return new FileStorageBuilder(logs,type,dataFolder,manager);
+        return new DefaultFileStorage(logs,type,dataFolder,manager);
     }
 
 }

@@ -12,7 +12,7 @@ import dev.mruniverse.slimelib.logs.SlimeLogs;
 import java.io.File;
 import java.util.HashMap;
 
-public class FileStorageBuilder implements FileStorage {
+public class DefaultFileStorage implements FileStorage {
 
     private final boolean isBungee;
 
@@ -28,7 +28,7 @@ public class FileStorageBuilder implements FileStorage {
 
     private SlimeFiles[] currentFiles;
 
-    public FileStorageBuilder(SlimeLogs logs, PluginMode type, File dataFolder, SlimeFiles[] enums, InputManager inputManager) {
+    public DefaultFileStorage(SlimeLogs logs, PluginMode type, File dataFolder, SlimeFiles[] enums, InputManager inputManager) {
         this.dataFolder   = dataFolder;
         this.logs         = logs;
         this.inputManager = inputManager;
@@ -38,7 +38,7 @@ public class FileStorageBuilder implements FileStorage {
         load();
     }
 
-    public FileStorageBuilder(SlimeLogs logs, PluginMode type, File dataFolder, InputManager inputManager) {
+    public DefaultFileStorage(SlimeLogs logs, PluginMode type, File dataFolder, InputManager inputManager) {
         this.dataFolder   = dataFolder;
         this.logs         = logs;
         this.type         = type;
