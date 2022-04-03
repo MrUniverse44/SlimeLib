@@ -2,11 +2,14 @@ package dev.mruniverse.slimelib.loader;
 
 import dev.mruniverse.slimelib.SlimePlugin;
 import dev.mruniverse.slimelib.SlimeStorage;
+import dev.mruniverse.slimelib.commands.SlimeCommands;
 import dev.mruniverse.slimelib.storage.FileStorage;
 
-
+@SuppressWarnings("unused")
 public abstract class BaseSlimeLoader<T> {
     private final SlimePlugin<T> plugin;
+
+    private final SlimeCommands<T> commands;
 
     private BaseSlimeListenerManager<T> listenerManager = null;
 
@@ -16,6 +19,10 @@ public abstract class BaseSlimeLoader<T> {
 
     public BaseSlimeLoader(SlimePlugin<T> plugin) {
         this.plugin = plugin;
+        commands = new SlimeCommands<>(
+                plugin,
+                plugin.getServerType()
+        );
     }
 
     public void storage(SlimeStorage storage) {
@@ -28,6 +35,10 @@ public abstract class BaseSlimeLoader<T> {
 
     public void fileStorage(FileStorage files) {
         this.files = files;
+    }
+
+    public SlimeCommands<T> getCommands() {
+        return commands;
     }
 
     public SlimePlugin<T> getPlugin() {
@@ -49,7 +60,7 @@ public abstract class BaseSlimeLoader<T> {
     /**
      * This will be like the "onLoad()" and "onEnable()",
      *
-     * This will
+     * This will init the loader.
      */
     public void init() {
 

@@ -32,7 +32,7 @@ public class DefaultSlimeLoader<T> extends BaseSlimeLoader<T> {
 
     @Override
     public void shutdown() {
-        //TODO
+        getCommands().unregister();
     }
 
     @Override

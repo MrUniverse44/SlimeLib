@@ -1,28 +1,32 @@
 package dev.mruniverse.slimelib.commands;
 
-import dev.mruniverse.slimelib.commands.inputs.InputAdapter;
+import dev.mruniverse.slimelib.PluginMode;
+import dev.mruniverse.slimelib.SlimePlugin;
+import dev.mruniverse.slimelib.commands.command.SlimeCommand;
 import dev.mruniverse.slimelib.commands.manager.SlimeCommandManager;
-import dev.mruniverse.slimelib.commands.manager.SlimeCommandManagerBuilder;
-import dev.mruniverse.slimelib.commands.manager.SlimeCommandManagerBuilderImpl;
+import dev.mruniverse.slimelib.commands.manager.DefaultSlimeCommandManager;
 
-public class SlimeCommands {
-    private static SlimeCommandManager manager;
+@SuppressWarnings("unused")
+public class SlimeCommands<T> {
 
-    public static SlimeCommandManager getManager() {
+    private final SlimeCommandManager manager;
+
+    private final SlimeCommandPlatform platform;
+
+    public SlimeCommands(SlimePlugin<T> plugin, PluginMode mode) {
+        this.manager = new DefaultSlimeCommandManager();
+        this.platform = SlimeCommandPlatform.fromMode(plugin, mode);
+    }
+
+    public SlimeCommandManager getManager() {
         return manager;
     }
 
-    public static void setCommandManager(SlimeCommandManager manager) {
-        SlimeCommands.manager = manager;
+    public void register(SlimeCommand command) {
+        platform.register(command);
     }
 
-    //TODO: Command Builder
-
-    public static SlimeCommandManagerBuilder builder() {
-        return new SlimeCommandManagerBuilderImpl();
-    }
-
-    public static <T> void registerInputAdapter(Class<T> clazz, InputAdapter<T> adapter) {
-        getManager().getAdapterMap().put(clazz, adapter);
+    public void unregister() {
+        platform.unregister();
     }
 }

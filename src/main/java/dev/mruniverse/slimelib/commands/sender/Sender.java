@@ -1,27 +1,15 @@
 package dev.mruniverse.slimelib.commands.sender;
 
-public interface Sender {
+public interface Sender extends Permissions {
 
-    Object getObject();
+    String getName();
 
     void sendMessage(String message);
 
-    default <T> T getSender(Class<T> sender, String commandString) {
-        final Object object = getObject();
+    void sendMessage(String[] message);
 
-        if (sender == null) {
-            throw new IllegalArgumentException(commandString + ", the sender is null");
-        }
+    void sendColoredMessage(String message);
 
-        if (object == null) {
-            throw new IllegalArgumentException(commandString + ", the sender.object is null");
-        }
-
-        if (!sender.isInstance(object)) {
-            throw new ClassCastException(commandString + ", sender can't be casted.");
-        }
-
-        return sender.cast(object);
-    }
+    void sendColoredMessage(String[] message);
 
 }
