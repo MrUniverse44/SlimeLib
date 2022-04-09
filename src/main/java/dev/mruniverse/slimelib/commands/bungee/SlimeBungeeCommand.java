@@ -9,8 +9,9 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
+import net.md_5.bungee.api.plugin.TabExecutor;
 
-public class SlimeBungeeCommand extends Command {
+public class SlimeBungeeCommand extends Command implements TabExecutor {
     private final SlimeCommand command;
 
     public SlimeBungeeCommand(SlimeCommand command) {
@@ -38,6 +39,15 @@ public class SlimeBungeeCommand extends Command {
             return new SlimeProxiedPlayer((ProxiedPlayer)sender);
         }
         return new SlimeConsoleBungee();
+    }
+
+    @Override
+    public Iterable<String> onTabComplete(CommandSender sender, String[] args) {
+        return command.onTabComplete(
+                cast(sender),
+                command.getCommand(),
+                args
+        );
     }
 }
 

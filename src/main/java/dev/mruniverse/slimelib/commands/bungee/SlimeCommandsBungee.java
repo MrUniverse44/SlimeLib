@@ -5,6 +5,7 @@ import dev.mruniverse.slimelib.SlimePlugin;
 import dev.mruniverse.slimelib.commands.SlimeCommandPlatform;
 import dev.mruniverse.slimelib.commands.command.SlimeCommand;
 
+import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.HashMap;
@@ -12,7 +13,7 @@ import java.util.Map;
 
 public class SlimeCommandsBungee<T extends Plugin> implements SlimeCommandPlatform {
 
-    private final Map<String, org.bukkit.command.Command> registeredCommandMap = new HashMap<>();
+    private final Map<String, Command> registeredCommandMap = new HashMap<>();
 
     private final Map<String, SlimeBungeeCommand> commandsMap = new HashMap<>();
 

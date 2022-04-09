@@ -5,6 +5,7 @@ import dev.mruniverse.slimelib.SlimePlugin;
 import dev.mruniverse.slimelib.commands.bungee.BungeeCommand;
 import dev.mruniverse.slimelib.commands.command.SlimeCommand;
 import dev.mruniverse.slimelib.commands.spigot.SpigotCommand;
+import dev.mruniverse.slimelib.commands.velocity.VelocityCommand;
 
 public interface SlimeCommandPlatform {
 
@@ -20,7 +21,7 @@ public interface SlimeCommandPlatform {
             case SPIGOT:
                 return new SpigotCommand(plugin).get();
             case VELOCITY:
-                return null;
+                return new VelocityCommand(plugin).get();
         }
     }
 }

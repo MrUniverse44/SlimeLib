@@ -6,10 +6,14 @@ import dev.mruniverse.slimelib.commands.sender.console.SlimeConsoleSpigot;
 import dev.mruniverse.slimelib.commands.sender.player.SlimePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class SlimeSpigotCommand extends Command {
+import java.util.List;
+
+public class SlimeSpigotCommand extends Command implements TabCompleter {
     private final SlimeCommand command;
 
     public SlimeSpigotCommand(SlimeCommand command, String description, String usage) {
@@ -36,5 +40,28 @@ public class SlimeSpigotCommand extends Command {
             return new SlimePlayer((Player)sender);
         }
         return new SlimeConsoleSpigot();
+    }
+
+    /**
+     * Requests a list of possible completions for a command argument.
+     *
+     * @param sender  Source of the command.  For players tab-completing a
+     *                command inside a command block, this will be the player, not
+     *                the command block.
+     * @param command Command which was executed
+     * @param alias   The alias used
+     * @param args    The arguments passed to the command, including final
+     *                partial argument to be completed and command label
+     * @return A List of possible completions for the final argument, or null
+     * to default to the command executor
+     */
+    @Nullable
+    @Override
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+        return this.command.onTabComplete(
+                cast(sender),
+                alias,
+                args
+        );
     }
 }
