@@ -40,7 +40,6 @@ public class ControlVelocityBuilder implements Control {
         return file;
     }
 
-    @SuppressWarnings("unused")
     public ControlVelocityBuilder(SlimeLogs logs,File file) {
         this.file = file;
         this.logs = logs;
