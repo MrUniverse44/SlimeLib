@@ -48,14 +48,17 @@ public enum EnumExample implements SlimeFiles {
     public String getFileName() {
         return this.file;
     }
+
     @Override
     public String getFolderName() {
         return this.folder;
     }
+
     @Override
     public String getResourceFileName(SlimePlatform platform) {
         return this.resource;
     }
+
     @Override
     public boolean isInDifferentFolder() {
         return this.differentFolder;

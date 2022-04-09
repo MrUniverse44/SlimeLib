@@ -15,11 +15,21 @@ public interface SlimeFiles {
     String getFolderName();
 
     /**
-     * return the name of the resource file
+     * The name of the resource file
      * @param platform - Use a different resource file depending on the platform
-     * @return String
+     * @return String - File Name
      */
     String getResourceFileName(SlimePlatform platform);
+
+    /**
+     * This will load the file in a specific platform.
+     * @param platform Platform
+     * @return Boolean, true by default.
+     */
+    @SuppressWarnings("unused")
+    default boolean loadOnPlatform(SlimePlatform platform) {
+        return true;
+    }
 
     boolean isInDifferentFolder();
 }

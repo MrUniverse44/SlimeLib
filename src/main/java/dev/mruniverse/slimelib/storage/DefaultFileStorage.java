@@ -62,46 +62,47 @@ public class DefaultFileStorage implements FileStorage {
     private void load() {
         for(SlimeFiles guardianFiles : currentFiles) {
             File mainFolder = dataFolder;
+
             if(guardianFiles.isInDifferentFolder()) {
                 mainFolder = new File(dataFolder,guardianFiles.getFolderName());
             }
-            if(isBungee) {
-                files.put(
-                    guardianFiles,
-                    new ControlBungeeBuilder(
-                        logs,
-                        new File(
-                            mainFolder,
-                            guardianFiles.getFileName()
-                        ),
-                        inputManager.getInputStream(guardianFiles.getResourceFileName(type))
-                    )
+
+            if (guardianFiles.loadOnPlatform(type)) {
+
+                File file = new File(
+                        mainFolder,
+                        guardianFiles.getFileName()
                 );
-            } else {
-                if(type == SlimePlatform.SPIGOT) {
+
+                if (isBungee) {
                     files.put(
-                        guardianFiles,
-                        new ControlSpigotBuilder(
-                            logs,
-                            new File(
-                                mainFolder,
-                                guardianFiles.getFileName()
-                            ),
-                            inputManager.getInputStream(guardianFiles.getResourceFileName(type))
-                        )
+                            guardianFiles,
+                            new ControlBungeeBuilder(
+                                    logs,
+                                    file,
+                                    inputManager.getInputStream(guardianFiles.getResourceFileName(type))
+                            )
                     );
-                } else if(type == SlimePlatform.VELOCITY){
-                    files.put(
-                        guardianFiles,
-                        new ControlVelocityBuilder(
-                            logs,
-                            new File(
-                                mainFolder,
-                                guardianFiles.getFileName()
-                            ),
-                            inputManager.getInputStream(guardianFiles.getResourceFileName(type))
-                       )
-                    );
+                } else {
+                    if (type == SlimePlatform.SPIGOT) {
+                        files.put(
+                                guardianFiles,
+                                new ControlSpigotBuilder(
+                                        logs,
+                                        file,
+                                        inputManager.getInputStream(guardianFiles.getResourceFileName(type))
+                                )
+                        );
+                    } else if (type == SlimePlatform.VELOCITY) {
+                        files.put(
+                                guardianFiles,
+                                new ControlVelocityBuilder(
+                                        logs,
+                                        file,
+                                        inputManager.getInputStream(guardianFiles.getResourceFileName(type))
+                                )
+                        );
+                    }
                 }
             }
         }
@@ -114,7 +115,15 @@ public class DefaultFileStorage implements FileStorage {
 
     @Override
     public Control getControl(SlimeFiles file) {
-        return files.get(file);
+        try {
+            if (!files.containsKey(file)) {
+                throw new SlimeFileNotLoadedException(file);
+            }
+            return files.get(file);
+        } catch (SlimeFileNotLoadedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
