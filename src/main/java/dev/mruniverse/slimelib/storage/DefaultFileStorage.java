@@ -1,7 +1,7 @@
 package dev.mruniverse.slimelib.storage;
 
 import dev.mruniverse.slimelib.SlimeFiles;
-import dev.mruniverse.slimelib.PluginMode;
+import dev.mruniverse.slimelib.SlimePlatform;
 import dev.mruniverse.slimelib.control.Control;
 import dev.mruniverse.slimelib.control.bungee.ControlBungeeBuilder;
 import dev.mruniverse.slimelib.control.spigot.ControlSpigotBuilder;
@@ -24,11 +24,11 @@ public class DefaultFileStorage implements FileStorage {
 
     private final InputManager inputManager;
 
-    private final PluginMode type;
+    private final SlimePlatform type;
 
     private SlimeFiles[] currentFiles;
 
-    public DefaultFileStorage(SlimeLogs logs, PluginMode type, File dataFolder, SlimeFiles[] enums, InputManager inputManager) {
+    public DefaultFileStorage(SlimeLogs logs, SlimePlatform type, File dataFolder, SlimeFiles[] enums, InputManager inputManager) {
         this.dataFolder   = dataFolder;
         this.logs         = logs;
         this.inputManager = inputManager;
@@ -38,7 +38,7 @@ public class DefaultFileStorage implements FileStorage {
         load();
     }
 
-    public DefaultFileStorage(SlimeLogs logs, PluginMode type, File dataFolder, InputManager inputManager) {
+    public DefaultFileStorage(SlimeLogs logs, SlimePlatform type, File dataFolder, InputManager inputManager) {
         this.dataFolder   = dataFolder;
         this.logs         = logs;
         this.type         = type;
@@ -74,11 +74,11 @@ public class DefaultFileStorage implements FileStorage {
                             mainFolder,
                             guardianFiles.getFileName()
                         ),
-                        inputManager.getInputStream(guardianFiles.getResourceFileName())
+                        inputManager.getInputStream(guardianFiles.getResourceFileName(type))
                     )
                 );
             } else {
-                if(type == PluginMode.SPIGOT) {
+                if(type == SlimePlatform.SPIGOT) {
                     files.put(
                         guardianFiles,
                         new ControlSpigotBuilder(
@@ -87,10 +87,10 @@ public class DefaultFileStorage implements FileStorage {
                                 mainFolder,
                                 guardianFiles.getFileName()
                             ),
-                            inputManager.getInputStream(guardianFiles.getResourceFileName())
+                            inputManager.getInputStream(guardianFiles.getResourceFileName(type))
                         )
                     );
-                } else if(type == PluginMode.VELOCITY){
+                } else if(type == SlimePlatform.VELOCITY){
                     files.put(
                         guardianFiles,
                         new ControlVelocityBuilder(
@@ -99,7 +99,7 @@ public class DefaultFileStorage implements FileStorage {
                                 mainFolder,
                                 guardianFiles.getFileName()
                             ),
-                            inputManager.getInputStream(guardianFiles.getResourceFileName())
+                            inputManager.getInputStream(guardianFiles.getResourceFileName(type))
                        )
                     );
                 }

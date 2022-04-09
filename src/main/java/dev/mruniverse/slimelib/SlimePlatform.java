@@ -1,6 +1,6 @@
 package dev.mruniverse.slimelib;
 
-public enum PluginMode {
+public enum SlimePlatform {
     SPIGOT,
     VELOCITY,
     BUNGEECORD;

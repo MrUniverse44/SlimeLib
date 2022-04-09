@@ -16,9 +16,10 @@ public interface SlimeFiles {
 
     /**
      * return the name of the resource file
+     * @param platform - Use a different resource file depending on the platform
      * @return String
      */
-    String getResourceFileName();
+    String getResourceFileName(SlimePlatform platform);
 
     boolean isInDifferentFolder();
 }

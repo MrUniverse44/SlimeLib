@@ -1,6 +1,7 @@
 package dev.mruniverse.slimelib.examples;
 
 import dev.mruniverse.slimelib.SlimeFiles;
+import dev.mruniverse.slimelib.SlimePlatform;
 
 @SuppressWarnings("unused")
 public enum EnumExample implements SlimeFiles {
@@ -52,7 +53,7 @@ public enum EnumExample implements SlimeFiles {
         return this.folder;
     }
     @Override
-    public String getResourceFileName() {
+    public String getResourceFileName(SlimePlatform platform) {
         return this.resource;
     }
     @Override

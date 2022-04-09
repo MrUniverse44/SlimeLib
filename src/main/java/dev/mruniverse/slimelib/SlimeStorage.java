@@ -16,23 +16,23 @@ import java.io.File;
 @SuppressWarnings("unused")
 public final class SlimeStorage {
 
-    private PluginMode type = PluginMode.SPIGOT;
+    private SlimePlatform type = SlimePlatform.SPIGOT;
 
     private SlimeLogs logs = null;
 
     private InputManager manager = null;
 
-    public SlimeStorage(PluginMode type) {
+    public SlimeStorage(SlimePlatform type) {
         this.type = type;
     }
 
-    public SlimeStorage(PluginMode type, SlimeLogs logs, InputManager manager) {
+    public SlimeStorage(SlimePlatform type, SlimeLogs logs, InputManager manager) {
         this.type = type;
         this.logs = logs;
         this.manager = manager;
     }
 
-    public SlimeStorage(PluginMode type, SlimeLogs logs) {
+    public SlimeStorage(SlimePlatform type, SlimeLogs logs) {
         this.type = type;
         this.logs = logs;
     }
@@ -51,7 +51,7 @@ public final class SlimeStorage {
         return this;
     }
 
-    public SlimeStorage setType(PluginMode type) {
+    public SlimeStorage setType(SlimePlatform type) {
         this.type = type;
         return this;
     }
@@ -61,7 +61,7 @@ public final class SlimeStorage {
         return this;
     }
 
-    public PluginMode getType() {
+    public SlimePlatform getType() {
         return type;
     }
 
@@ -76,7 +76,7 @@ public final class SlimeStorage {
         File finalFile = new File(dataFolder,fileInfo.getFileName());
 
         if(!includeResource) {
-            if (type == PluginMode.BUNGEECORD) {
+            if (type == SlimePlatform.BUNGEECORD) {
                 return new ControlBungeeBuilder(logs, finalFile);
             }
             return new ControlSpigotBuilder(logs, finalFile);
@@ -86,11 +86,11 @@ public final class SlimeStorage {
             return null;
         }
 
-        if (type == PluginMode.BUNGEECORD) {
+        if (type == SlimePlatform.BUNGEECORD) {
             return new ControlBungeeBuilder(logs, finalFile,manager.getInputStream(resource));
         }
 
-        if (type == PluginMode.VELOCITY) {
+        if (type == SlimePlatform.VELOCITY) {
             return new ControlVelocityBuilder(logs, finalFile,manager.getInputStream(resource));
         }
 

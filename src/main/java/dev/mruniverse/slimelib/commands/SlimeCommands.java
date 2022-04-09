@@ -1,6 +1,6 @@
 package dev.mruniverse.slimelib.commands;
 
-import dev.mruniverse.slimelib.PluginMode;
+import dev.mruniverse.slimelib.SlimePlatform;
 import dev.mruniverse.slimelib.SlimePlugin;
 import dev.mruniverse.slimelib.commands.command.SlimeCommand;
 import dev.mruniverse.slimelib.commands.manager.SlimeCommandManager;
@@ -13,7 +13,7 @@ public class SlimeCommands<T> {
 
     private final SlimeCommandPlatform platform;
 
-    public SlimeCommands(SlimePlugin<T> plugin, PluginMode mode) {
+    public SlimeCommands(SlimePlugin<T> plugin, SlimePlatform mode) {
         this.manager = new DefaultSlimeCommandManager();
         this.platform = SlimeCommandPlatform.fromMode(plugin, mode);
     }

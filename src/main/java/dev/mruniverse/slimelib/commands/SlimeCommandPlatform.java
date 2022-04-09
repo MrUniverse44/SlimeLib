@@ -1,6 +1,6 @@
 package dev.mruniverse.slimelib.commands;
 
-import dev.mruniverse.slimelib.PluginMode;
+import dev.mruniverse.slimelib.SlimePlatform;
 import dev.mruniverse.slimelib.SlimePlugin;
 import dev.mruniverse.slimelib.commands.bungee.BungeeCommand;
 import dev.mruniverse.slimelib.commands.command.SlimeCommand;
@@ -13,7 +13,7 @@ public interface SlimeCommandPlatform {
 
     void unregister();
 
-    static <T> SlimeCommandPlatform fromMode(SlimePlugin<T> plugin, PluginMode mode) {
+    static <T> SlimeCommandPlatform fromMode(SlimePlugin<T> plugin, SlimePlatform mode) {
         switch (mode) {
             default:
             case BUNGEECORD:

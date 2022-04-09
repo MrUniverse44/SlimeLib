@@ -9,7 +9,7 @@ import dev.mruniverse.slimelib.logs.SlimeLogs;
  */
 public interface SlimePlugin<T> extends SlimePluginResource {
 
-    PluginMode getServerType();
+    SlimePlatform getServerType();
 
     SlimeLogs getLogs();
 
