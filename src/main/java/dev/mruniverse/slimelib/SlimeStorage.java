@@ -4,8 +4,7 @@ import dev.mruniverse.slimelib.control.Control;
 
 import dev.mruniverse.slimelib.control.bungee.ControlBungeeBuilder;
 import dev.mruniverse.slimelib.control.spigot.ControlSpigotBuilder;
-import dev.mruniverse.slimelib.control.sponge.ControlSpongeBuilder;
-import dev.mruniverse.slimelib.control.velocity.ControlVelocityBuilder;
+import dev.mruniverse.slimelib.control.multiplatform.DefaultControlBuilder;
 import dev.mruniverse.slimelib.input.InputManager;
 
 import dev.mruniverse.slimelib.logs.SlimeLogs;
@@ -66,7 +65,7 @@ public final class SlimeStorage {
         return type;
     }
 
-    public Control createControlFile(File pluginDataFolder, SlimeFiles fileInfo, String resource, boolean includeResource) {
+    public Control createControlFile(File pluginDataFolder, SlimeFiles slimeFile, String resource, boolean includeResource) {
 
         if(logs == null) {
             return null;
@@ -74,70 +73,66 @@ public final class SlimeStorage {
 
         File dataFolder = pluginDataFolder;
 
-        if(fileInfo.isInDifferentFolder()) {
+        if(slimeFile.isInDifferentFolder()) {
             dataFolder = new File(
                     pluginDataFolder,
-                    fileInfo.getFolderName()
+                    slimeFile.getFolderName()
             );
         }
 
-        File finalFile = new File(
+        File file = new File(
                 dataFolder,
-                fileInfo.getFileName()
+                slimeFile.getFileName()
         );
 
         if (!includeResource) {
-            if (type == SlimePlatform.BUNGEECORD) {
-                return new ControlBungeeBuilder(
-                        logs,
-                        finalFile
-                );
+            switch (type) {
+                case SPIGOT:
+                    return new ControlSpigotBuilder(
+                            logs,
+                            file
+                    );
+                case BUNGEECORD:
+                    return new ControlBungeeBuilder(
+                            logs,
+                            file
+                    );
+                default:
+                case SPONGE:
+                case VELOCITY:
+                    return new DefaultControlBuilder(
+                            logs,
+                            file
+                    );
             }
-            if (type == SlimePlatform.VELOCITY) {
-                return new ControlVelocityBuilder(
-                        logs,
-                        finalFile
-                );
-            }
-            return new ControlSpigotBuilder(
-                    logs,
-                    finalFile
-            );
         }
 
         if(manager == null) {
             return null;
         }
 
-        if (type == SlimePlatform.BUNGEECORD) {
-            return new ControlBungeeBuilder(
-                    logs,
-                    finalFile,
-                    manager.getInputStream(resource)
-            );
+        switch (type) {
+            case BUNGEECORD:
+                return new ControlBungeeBuilder(
+                        logs,
+                        file,
+                        manager.getInputStream(resource)
+                );
+            case SPIGOT:
+                return new ControlSpigotBuilder(
+                        logs,
+                        file,
+                        manager.getInputStream(resource)
+                );
+            default:
+            case SPONGE:
+            case VELOCITY:
+                return new DefaultControlBuilder(
+                        logs,
+                        file,
+                        manager.getInputStream(resource)
+                );
         }
-
-        if (type == SlimePlatform.VELOCITY) {
-            return new ControlVelocityBuilder(
-                    logs,
-                    finalFile,
-                    manager.getInputStream(resource)
-            );
-        }
-
-        if (type == SlimePlatform.SPONGE) {
-            return new ControlSpongeBuilder(
-                    logs,
-                    finalFile,
-                    manager.getInputStream(resource)
-            );
-        }
-
-        return new ControlSpigotBuilder(
-                logs,
-                finalFile,
-                manager.getInputStream(resource)
-        );
     }
 
     public FileStorage createStorage(File dataFolder, SlimeFiles[] enums) {

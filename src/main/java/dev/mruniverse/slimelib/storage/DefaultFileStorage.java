@@ -3,38 +3,36 @@ package dev.mruniverse.slimelib.storage;
 import dev.mruniverse.slimelib.SlimeFiles;
 import dev.mruniverse.slimelib.SlimePlatform;
 import dev.mruniverse.slimelib.control.Control;
-import dev.mruniverse.slimelib.control.bungee.ControlBungeeBuilder;
-import dev.mruniverse.slimelib.control.spigot.ControlSpigotBuilder;
-import dev.mruniverse.slimelib.control.velocity.ControlVelocityBuilder;
 import dev.mruniverse.slimelib.input.InputManager;
 import dev.mruniverse.slimelib.logs.SlimeLogs;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.HashMap;
 
 public class DefaultFileStorage implements FileStorage {
 
-    private final boolean isBungee;
-
     private final HashMap<SlimeFiles, Control> files = new HashMap<>();
-
-    private final SlimeLogs logs;
-
-    private final File dataFolder;
 
     private final InputManager inputManager;
 
-    private final SlimePlatform type;
+    private final ControlProvider provider;
 
     private SlimeFiles[] currentFiles;
+
+    private final SlimePlatform type;
+
+    private final File dataFolder;
+
+    private final SlimeLogs logs;
 
     public DefaultFileStorage(SlimeLogs logs, SlimePlatform type, File dataFolder, SlimeFiles[] enums, InputManager inputManager) {
         this.dataFolder   = dataFolder;
         this.logs         = logs;
         this.inputManager = inputManager;
-        this.isBungee     = inputManager.isBungee();
         this.currentFiles = enums;
         this.type         = type;
+        this.provider = ControlProvider.create(type);
         load();
     }
 
@@ -43,7 +41,7 @@ public class DefaultFileStorage implements FileStorage {
         this.logs         = logs;
         this.type         = type;
         this.inputManager = inputManager;
-        this.isBungee     = inputManager.isBungee();
+        this.provider = ControlProvider.create(type);
     }
 
     public FileStorage setEnums(SlimeFiles[] enums) {
@@ -55,7 +53,7 @@ public class DefaultFileStorage implements FileStorage {
         if(currentFiles != null) {
             load();
         } else {
-            logs.info("Enums aren't defined");
+            logs.info("Enums aren't defined so can't init files if files doesn't exists");
         }
     }
 
@@ -74,36 +72,18 @@ public class DefaultFileStorage implements FileStorage {
                         guardianFiles.getFileName()
                 );
 
-                if (isBungee) {
-                    files.put(
-                            guardianFiles,
-                            new ControlBungeeBuilder(
-                                    logs,
-                                    file,
-                                    inputManager.getInputStream(guardianFiles.getResourceFileName(type))
-                            )
-                    );
-                } else {
-                    if (type == SlimePlatform.SPIGOT) {
-                        files.put(
-                                guardianFiles,
-                                new ControlSpigotBuilder(
-                                        logs,
-                                        file,
-                                        inputManager.getInputStream(guardianFiles.getResourceFileName(type))
-                                )
-                        );
-                    } else if (type == SlimePlatform.VELOCITY) {
-                        files.put(
-                                guardianFiles,
-                                new ControlVelocityBuilder(
-                                        logs,
-                                        file,
-                                        inputManager.getInputStream(guardianFiles.getResourceFileName(type))
-                                )
-                        );
-                    }
-                }
+                InputStream resource = inputManager.getInputStream(
+                        guardianFiles.getResourceFileName(type)
+                );
+
+                files.put(
+                        guardianFiles,
+                        provider.create(
+                                logs,
+                                file,
+                                resource
+                        )
+                );
             }
         }
     }

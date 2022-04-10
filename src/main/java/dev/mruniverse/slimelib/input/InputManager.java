@@ -3,7 +3,11 @@ package dev.mruniverse.slimelib.input;
 import java.io.InputStream;
 
 public interface InputManager {
-    InputStream getInputStream(String resource);
 
-    boolean isBungee();
+    /**
+     * Get a InputStream from a resource file.
+     * @param resource File Path with File Name
+     * @return InputStream
+     */
+    InputStream getInputStream(String resource);
 }

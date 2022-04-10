@@ -16,9 +16,4 @@ public class SpigotInputManager implements InputManager {
     public InputStream getInputStream(String resource) {
         return plugin.getResource(resource);
     }
-
-    @Override
-    public boolean isBungee() {
-        return false;
-    }
 }

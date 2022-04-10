@@ -1,4 +1,4 @@
-package dev.mruniverse.slimelib.control.velocity;
+package dev.mruniverse.slimelib.control.multiplatform;
 
 import dev.mruniverse.slimelib.logs.SlimeLogs;
 import dev.mruniverse.slimelib.utils.Configuration;
@@ -16,7 +16,7 @@ import java.util.Set;
 
 import dev.mruniverse.slimelib.control.Control;
 
-public class ControlVelocityBuilder implements Control {
+public class DefaultControlBuilder implements Control {
     private final InputStream resource;
 
     private final SlimeLogs logs;
@@ -27,24 +27,23 @@ public class ControlVelocityBuilder implements Control {
 
 
 
-    public ControlVelocityBuilder(SlimeLogs logs, File file, InputStream resource) {
+    public DefaultControlBuilder(SlimeLogs logs, File file, InputStream resource) {
         this.file = file;
         this.logs = logs;
         this.resource = resource;
         load();
     }
 
-
-    @Override
-    public File getFile() {
-        return file;
-    }
-
-    public ControlVelocityBuilder(SlimeLogs logs,File file) {
+    public DefaultControlBuilder(SlimeLogs logs, File file) {
         this.file = file;
         this.logs = logs;
         this.resource = null;
         load();
+    }
+
+    @Override
+    public File getFile() {
+        return file;
     }
 
     @Override
@@ -147,7 +146,9 @@ public class ControlVelocityBuilder implements Control {
     public void saveConfig(File fileToSave) {
         if (!fileToSave.getParentFile().exists()) {
             boolean createFile = fileToSave.getParentFile().mkdirs();
-            if(createFile) logs.info("&7Folder created!!");
+            if(createFile) {
+                logs.info("&7Folder created!!");
+            }
         }
 
         if (!fileToSave.exists()) {
@@ -168,6 +169,7 @@ public class ControlVelocityBuilder implements Control {
         }
 
         Configuration cnf = null;
+
         try {
             cnf = ConfigurationProvider.getProvider(ConfigurationProvider.Provider.YAML).load(file);
         } catch (Exception exception) {
@@ -197,9 +199,15 @@ public class ControlVelocityBuilder implements Control {
     @Override
     public List<String> getContent(String path, boolean getKeys) {
         List<String> rx = new ArrayList<>();
+
         Configuration section = configuration.getSection(path);
-        if(section == null) return rx;
+
+        if(section == null) {
+            return rx;
+        }
+
         rx.addAll(section.getKeys());
+
         return rx;
     }
 
@@ -245,7 +253,12 @@ public class ControlVelocityBuilder implements Control {
 
     @Override
     public Control getSection(String path) {
-        return new ControlVelocitySectionBuilder(file, logs, configuration, configuration.getSection(path));
+        return new DefaultControlSectionBuilder(
+                file,
+                logs,
+                configuration,
+                configuration.getSection(path)
+        );
     }
 
     @Override

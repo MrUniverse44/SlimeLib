@@ -1,4 +1,4 @@
-package dev.mruniverse.slimelib.control.velocity;
+package dev.mruniverse.slimelib.control.multiplatform;
 
 import dev.mruniverse.slimelib.logs.SlimeLogs;
 import dev.mruniverse.slimelib.control.Control;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class ControlVelocitySectionBuilder implements Control {
+public class DefaultControlSectionBuilder implements Control {
 
     private final Configuration configuration;
 
@@ -21,7 +21,7 @@ public class ControlVelocitySectionBuilder implements Control {
 
     private Configuration fileConfig;
 
-    public ControlVelocitySectionBuilder(File file,SlimeLogs logs,Configuration fileConfig, Configuration section) {
+    public DefaultControlSectionBuilder(File file, SlimeLogs logs, Configuration fileConfig, Configuration section) {
         this.configuration = section;
         this.logs = logs;
         this.fileConfig = fileConfig;
@@ -99,9 +99,15 @@ public class ControlVelocitySectionBuilder implements Control {
     @Override
     public List<String> getContent(String path, boolean getKeys) {
         List<String> rx = new ArrayList<>();
+
         Configuration section = configuration.getSection(path);
-        if(section == null) return rx;
+
+        if(section == null) {
+            return rx;
+        }
+
         rx.addAll(section.getKeys());
+
         return rx;
     }
 
@@ -141,7 +147,12 @@ public class ControlVelocitySectionBuilder implements Control {
 
     @Override
     public Control getSection(String path) {
-        return new ControlVelocitySectionBuilder(file, logs, fileConfig, configuration.getSection(path));
+        return new DefaultControlSectionBuilder(
+                file,
+                logs,
+                fileConfig,
+                configuration.getSection(path)
+        );
     }
 
     @Override

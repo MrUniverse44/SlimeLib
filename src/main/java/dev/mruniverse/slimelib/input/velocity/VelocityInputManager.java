@@ -16,9 +16,4 @@ public class VelocityInputManager implements InputManager {
     public InputStream getInputStream(String resource) {
         return plugin.getClass().getResourceAsStream(resource);
     }
-
-    @Override
-    public boolean isBungee() {
-        return false;
-    }
 }
