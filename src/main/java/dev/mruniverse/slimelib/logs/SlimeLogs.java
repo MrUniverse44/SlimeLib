@@ -49,13 +49,13 @@ public abstract class SlimeLogs {
         String location = current.getName();
         String error = current.getSimpleName();
 
-        error("&b -------------------------");
-        error("&bLocation: " + location.replace("." + error,""));
-        error("&bError: " + error);
+        error(properties.getExceptionProperties().getBaseColor() + " -------------------------");
+        error(properties.getExceptionProperties().getBaseColor() + "Location: " + location.replace("." + error,""));
+        error(properties.getExceptionProperties().getBaseColor() + "Error: " + error);
 
         if (exception.getStackTrace() != null) {
 
-            error("&bInternal - StackTrace: ");
+            error(properties.getExceptionProperties().getBaseColor() + "Internal - StackTrace: ");
 
             List<StackTraceElement> other = new ArrayList<>();
 
@@ -68,21 +68,21 @@ public abstract class SlimeLogs {
                 String replace = "(" + line.getFileName() + ":" + number + ")";
 
                 if (text.contains(logger.getContainIdentifier())) {
-                    error("&b (Line: " + number + ") " + text.replace(replace,"").replace(logger.getHidePackage(),""));
+                    error(properties.getExceptionProperties().getCodeColor() + " (Line: " + number + ") " + text.replace(replace,"").replace(logger.getHidePackage(),""));
                 } else {
                     other.add(line);
                 }
             }
 
-            error("&b -------------------------");
-            error("&bExternal - StackTrace: ");
+            error(properties.getExceptionProperties().getBaseColor() + " -------------------------");
+            error(properties.getExceptionProperties().getBaseColor() + "External - StackTrace: ");
 
             for (StackTraceElement line : other) {
-                error("&b (Line: " + line.getLineNumber() + ") (Class: " + line.getFileName() + ") (Method: " + line.getMethodName() + ")".replace(".java",""));
+                error(properties.getExceptionProperties().getCodeColor() + " (Line: " + line.getLineNumber() + ") (Class: " + line.getFileName() + ") (Method: " + line.getMethodName() + ")".replace(".java",""));
             }
         }
 
-        error("&b -------------------------");
+        error(properties.getExceptionProperties().getBaseColor() + " -------------------------");
     }
 
     public void error(String message, Exception exception) {
@@ -103,6 +103,6 @@ public abstract class SlimeLogs {
     }
 
     public void send(String message) {
-        // This need to be setted by the user
+        // This method will change depending on the platform.
     }
 }

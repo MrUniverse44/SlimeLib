@@ -3,6 +3,7 @@ package dev.mruniverse.slimelib.logs;
 @SuppressWarnings("unused")
 public class SlimeLoggerProperties {
     private Prefixes prefixes;
+    private ExceptionProperties exceptionProperties;
 
     public SlimeLoggerProperties() {
         this.prefixes = new Prefixes();
@@ -12,8 +13,37 @@ public class SlimeLoggerProperties {
         return prefixes;
     }
 
+    public ExceptionProperties getExceptionProperties() {
+        return exceptionProperties;
+    }
+
+    public void setExceptionProperties(ExceptionProperties properties) {
+        this.exceptionProperties = properties;
+    }
+
     public void setPrefixes(Prefixes prefixes) {
         this.prefixes = prefixes;
+    }
+
+    public static class ExceptionProperties {
+        private String baseColor = "&b";
+        private String codeColor = "&b";
+
+        public void setBaseColor(String baseColor) {
+            this.baseColor = baseColor;
+        }
+
+        public void setCodeColor(String codeColor) {
+            this.codeColor = codeColor;
+        }
+
+        public String getBaseColor() {
+            return baseColor;
+        }
+
+        public String getCodeColor() {
+            return codeColor;
+        }
     }
 
     public static class Prefixes {

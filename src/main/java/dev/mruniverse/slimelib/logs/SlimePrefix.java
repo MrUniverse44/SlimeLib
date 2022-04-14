@@ -5,7 +5,7 @@ public abstract class SlimePrefix {
     private String prefix;
 
     public SlimePrefix() {
-        this("&8[&aSlimeFriends&8] &dUnknown &8| &e");
+        this("&8[&aSlimeLib&8] &dUnknown &8| &e");
     }
 
     public SlimePrefix(String prefix) {
