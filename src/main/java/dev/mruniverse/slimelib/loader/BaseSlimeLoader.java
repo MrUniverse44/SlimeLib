@@ -1,17 +1,17 @@
 package dev.mruniverse.slimelib.loader;
 
+import dev.mruniverse.slimelib.SlimeFiles;
 import dev.mruniverse.slimelib.SlimePlugin;
 import dev.mruniverse.slimelib.SlimeStorage;
 import dev.mruniverse.slimelib.commands.SlimeCommands;
 import dev.mruniverse.slimelib.storage.FileStorage;
+import dev.mruniverse.slimelib.utils.SlimeHelper;
 
 @SuppressWarnings("unused")
 public abstract class BaseSlimeLoader<T> {
     private final SlimePlugin<T> plugin;
 
     private final SlimeCommands<T> commands;
-
-    private BaseSlimeListenerManager<T> listenerManager = null;
 
     private SlimeStorage storage = null;
 
@@ -25,12 +25,13 @@ public abstract class BaseSlimeLoader<T> {
         );
     }
 
-    public void storage(SlimeStorage storage) {
-        this.storage = storage;
+    public <O extends Enum<O> & SlimeFiles> void setFiles(Class<O> clazz) {
+        fileStorage(getStorage().createStorage(getPlugin().getDataFolder())
+                .setEnums(SlimeHelper.process(clazz)));
     }
 
-    public void listenerManager(BaseSlimeListenerManager<T> listenerManager) {
-        this.listenerManager = listenerManager;
+    public void storage(SlimeStorage storage) {
+        this.storage = storage;
     }
 
     public void fileStorage(FileStorage files) {
@@ -43,10 +44,6 @@ public abstract class BaseSlimeLoader<T> {
 
     public SlimePlugin<T> getPlugin() {
         return plugin;
-    }
-
-    public BaseSlimeListenerManager<T> getListenerManager() {
-        return listenerManager;
     }
 
     public SlimeStorage getStorage() {
