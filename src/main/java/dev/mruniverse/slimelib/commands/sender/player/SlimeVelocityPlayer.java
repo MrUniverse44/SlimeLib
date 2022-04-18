@@ -32,6 +32,16 @@ public class SlimeVelocityPlayer implements Sender {
     }
 
     @Override
+    public boolean isPlayer() {
+        return true;
+    }
+
+    @Override
+    public boolean isConsoleSender() {
+        return false;
+    }
+
+    @Override
     public String getName() {
         return name;
     }

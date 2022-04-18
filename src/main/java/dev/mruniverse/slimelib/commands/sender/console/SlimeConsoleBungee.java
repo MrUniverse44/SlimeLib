@@ -25,6 +25,16 @@ public class SlimeConsoleBungee implements Sender {
     }
 
     @Override
+    public boolean isPlayer() {
+        return false;
+    }
+
+    @Override
+    public boolean isConsoleSender() {
+        return true;
+    }
+
+    @Override
     public String getName() {
         return "Console";
     }
