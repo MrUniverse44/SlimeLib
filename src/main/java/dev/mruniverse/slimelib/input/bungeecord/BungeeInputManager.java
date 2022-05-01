@@ -8,8 +8,8 @@ import java.io.InputStream;
 public class BungeeInputManager implements InputManager {
     private final Plugin plugin;
 
-    public BungeeInputManager(Plugin plugin) {
-        this.plugin = plugin;
+    public <T> BungeeInputManager(T plugin) {
+        this.plugin = (Plugin) plugin;
     }
 
     @Override

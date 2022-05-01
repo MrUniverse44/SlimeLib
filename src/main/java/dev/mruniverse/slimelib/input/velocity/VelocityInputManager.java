@@ -8,8 +8,8 @@ import java.io.InputStream;
 public class VelocityInputManager implements InputManager {
     private final Plugin plugin;
 
-    public VelocityInputManager(Plugin plugin) {
-        this.plugin = plugin;
+    public <T> VelocityInputManager(T plugin) {
+        this.plugin = (Plugin) plugin;
     }
 
     @Override

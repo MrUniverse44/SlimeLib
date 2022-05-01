@@ -8,8 +8,8 @@ import java.io.InputStream;
 public class SpongeInputManager implements InputManager {
     private final Plugin plugin;
 
-    public SpongeInputManager(Plugin plugin) {
-        this.plugin = plugin;
+    public <T> SpongeInputManager(T plugin) {
+        this.plugin = (Plugin) plugin;
     }
 
     @Override

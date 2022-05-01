@@ -29,7 +29,7 @@ public interface SlimeCommand {
      * @param commandLabel the command-alias used
      * @param args arguments of the command executed
      */
-    void execute(@NotNull Sender sender, @NotNull String commandLabel, @NotNull String[] args);
+    void execute(Sender sender, String commandLabel, String[] args);
 
     /**
      * Add Tab Complete to your command

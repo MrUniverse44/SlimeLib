@@ -197,6 +197,10 @@ public class DefaultControlSectionBuilder implements Control {
         return (Set<String>) configuration.getKeys();
     }
 
+    public Object getObjectConfiguration() {
+        return configuration;
+    }
+
 }
 
 

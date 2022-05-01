@@ -8,8 +8,8 @@ import java.io.InputStream;
 public class SpigotInputManager implements InputManager {
     private final JavaPlugin plugin;
 
-    public SpigotInputManager(JavaPlugin plugin) {
-        this.plugin = plugin;
+    public <T> SpigotInputManager(T plugin) {
+        this.plugin = (JavaPlugin) plugin;
     }
 
     @Override

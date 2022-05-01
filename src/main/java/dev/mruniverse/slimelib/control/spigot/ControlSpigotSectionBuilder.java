@@ -186,4 +186,8 @@ public class ControlSpigotSectionBuilder implements Control {
         return configuration.getKeys(deep);
     }
 
+    public Object getObjectConfiguration() {
+        return fileConfig;
+    }
+
 }

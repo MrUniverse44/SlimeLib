@@ -77,4 +77,6 @@ public interface Control {
     Set<String> getKeys(boolean deep);
 
     Control getSection(String path);
+
+    Object getObjectConfiguration();
 }

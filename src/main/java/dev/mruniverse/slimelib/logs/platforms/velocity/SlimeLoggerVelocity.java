@@ -1,4 +1,4 @@
-package dev.mruniverse.slimelib.logs.platforms;
+package dev.mruniverse.slimelib.logs.platforms.velocity;
 
 import com.velocitypowered.api.proxy.ProxyServer;
 import dev.mruniverse.slimelib.logs.SlimeLogger;

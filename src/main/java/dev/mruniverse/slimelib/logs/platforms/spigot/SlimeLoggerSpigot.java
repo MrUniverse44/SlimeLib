@@ -1,4 +1,4 @@
-package dev.mruniverse.slimelib.logs.platforms;
+package dev.mruniverse.slimelib.logs.platforms.spigot;
 
 import dev.mruniverse.slimelib.logs.SlimeLogger;
 import dev.mruniverse.slimelib.logs.SlimeLogs;

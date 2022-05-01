@@ -187,6 +187,10 @@ public class ControlBungeeSectionBuilder implements Control {
         return new HashSet<>(configuration.getKeys());
     }
 
+    public Object getObjectConfiguration() {
+        return configuration;
+    }
+
 }
 
 

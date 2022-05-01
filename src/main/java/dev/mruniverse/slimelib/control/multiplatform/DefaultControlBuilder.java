@@ -270,5 +270,9 @@ public class DefaultControlBuilder implements Control {
     public String getString(String path) {
         return configuration.getString(path,"&cInvalid Path: &e" + path);
     }
+
+    public Object getObjectConfiguration() {
+        return configuration;
+    }
 }
 

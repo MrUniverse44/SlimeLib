@@ -236,4 +236,8 @@ public class ControlSpigotBuilder implements Control {
     public Set<String> getKeys(boolean deep) {
         return configuration.getKeys(deep);
     }
+
+    public Object getObjectConfiguration() {
+        return configuration;
+    }
 }
