@@ -7,6 +7,8 @@ creation of multi-platform plugins.
 
 **Features**:
 * BungeeCord, Spigot and Velocity Support
+* Command System
+* Some Utils for a fast plugin developing
 * 1.8.X - 1.18.X
 * Yaml Files
 * Logs
@@ -27,7 +29,7 @@ Dependency:
             <artifactId>SlimeLib</artifactId>
             <version>TAG</version>
             <!-- TAG = latest version, for example:
-            <version>1.0.4.2</version>
+            <version>1.0.4.4</version>
             -->
         </dependency>
 ```
