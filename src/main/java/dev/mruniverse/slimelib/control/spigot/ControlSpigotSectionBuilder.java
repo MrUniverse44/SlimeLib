@@ -1,5 +1,7 @@
 package dev.mruniverse.slimelib.control.spigot;
 
+import dev.mruniverse.slimelib.exceptions.SlimeControlFileSaveException;
+import dev.mruniverse.slimelib.exceptions.SlimeControlLoadException;
 import dev.mruniverse.slimelib.logs.SlimeLogs;
 import dev.mruniverse.slimelib.control.Control;
 import org.bukkit.ChatColor;
@@ -66,8 +68,10 @@ public class ControlSpigotSectionBuilder implements Control {
         try {
             fileConfig.save(file);
         }catch (Exception exception) {
-            logs.error("Can't save file: " + file.getName());
-            logs.error(exception);
+            logs.error(
+                    "Can't save file: " + file.getName(),
+                    new SlimeControlFileSaveException(exception)
+            );
         }
     }
 
@@ -76,8 +80,10 @@ public class ControlSpigotSectionBuilder implements Control {
         try {
             fileConfig = YamlConfiguration.loadConfiguration(file);
         }catch (Exception exception) {
-            logs.error("Can't reload file: " + file.getName());
-            logs.error(exception);
+            logs.error(
+                    "Can't reload file: " + file.getName(),
+                    new SlimeControlLoadException(exception)
+            );
         }
     }
 

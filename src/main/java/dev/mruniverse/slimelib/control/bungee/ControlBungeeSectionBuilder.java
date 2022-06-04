@@ -1,5 +1,7 @@
 package dev.mruniverse.slimelib.control.bungee;
 
+import dev.mruniverse.slimelib.exceptions.SlimeControlFileSaveException;
+import dev.mruniverse.slimelib.exceptions.SlimeControlLoadException;
 import dev.mruniverse.slimelib.logs.SlimeLogs;
 import dev.mruniverse.slimelib.control.Control;
 import net.md_5.bungee.api.ChatColor;
@@ -67,8 +69,10 @@ public class ControlBungeeSectionBuilder implements Control {
         try {
             ConfigurationProvider.getProvider(YamlConfiguration.class).save(fileConfig, file);
         }catch (Exception exception) {
-            logs.error("Can't save file: " + file.getName());
-            logs.error(exception);
+            logs.error(
+                    "Can't save file: " + file.getName(),
+                    new SlimeControlFileSaveException(exception)
+            );
         }
     }
 
@@ -77,8 +81,10 @@ public class ControlBungeeSectionBuilder implements Control {
         try {
             fileConfig = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
         }catch (Exception exception) {
-            logs.error("Can't reload file: " + file.getName());
-            logs.error(exception);
+            logs.error(
+                    "Can't reload file: " + file.getName(),
+                    new SlimeControlLoadException(exception)
+            );
         }
     }
 

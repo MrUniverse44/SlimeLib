@@ -1,5 +1,8 @@
 package dev.mruniverse.slimelib.control.bungee;
 
+import dev.mruniverse.slimelib.exceptions.SlimeControlFileException;
+import dev.mruniverse.slimelib.exceptions.SlimeControlFileSaveException;
+import dev.mruniverse.slimelib.exceptions.SlimeControlLoadException;
 import dev.mruniverse.slimelib.logs.SlimeLogs;
 import dev.mruniverse.slimelib.control.Control;
 import net.md_5.bungee.api.ChatColor;
@@ -47,8 +50,10 @@ public class ControlBungeeBuilder implements Control {
         try {
             ConfigurationProvider.getProvider(YamlConfiguration.class).save(configuration, file);
         }catch (Exception exception) {
-            logs.error("Can't save file: " + file.getName());
-            logs.error(exception);
+            logs.error(
+                    "Can't save file: " + file.getName(),
+                    new SlimeControlFileSaveException(exception)
+            );
         }
     }
 
@@ -109,9 +114,11 @@ public class ControlBungeeBuilder implements Control {
     public void reload() {
         try {
             configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
-        }catch (Exception exception) {
-            logs.error("Can't reload file: " + file.getName());
-            logs.error(exception);
+        } catch (Exception exception) {
+            logs.error(
+                    "Can't reload file: " + file.getName(),
+                    new SlimeControlLoadException(exception)
+            );
         }
     }
 
@@ -131,8 +138,10 @@ public class ControlBungeeBuilder implements Control {
                     Files.copy(in, fileToSave.toPath());
                 }
             } catch (Exception exception) {
-                logs.error(String.format("A error occurred while copying the config %s to the plugin data folder. Error: %s", fileToSave.getName(), exception));
-                logs.error(exception);
+                logs.error(
+                        String.format("A error occurred while copying the config %s to the plugin data folder.", fileToSave.getName()),
+                        new SlimeControlFileException(exception)
+                );
             }
         }
     }
@@ -146,8 +155,12 @@ public class ControlBungeeBuilder implements Control {
         try {
             cnf = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
         } catch (Exception e) {
-            logs.warn(String.format("A error occurred while loading the settings file. Error: %s", e));
-            e.printStackTrace();
+            logs.warn(
+                    String.format(
+                            "A error occurred while loading the settings file. Error: %s",
+                            new SlimeControlLoadException(e)
+                    )
+            );
         }
 
         logs.info(String.format("&7File &e%s &7has been loaded", file.getName()));
