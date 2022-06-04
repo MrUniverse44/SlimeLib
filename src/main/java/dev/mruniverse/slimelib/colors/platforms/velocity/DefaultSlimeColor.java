@@ -21,4 +21,14 @@ public class DefaultSlimeColor extends SlimeText<Component> {
     public DefaultSlimeColor() {
         super();
     }
+
+    @Override
+    public Component empty() {
+        return Component.empty();
+    }
+
+    @Override
+    public Component build() {
+        return Component.empty();
+    }
 }

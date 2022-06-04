@@ -120,7 +120,7 @@ public class ColorUtils {
         );
     }
 
-    private static Color getColor(ChatColor color, boolean rgb) {
+    public static Color getColor(ChatColor color, boolean rgb) {
         if (minecraftColors.containsKey(color)) {
             return minecraftColors.get(color);
         }

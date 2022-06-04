@@ -17,7 +17,25 @@ public interface InputManager {
      */
     InputStream getInputStream(String resource);
 
+    /**
+     * Gives a InputManager depending on your platform, See a shorter method {@link InputManager#create(SlimePlatform, Object)}
+     * @param platform Your current platform
+     * @param plugin   The plugin instance
+     * @param <T>      The platform-instance-type
+     * @return InputManager
+     */
     static <T> InputManager createInputManager(SlimePlatform platform, T plugin) {
+        return create(platform, plugin);
+    }
+
+    /**
+     * A shorter static method of {@link InputManager#createInputManager(SlimePlatform, Object)}
+     * @param platform Your current platform
+     * @param plugin   The plugin instance
+     * @param <T>      The platform-instance-type
+     * @return InputManager
+     */
+    static <T> InputManager create(SlimePlatform platform, T plugin) {
         switch (platform) {
             case SPONGE:
                 return new SpongeInputManager(plugin);
