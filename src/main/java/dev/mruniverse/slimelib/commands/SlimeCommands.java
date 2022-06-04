@@ -18,6 +18,14 @@ public class SlimeCommands<T> {
         this.platform = SlimeCommandPlatform.fromMode(plugin, mode);
     }
 
+    public SlimeCommands(SlimePlugin<T> plugin) {
+        this.manager = new DefaultSlimeCommandManager();
+        this.platform = SlimeCommandPlatform.fromMode(
+                plugin,
+                SlimePlatform.getAutomatically()
+        );
+    }
+
     public SlimeCommandManager getManager() {
         return manager;
     }

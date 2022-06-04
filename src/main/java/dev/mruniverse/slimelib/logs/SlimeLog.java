@@ -9,6 +9,21 @@ import dev.mruniverse.slimelib.logs.platforms.velocity.LoggerVelocity;
 
 public class SlimeLog {
 
+    public static <T> SlimeLogs createLogs(SlimePlugin<T> plugin) {
+        SlimePlatform platform = SlimePlatform.getAutomatically();
+        switch (platform) {
+            case BUNGEECORD:
+                return new LoggerBungee(plugin).getNewInstance();
+            case VELOCITY:
+                return new LoggerVelocity(plugin).getNewInstance();
+            case SPONGE:
+                return new LoggerSponge().getNewInstance();
+            default:
+            case SPIGOT:
+                return new LoggerSpigot(plugin).getNewInstance();
+        }
+    }
+
     public static <T> SlimeLogs createLogs(SlimePlatform platform, SlimePlugin<T> plugin) {
         switch (platform) {
             case BUNGEECORD:
