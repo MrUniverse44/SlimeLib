@@ -168,10 +168,10 @@ public class BungeeSlimeColor extends SlimeText<BaseComponent> {
 
                             componentList.stream().iterator().forEachRemaining(textComponent::addExtra);
 
-                            textComponent = processSolid(textComponent, secondSplit[1]);
+                            processSolid(textComponent, secondSplit[1]);
 
                         } else {
-                            textComponent = processSolid(textComponent, split);
+                            processSolid(textComponent, split);
                         }
                     }
                 }
@@ -234,10 +234,10 @@ public class BungeeSlimeColor extends SlimeText<BaseComponent> {
 
                             componentList.stream().iterator().forEachRemaining(textComponent::addExtra);
 
-                            textComponent = processSolid(textComponent, secondSplit[1]);
+                            processSolid(textComponent, secondSplit[1]);
 
                         } else {
-                            textComponent = processSolid(textComponent, split);
+                            processSolid(textComponent, split);
                         }
                     }
                 }
@@ -362,14 +362,12 @@ public class BungeeSlimeColor extends SlimeText<BaseComponent> {
         return null;
     }
 
-    private TextComponent processSolid(TextComponent component, String paramText) {
+    private void processSolid(TextComponent component, String paramText) {
         Matcher matcher = SOLID_PATTERN.matcher(paramText);
 
         String replaceText;
 
         String[] splitContent = paramText.split("%\\(slimecolor solid:");
-
-        TextComponent textComponent = new TextComponent();
 
         while (matcher.find()) {
             String content = matcher.group(2);
@@ -386,18 +384,17 @@ public class BungeeSlimeColor extends SlimeText<BaseComponent> {
 
                     String[] secondSplit = split.split("\\(end-point\\)%");
 
-                    textComponent.addExtra(result);
+                    component.addExtra(result);
 
-                    textComponent.addExtra(secondSplit[1]);
+                    component.addExtra(secondSplit[1]);
 
                 } else {
-                    textComponent.addExtra(split);
+                    component.addExtra(split);
                 }
             }
 
         }
 
-        return textComponent;
     }
 
     private ChatColor getColor(String color) {

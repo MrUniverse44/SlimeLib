@@ -82,6 +82,52 @@ public class ColorUtils {
         return colors;
     }
 
+    public static List<Color> createColorGradient(long length, List<Color> gradient, boolean rgb) {
+        List<Color> colors = new ArrayList<>();
+        if (gradient.size() < 2 || length < 2) {
+            if (gradient.isEmpty()) {
+                return gradient;
+            }
+            return Collections.singletonList(gradient.get(0));
+        }
+
+        float phase = 0;
+
+        float mathLength = (float) (length - 1) / (gradient.size() - 1);
+
+        float mathMultiplier = 1.0F / (mathLength);
+
+        long index = 0;
+
+        int colorIndex = 0;
+
+        for (long i = 0; i < length; i++) {
+
+            if (mathMultiplier * index > 1) {
+                colorIndex++;
+                index = 0;
+            }
+
+            float factor = mathLength * (index++ + phase);
+
+            if (factor > 1) {
+                factor = 1 - (factor - 1);
+            }
+
+            Color color = interpolate(
+                    gradient.get(colorIndex),
+                    gradient.get(Math.min(gradient.size() - 1, colorIndex + 1)),
+                    factor
+            );
+
+            if (color != null) {
+                colors.add(color);
+            }
+        }
+
+        return colors;
+    }
+
     public static ChatColor getClosestLegacy(Color color) {
         ChatColor closest = null;
 
