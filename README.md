@@ -29,7 +29,7 @@ Dependency:
             <artifactId>SlimeLib</artifactId>
             <version>TAG</version>
             <!-- TAG = latest version, for example:
-            <version>1.0.4.4</version>
+            <version>1.0.4.5</version>
             -->
         </dependency>
 ```
