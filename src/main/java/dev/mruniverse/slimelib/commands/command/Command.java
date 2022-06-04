@@ -17,6 +17,14 @@ public @interface Command {
     String description() default "";
 
     /**
+     * The short description of the command, explaining what it can be used for.
+     *
+     * @return the short description of the command
+     */
+    String shortDescription() default "";
+
+
+    /**
      * The usage of the command.
      *
      * @return the usage of the command.
