@@ -49,13 +49,13 @@ public abstract class SlimeLogs {
         String location = current.getName();
         String error = current.getSimpleName();
 
-        error(properties.getExceptionProperties().getBaseColor() + " -------------------------");
-        error(properties.getExceptionProperties().getBaseColor() + "Location: " + location.replace("." + error,""));
-        error(properties.getExceptionProperties().getBaseColor() + "Error: " + error);
+        error(properties.getExceptionProperties().BASE_COLOR + " -------------------------");
+        error(properties.getExceptionProperties().BASE_COLOR + "Location: " + location.replace("." + error,""));
+        error(properties.getExceptionProperties().BASE_COLOR + "Error: " + error);
 
         if (exception.getStackTrace() != null) {
 
-            error(properties.getExceptionProperties().getBaseColor() + "Internal - StackTrace: ");
+            error(properties.getExceptionProperties().BASE_COLOR + "Internal - StackTrace: ");
 
             List<StackTraceElement> other = new ArrayList<>();
 
@@ -68,21 +68,21 @@ public abstract class SlimeLogs {
                 String replace = "(" + line.getFileName() + ":" + number + ")";
 
                 if (text.contains(logger.getContainIdentifier())) {
-                    error(properties.getExceptionProperties().getCodeColor() + " (Line: " + number + ") " + text.replace(replace,"").replace(logger.getHidePackage(),""));
+                    error(properties.getExceptionProperties().BASE_COLOR + " (Line: " + number + ") " + text.replace(replace,"").replace(logger.getHidePackage(),""));
                 } else {
                     other.add(line);
                 }
             }
 
-            error(properties.getExceptionProperties().getBaseColor() + " -------------------------");
-            error(properties.getExceptionProperties().getBaseColor() + "External - StackTrace: ");
+            error(properties.getExceptionProperties().BASE_COLOR + " -------------------------");
+            error(properties.getExceptionProperties().BASE_COLOR + "External - StackTrace: ");
 
             for (StackTraceElement line : other) {
-                error(properties.getExceptionProperties().getCodeColor() + " (Line: " + line.getLineNumber() + ") (Class: " + line.getFileName() + ") (Method: " + line.getMethodName() + ")".replace(".java",""));
+                error(properties.getExceptionProperties().BASE_COLOR + " (Line: " + line.getLineNumber() + ") (Class: " + line.getFileName() + ") (Method: " + line.getMethodName() + ")".replace(".java",""));
             }
         }
 
-        error(properties.getExceptionProperties().getBaseColor() + " -------------------------");
+        error(properties.getExceptionProperties().BASE_COLOR + " -------------------------");
     }
 
     public void error(String message, Exception exception) {

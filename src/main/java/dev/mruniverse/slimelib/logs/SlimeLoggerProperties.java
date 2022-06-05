@@ -7,6 +7,7 @@ public class SlimeLoggerProperties {
 
     public SlimeLoggerProperties() {
         this.prefixes = new Prefixes();
+        this.exceptionProperties = new ExceptionProperties();
     }
 
     public Prefixes getPrefixes() {
@@ -26,24 +27,8 @@ public class SlimeLoggerProperties {
     }
 
     public static class ExceptionProperties {
-        private String baseColor = "&b";
-        private String codeColor = "&b";
-
-        public void setBaseColor(String baseColor) {
-            this.baseColor = baseColor;
-        }
-
-        public void setCodeColor(String codeColor) {
-            this.codeColor = codeColor;
-        }
-
-        public String getBaseColor() {
-            return baseColor;
-        }
-
-        public String getCodeColor() {
-            return codeColor;
-        }
+        public String BASE_COLOR = "&b";
+        public String CODE_COLOR = "&b";
     }
 
     public static class Prefixes {
@@ -57,6 +42,17 @@ public class SlimeLoggerProperties {
             warn = new Warn();
             debug = new Debug();
             info = new Info();
+        }
+
+        /**
+         * Change the "SlimeLib" from prefixes
+         * @param content the new text
+         */
+        public void changeMainText(String content) {
+            issue.setPrefix(issue.getPrefix().replace("SlimeLib", content));
+            warn.setPrefix(warn.getPrefix().replace("SlimeLib", content));
+            debug.setPrefix(debug.getPrefix().replace("SlimeLib", content));
+            info.setPrefix(info.getPrefix().replace("SlimeLib", content));
         }
 
         public void setIssue(Issue issue) {
@@ -127,7 +123,7 @@ public class SlimeLoggerProperties {
         public static class Info extends SlimePrefix {
 
             public Info() {
-                super("&8[&aSlimeLib&8] &cERROR &8| &b");
+                super("&8[&aSlimeLib&8] &bINFO &8| &b");
             }
 
             public Info(String prefix) {

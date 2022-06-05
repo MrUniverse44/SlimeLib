@@ -2,6 +2,7 @@ package dev.mruniverse.slimelib.logs.platforms.velocity;
 
 import com.velocitypowered.api.proxy.ProxyServer;
 import dev.mruniverse.slimelib.SlimePlugin;
+import dev.mruniverse.slimelib.logs.SlimeLogger;
 
 public class LoggerVelocity {
 
@@ -14,5 +15,14 @@ public class LoggerVelocity {
 
     public SlimeLoggerVelocity getNewInstance() {
         return new SlimeLoggerVelocity(plugin.getPlugin());
+    }
+
+    public SlimeLoggerVelocity getNewInstance(String pluginName) {
+        SlimeLogger logger = new SlimeLogger();
+        logger.setPluginName(pluginName);
+        return new SlimeLoggerVelocity(
+                plugin.getPlugin(),
+                logger
+        );
     }
 }
