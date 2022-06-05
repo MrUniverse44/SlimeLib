@@ -36,6 +36,7 @@ public class BungeeSlimeColor extends SlimeText<BaseComponent> {
         return new TextComponent();
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public BaseComponent build() {
         if (hasLegacy() && !hasGradient() && !hasSolid()) {
@@ -234,10 +235,10 @@ public class BungeeSlimeColor extends SlimeText<BaseComponent> {
 
                             componentList.stream().iterator().forEachRemaining(textComponent::addExtra);
 
-                            processSolid(textComponent, secondSplit[1]);
+                            textComponent = processSolid(textComponent, secondSplit[1]);
 
                         } else {
-                            processSolid(textComponent, split);
+                            textComponent = processSolid(textComponent, split);
                         }
                     }
                 }
@@ -362,7 +363,7 @@ public class BungeeSlimeColor extends SlimeText<BaseComponent> {
         return null;
     }
 
-    private void processSolid(TextComponent component, String paramText) {
+    private TextComponent processSolid(TextComponent component, String paramText) {
         Matcher matcher = SOLID_PATTERN.matcher(paramText);
 
         String replaceText;
@@ -392,9 +393,8 @@ public class BungeeSlimeColor extends SlimeText<BaseComponent> {
                     component.addExtra(split);
                 }
             }
-
         }
-
+        return component;
     }
 
     private ChatColor getColor(String color) {
