@@ -59,6 +59,8 @@ public class DefaultSlimeColor extends SlimeText<Component> {
 
                 Component textComponent = Component.empty();
 
+                boolean findGradient = false;
+
                 while (gradientMatcher.find()) {
                     String content = gradientMatcher.group(2);
                     String start   = gradientMatcher.group(1);
@@ -82,6 +84,8 @@ public class DefaultSlimeColor extends SlimeText<Component> {
                     for (String character : contentSplit) {
                         componentList.add(Component.text(character));
                     }
+
+                    findGradient = true;
 
                     int length = componentList.size();
 
@@ -130,6 +134,15 @@ public class DefaultSlimeColor extends SlimeText<Component> {
                         }
                     }
                 }
+                if (!findGradient) {
+                    for (String split : splitContent) {
+                        if (hasLegacy()) {
+                            textComponent = textComponent.append(Component.text(legacy(split)));
+                        } else {
+                            textComponent = textComponent.append(Component.text(split));
+                        }
+                    }
+                }
                 return textComponent;
             }
 
@@ -143,6 +156,8 @@ public class DefaultSlimeColor extends SlimeText<Component> {
                 String[] splitContent = result.split("%\\(slimecolor start:");
 
                 Component textComponent = Component.empty();
+
+                boolean hasGradient = false;
 
                 while (gradientMatcher.find()) {
                     String content = gradientMatcher.group(2);
@@ -163,6 +178,7 @@ public class DefaultSlimeColor extends SlimeText<Component> {
                     colorList.add(
                             getColor(end)
                     );
+                    hasGradient = true;
 
                     for (String character : contentSplit) {
                         componentList.add(Component.text(character));
@@ -208,6 +224,11 @@ public class DefaultSlimeColor extends SlimeText<Component> {
                         }
                     }
                 }
+                if (!hasGradient) {
+                    for (String split : splitContent) {
+                        textComponent = processSolid(textComponent, split);
+                    }
+                }
                 return textComponent;
             }
         }
@@ -222,6 +243,7 @@ public class DefaultSlimeColor extends SlimeText<Component> {
             String[] splitContent = result.split("%\\(slimecolor solid:");
 
             Component textComponent = Component.empty();
+            boolean hasSolid = false;
 
             while (matcher.find()) {
                 String content = matcher.group(2);
@@ -238,6 +260,8 @@ public class DefaultSlimeColor extends SlimeText<Component> {
                                 color1.getRed(), color1.getGreen(), color1.getBlue()
                         )
                 );
+
+                hasSolid = true;
 
                 for (String split : splitContent) {
                     if (split.contains(replaceText)) {
@@ -260,6 +284,15 @@ public class DefaultSlimeColor extends SlimeText<Component> {
                     }
                 }
             }
+            if (!hasSolid) {
+                for (String split : splitContent) {
+                    if (hasLegacy()) {
+                        textComponent = textComponent.append(Component.text(legacy(split)));
+                    } else {
+                        textComponent = textComponent.append(Component.text(split));
+                    }
+                }
+            }
             return textComponent;
         }
         return Component.text(legacy(getContent()));
@@ -278,6 +311,8 @@ public class DefaultSlimeColor extends SlimeText<Component> {
 
         Component textComponent = component;
 
+        boolean hasSolid = false;
+
         while (matcher.find()) {
             String content = matcher.group(2);
             String color   = matcher.group(1);
@@ -293,6 +328,8 @@ public class DefaultSlimeColor extends SlimeText<Component> {
                             color1.getRed(), color1.getGreen(), color1.getBlue()
                     )
             );
+
+            hasSolid = true;
 
             for (String split : splitContent) {
                 if (split.contains(replaceText)) {
@@ -313,6 +350,15 @@ public class DefaultSlimeColor extends SlimeText<Component> {
                     } else {
                         textComponent = textComponent.append(Component.text(split));
                     }
+                }
+            }
+        }
+        if (!hasSolid) {
+            for (String split : splitContent) {
+                if (hasLegacy()) {
+                    textComponent = textComponent.append(Component.text(legacy(split)));
+                } else {
+                    textComponent = textComponent.append(Component.text(split));
                 }
             }
         }
