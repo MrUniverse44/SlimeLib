@@ -10,7 +10,7 @@ creation of multi-platform plugins.
 * BungeeCord, Spigot and Velocity Support
 * Command System
 * Some Utils for a fast plugin developing
-* 1.8.X - 1.18.X
+* 1.8.X - 1.19.X
 * Yaml Files
 * Updater for SpigotMC & GitHub
 * Logs
