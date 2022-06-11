@@ -1,21 +1,29 @@
 package dev.mruniverse.slimelib.colors.platforms.velocity;
 
+import dev.mruniverse.slimelib.colors.ColorExtras;
 import dev.mruniverse.slimelib.colors.ColorUtils;
 import dev.mruniverse.slimelib.colors.SlimeColor;
 import dev.mruniverse.slimelib.colors.SlimeText;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 
 @SuppressWarnings("unused")
 public class DefaultSlimeColor extends SlimeText<Component> {
+
+    public final Map<ColorExtras, Boolean> GRADIENT_BOOLEAN_MAP = new EnumMap<>(ColorExtras.class);
+
+    public final Map<ColorExtras, Boolean> SOLID_BOOLEAN_MAP = new EnumMap<>(ColorExtras.class);
 
     public DefaultSlimeColor(String content, boolean hasHexSupport, SlimeColor.ColorMethod method) {
         super(content, hasHexSupport, method);
@@ -33,6 +41,19 @@ public class DefaultSlimeColor extends SlimeText<Component> {
         super();
     }
 
+    private boolean getBoolean(boolean isGradient, ColorExtras extra) {
+        if (isGradient) {
+            if (GRADIENT_BOOLEAN_MAP.containsKey(extra)) {
+                return GRADIENT_BOOLEAN_MAP.get(extra);
+            }
+            return GRADIENT_BOOLEAN_MAP.computeIfAbsent(extra, v -> false);
+        }
+        if (SOLID_BOOLEAN_MAP.containsKey(extra)) {
+            return SOLID_BOOLEAN_MAP.get(extra);
+        }
+        return SOLID_BOOLEAN_MAP.computeIfAbsent(extra, v -> false);
+    }
+
     @Override
     public Component empty() {
         return Component.empty();
@@ -40,16 +61,19 @@ public class DefaultSlimeColor extends SlimeText<Component> {
 
     @Override
     public Component build() {
-        if (hasLegacy() && !hasGradient() && !hasSolid()) {
+        if (!hasGradient() && !hasSolid()) {
             return Component.text(legacy(getContent()));
         }
+
+        GRADIENT_BOOLEAN_MAP.clear();
+        SOLID_BOOLEAN_MAP.clear();
 
         if (hasGradient()) {
 
             String result;
 
             if (!hasSolid()) {
-                result = getContent();
+                result = legacy(getContent());
 
                 Matcher gradientMatcher = GRADIENT_PATTERN.matcher(result);
 
@@ -66,7 +90,34 @@ public class DefaultSlimeColor extends SlimeText<Component> {
                     String start   = gradientMatcher.group(1);
                     String end     = gradientMatcher.group(3);
 
-                    replaceText = start + ")" + content + "(end-point:" + end + ")%";
+                    int count = gradientMatcher.groupCount();
+
+                    if (count >= 4) {
+                        ColorExtras extra = match(gradientMatcher.group(4));
+                        GRADIENT_BOOLEAN_MAP.put(extra, true);
+                    }
+
+                    if (count >= 5) {
+                        ColorExtras extra = match(gradientMatcher.group(5));
+                        GRADIENT_BOOLEAN_MAP.put(extra, true);
+                    }
+
+                    if (count >= 6) {
+                        ColorExtras extra = match(gradientMatcher.group(6));
+                        GRADIENT_BOOLEAN_MAP.put(extra, true);
+                    }
+
+                    if (count >= 7) {
+                        ColorExtras extra = match(gradientMatcher.group(7));
+                        GRADIENT_BOOLEAN_MAP.put(extra, true);
+                    }
+
+                    if (count >= 8) {
+                        ColorExtras extra = match(gradientMatcher.group(8));
+                        GRADIENT_BOOLEAN_MAP.put(extra, true);
+                    }
+
+                    replaceText = start + ")" + content + "(end-point:" + end;
 
                     List<TextComponent> componentList = new ArrayList<>();
                     List<Color> colorList = new ArrayList<>();
@@ -89,10 +140,9 @@ public class DefaultSlimeColor extends SlimeText<Component> {
 
                     int length = componentList.size();
 
-                    List<Color> gradient = ColorUtils.createColorGradient(
+                    List<Color> gradient = ColorUtils.createColorGradientHSV(
                             length,
-                            colorList,
-                            true
+                            colorList
                     );
 
                     List<Component> components = new ArrayList<>();
@@ -101,12 +151,36 @@ public class DefaultSlimeColor extends SlimeText<Component> {
                     for (TextComponent component : componentList) {
                         Color color = gradient.get(size);
 
-                        components.add(
-                                component.asComponent().color(
-                                        TextColor.color(
-                                                color.getRed(), color.getGreen(), color.getBlue()
-                                        )
+                        Component component1 = component.asComponent();
+
+                        if (getBoolean(true, ColorExtras.BOLD)) {
+                            component1 = component1.decorate(TextDecoration.BOLD);
+                        }
+
+                        if (getBoolean(true, ColorExtras.ITALIC)) {
+                            component1 = component1.decorate(TextDecoration.ITALIC);
+                        }
+
+                        if (getBoolean(true, ColorExtras.MAGIC)) {
+                            component1 = component1.decorate(TextDecoration.OBFUSCATED);
+                        }
+
+                        if (getBoolean(true, ColorExtras.STRIKETHROUGH)) {
+                            component1 = component1.decorate(TextDecoration.STRIKETHROUGH);
+                        }
+
+                        if (getBoolean(true, ColorExtras.UNDERLINE)) {
+                            component1 = component1.decorate(TextDecoration.UNDERLINED);
+                        }
+
+                        component1 = component1.color(
+                                TextColor.color(
+                                        color.getRed(), color.getGreen(), color.getBlue()
                                 )
+                        );
+
+                        components.add(
+                                component1
                         );
                         size++;
                     }
@@ -114,33 +188,21 @@ public class DefaultSlimeColor extends SlimeText<Component> {
                     for (String split : splitContent) {
                         if (split.contains(replaceText)) {
 
-                            String[] secondSplit = split.split("\\(end-point:" + end + "\\)%");
+                            String[] secondSplit = split.split("\\(end-point:" + end + "( add:.+?)?( add:.+?)?( add:.+?)?( add:.+?)?( add:.+?)?\\)%");
 
                             for (Component component : components) {
                                 textComponent = textComponent.append(component);
                             }
 
-                            if (hasLegacy()) {
-                                textComponent = textComponent.append(Component.text(legacy(secondSplit[1])));
-                            } else {
-                                textComponent = textComponent.append(Component.text(secondSplit[1]));
-                            }
+                            textComponent = textComponent.append(Component.text(legacy(secondSplit[1])));
                         } else {
-                            if (hasLegacy()) {
-                                textComponent = textComponent.append(Component.text(legacy(split)));
-                            } else {
-                                textComponent = textComponent.append(Component.text(split));
-                            }
+                            textComponent = textComponent.append(Component.text(legacy(split)));
                         }
                     }
                 }
                 if (!findGradient) {
                     for (String split : splitContent) {
-                        if (hasLegacy()) {
-                            textComponent = textComponent.append(Component.text(legacy(split)));
-                        } else {
-                            textComponent = textComponent.append(Component.text(split));
-                        }
+                        textComponent = textComponent.append(Component.text(legacy(split)));
                     }
                 }
                 return textComponent;
@@ -164,7 +226,34 @@ public class DefaultSlimeColor extends SlimeText<Component> {
                     String start = gradientMatcher.group(1);
                     String end = gradientMatcher.group(3);
 
-                    replaceText = start + ")" + content + "(end-point:" + end + ")%";
+                    int count = gradientMatcher.groupCount();
+
+                    if (count >= 4) {
+                        ColorExtras extra = match(gradientMatcher.group(4));
+                        GRADIENT_BOOLEAN_MAP.put(extra, true);
+                    }
+
+                    if (count >= 5) {
+                        ColorExtras extra = match(gradientMatcher.group(5));
+                        GRADIENT_BOOLEAN_MAP.put(extra, true);
+                    }
+
+                    if (count >= 6) {
+                        ColorExtras extra = match(gradientMatcher.group(6));
+                        GRADIENT_BOOLEAN_MAP.put(extra, true);
+                    }
+
+                    if (count >= 7) {
+                        ColorExtras extra = match(gradientMatcher.group(7));
+                        GRADIENT_BOOLEAN_MAP.put(extra, true);
+                    }
+
+                    if (count >= 8) {
+                        ColorExtras extra = match(gradientMatcher.group(8));
+                        GRADIENT_BOOLEAN_MAP.put(extra, true);
+                    }
+
+                    replaceText = start + ")" + content + "(end-point:" + end;
 
                     List<TextComponent> componentList = new ArrayList<>();
                     List<Color> colorList = new ArrayList<>();
@@ -186,10 +275,9 @@ public class DefaultSlimeColor extends SlimeText<Component> {
 
                     int length = componentList.size();
 
-                    List<Color> gradient = ColorUtils.createColorGradient(
+                    List<Color> gradient = ColorUtils.createColorGradientHSV(
                             length,
-                            colorList,
-                            true
+                            colorList
                     );
 
                     List<Component> components = new ArrayList<>();
@@ -198,12 +286,36 @@ public class DefaultSlimeColor extends SlimeText<Component> {
                     for (TextComponent component : componentList) {
                         Color color = gradient.get(size);
 
-                        components.add(
-                                component.asComponent().color(
-                                        TextColor.color(
-                                                color.getRed(), color.getGreen(), color.getBlue()
-                                        )
+                        Component component1 = component.asComponent();
+
+                        if (getBoolean(true, ColorExtras.BOLD)) {
+                            component1 = component1.decorate(TextDecoration.BOLD);
+                        }
+
+                        if (getBoolean(true, ColorExtras.ITALIC)) {
+                            component1 = component1.decorate(TextDecoration.ITALIC);
+                        }
+
+                        if (getBoolean(true, ColorExtras.MAGIC)) {
+                            component1 = component1.decorate(TextDecoration.OBFUSCATED);
+                        }
+
+                        if (getBoolean(true, ColorExtras.STRIKETHROUGH)) {
+                            component1 = component1.decorate(TextDecoration.STRIKETHROUGH);
+                        }
+
+                        if (getBoolean(true, ColorExtras.UNDERLINE)) {
+                            component1 = component1.decorate(TextDecoration.UNDERLINED);
+                        }
+
+                        component1 = component1.color(
+                                TextColor.color(
+                                        color.getRed(), color.getGreen(), color.getBlue()
                                 )
+                        );
+
+                        components.add(
+                                component1
                         );
                         size++;
                     }
@@ -211,7 +323,7 @@ public class DefaultSlimeColor extends SlimeText<Component> {
                     for (String split : splitContent) {
                         if (split.contains(replaceText)) {
 
-                            String[] secondSplit = split.split("\\(end-point:" + end + "\\)%");
+                            String[] secondSplit = split.split("\\(end-point:" + end + "( add:.+?)?( add:.+?)?( add:.+?)?( add:.+?)?( add:.+?)?\\)%");
 
                             for (Component component : components) {
                                 textComponent = textComponent.append(component);
@@ -249,11 +361,58 @@ public class DefaultSlimeColor extends SlimeText<Component> {
                 String content = matcher.group(2);
                 String color   = matcher.group(1);
 
+                int count = matcher.groupCount();
+
+                if (count >= 3) {
+                    ColorExtras extra = match(matcher.group(3));
+                    SOLID_BOOLEAN_MAP.put(extra, true);
+                }
+
+                if (count >= 4) {
+                    ColorExtras extra = match(matcher.group(4));
+                    SOLID_BOOLEAN_MAP.put(extra, true);
+                }
+
+                if (count >= 5) {
+                    ColorExtras extra = match(matcher.group(5));
+                    SOLID_BOOLEAN_MAP.put(extra, true);
+                }
+
+                if (count >= 6) {
+                    ColorExtras extra = match(matcher.group(6));
+                    SOLID_BOOLEAN_MAP.put(extra, true);
+                }
+
+                if (count >= 7) {
+                    ColorExtras extra = match(matcher.group(7));
+                    SOLID_BOOLEAN_MAP.put(extra, true);
+                }
+
                 replaceText = color + ")" + content;
 
                 Component component = Component.text(content);
 
                 Color color1 = getColor(color);
+
+                if (getBoolean(false, ColorExtras.BOLD)) {
+                    component = component.decorate(TextDecoration.BOLD);
+                }
+
+                if (getBoolean(false, ColorExtras.ITALIC)) {
+                    component = component.decorate(TextDecoration.ITALIC);
+                }
+
+                if (getBoolean(false, ColorExtras.MAGIC)) {
+                    component = component.decorate(TextDecoration.OBFUSCATED);
+                }
+
+                if (getBoolean(false, ColorExtras.STRIKETHROUGH)) {
+                    component = component.decorate(TextDecoration.STRIKETHROUGH);
+                }
+
+                if (getBoolean(false, ColorExtras.UNDERLINE)) {
+                    component = component.decorate(TextDecoration.UNDERLINED);
+                }
 
                 component = component.color(
                         TextColor.color(
@@ -266,31 +425,19 @@ public class DefaultSlimeColor extends SlimeText<Component> {
                 for (String split : splitContent) {
                     if (split.contains(replaceText)) {
 
-                        String[] secondSplit = split.split("\\(end-point\\)%");
+                        String[] secondSplit = split.split("\\(end-point( add:.+?)?( add:.+?)?( add:.+?)?( add:.+?)?( add:.+?)?\\)%");
 
                         textComponent = textComponent.append(component);
 
-                        if (hasLegacy()) {
-                            textComponent = textComponent.append(Component.text(legacy(secondSplit[1])));
-                        } else {
-                            textComponent = textComponent.append(Component.text(secondSplit[1]));
-                        }
+                        textComponent = textComponent.append(Component.text(legacy(secondSplit[1])));
                     } else {
-                        if (hasLegacy()) {
-                            textComponent = textComponent.append(Component.text(legacy(split)));
-                        } else {
-                            textComponent = textComponent.append(Component.text(split));
-                        }
+                        textComponent = textComponent.append(Component.text(legacy(split)));
                     }
                 }
             }
             if (!hasSolid) {
                 for (String split : splitContent) {
-                    if (hasLegacy()) {
-                        textComponent = textComponent.append(Component.text(legacy(split)));
-                    } else {
-                        textComponent = textComponent.append(Component.text(split));
-                    }
+                    textComponent = textComponent.append(Component.text(legacy(split)));
                 }
             }
             return textComponent;
@@ -298,11 +445,44 @@ public class DefaultSlimeColor extends SlimeText<Component> {
         return Component.text(legacy(getContent()));
     }
 
+    public ColorExtras match(String text) {
+
+        if (text == null) {
+            return ColorExtras.RESET;
+        }
+
+        text = text.toLowerCase()
+                .replace(" ", "")
+                .replace("add:", "");
+
+        switch (text) {
+            case "&l":
+            case "bold":
+                return ColorExtras.BOLD;
+            case "&o":
+            case "italic":
+                return ColorExtras.ITALIC;
+            case "&k":
+            case "magic":
+                return ColorExtras.MAGIC;
+            case "&m":
+            case "strikethrough":
+                return ColorExtras.STRIKETHROUGH;
+            case "&n":
+            case "underline":
+                return ColorExtras.UNDERLINE;
+            default:
+                return ColorExtras.RESET;
+        }
+    }
+
     private @NotNull String legacy(String content) {
         return LegacyComponentSerializer.builder().character('&').build().deserialize(content).content();
     }
 
     private Component processSolid(Component component, String paramText) {
+        SOLID_BOOLEAN_MAP.clear();
+
         Matcher matcher = SOLID_PATTERN.matcher(paramText);
 
         String replaceText;
@@ -317,11 +497,59 @@ public class DefaultSlimeColor extends SlimeText<Component> {
             String content = matcher.group(2);
             String color   = matcher.group(1);
 
+            int count = matcher.groupCount();
+
+            if (count >= 3) {
+                ColorExtras extra = match(matcher.group(3));
+                SOLID_BOOLEAN_MAP.put(extra, true);
+            }
+
+            if (count >= 4) {
+                ColorExtras extra = match(matcher.group(4));
+                SOLID_BOOLEAN_MAP.put(extra, true);
+            }
+
+            if (count >= 5) {
+                ColorExtras extra = match(matcher.group(5));
+                SOLID_BOOLEAN_MAP.put(extra, true);
+            }
+
+            if (count >= 6) {
+                ColorExtras extra = match(matcher.group(6));
+                SOLID_BOOLEAN_MAP.put(extra, true);
+            }
+
+            if (count >= 7) {
+                ColorExtras extra = match(matcher.group(7));
+                SOLID_BOOLEAN_MAP.put(extra, true);
+            }
+
             replaceText = color + ")" + content;
 
             Component result = Component.empty();
 
             Color color1 = getColor(color);
+
+            if (getBoolean(false, ColorExtras.BOLD)) {
+                result = result.decorate(TextDecoration.BOLD);
+            }
+
+            if (getBoolean(false, ColorExtras.ITALIC)) {
+                result = result.decorate(TextDecoration.ITALIC);
+            }
+
+            if (getBoolean(false, ColorExtras.MAGIC)) {
+                result = result.decorate(TextDecoration.OBFUSCATED);
+            }
+
+            if (getBoolean(false, ColorExtras.STRIKETHROUGH)) {
+                result = result.decorate(TextDecoration.STRIKETHROUGH);
+            }
+
+            if (getBoolean(false, ColorExtras.UNDERLINE)) {
+                result = result.decorate(TextDecoration.UNDERLINED);
+            }
+
 
             result = result.color(
                     TextColor.color(
@@ -334,32 +562,20 @@ public class DefaultSlimeColor extends SlimeText<Component> {
             for (String split : splitContent) {
                 if (split.contains(replaceText)) {
 
-                    String[] secondSplit = split.split("\\(end-point\\)%");
+                    String[] secondSplit = split.split("\\(end-point( add:.+?)?( add:.+?)?( add:.+?)?( add:.+?)?( add:.+?)?\\)%");
 
                     textComponent = textComponent.append(result);
 
-                    if (hasLegacy()) {
-                        textComponent = textComponent.append(Component.text(legacy(secondSplit[1])));
-                    } else {
-                        textComponent = textComponent.append(Component.text(secondSplit[1]));
-                    }
+                    textComponent = textComponent.append(Component.text(legacy(secondSplit[1])));
 
                 } else {
-                    if (hasLegacy()) {
-                        textComponent = textComponent.append(Component.text(legacy(split)));
-                    } else {
-                        textComponent = textComponent.append(Component.text(split));
-                    }
+                    textComponent = textComponent.append(Component.text(legacy(split)));
                 }
             }
         }
         if (!hasSolid) {
             for (String split : splitContent) {
-                if (hasLegacy()) {
-                    textComponent = textComponent.append(Component.text(legacy(split)));
-                } else {
-                    textComponent = textComponent.append(Component.text(split));
-                }
+                textComponent = textComponent.append(Component.text(legacy(split)));
             }
         }
         return textComponent;

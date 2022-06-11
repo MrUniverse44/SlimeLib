@@ -1,6 +1,6 @@
 package dev.mruniverse.slimelib.colors.platforms;
 
-import dev.mruniverse.slimelib.colors.ColorUtils;
+import dev.mruniverse.slimelib.colors.ChatColorUtils;
 import dev.mruniverse.slimelib.colors.SlimeColor;
 import dev.mruniverse.slimelib.colors.SlimeText;
 import net.md_5.bungee.api.ChatColor;
@@ -31,7 +31,7 @@ public class StringSlimeColor extends SlimeText<String> {
 
     @Override
     public String build() {
-        if (hasLegacy() && !hasGradient() && !hasSolid()) {
+        if (!hasGradient() && !hasSolid()) {
             return ChatColor.translateAlternateColorCodes('&', getContent());
         }
 
@@ -39,7 +39,7 @@ public class StringSlimeColor extends SlimeText<String> {
 
             String result;
 
-            if (!hasSolid() && !hasLegacy()) {
+            if (!hasSolid()) {
                 result = getContent();
 
                 Matcher gradientMatcher = GRADIENT_PATTERN.matcher(result);
@@ -60,94 +60,10 @@ public class StringSlimeColor extends SlimeText<String> {
                             )
                     );
                 }
-                return finalResult;
-            }
-
-            if (hasSolid() && !hasLegacy()) {
-                result = getContent();
-
-                Matcher gradientMatcher = GRADIENT_PATTERN.matcher(result);
-
-                String finalResult = getContent();
-
-                while (gradientMatcher.find()) {
-                    String content = gradientMatcher.group(2);
-                    String start   = gradientMatcher.group(1);
-                    String end     = gradientMatcher.group(3);
-
-                    finalResult = finalResult.replace(
-                            gradientMatcher.group(),
-                            color(
-                                    content,
-                                    new Color(Integer.parseInt(start, 16)),
-                                    new Color(Integer.parseInt(end, 16))
-                            )
-                    );
-                }
-
-                Matcher solidMatcher = SOLID_PATTERN.matcher(finalResult);
-
-                while (solidMatcher.find()) {
-                    String color = solidMatcher.group(1);
-
-                    Color colorized = new Color(Integer.parseInt(color, 16));
-
-                    finalResult = finalResult.replace(
-                            solidMatcher.group(),
-                            ColorUtils.getColor(
-                                    ChatColor.of(colorized),
-                                    true
-                            ) + ""
-                    );
-                }
-
-                return finalResult;
-            }
-
-            if (hasSolid() && hasLegacy()) {
-                result = getContent();
-
-                Matcher gradientMatcher = GRADIENT_PATTERN.matcher(result);
-
-                String finalResult = getContent();
-
-                while (gradientMatcher.find()) {
-                    String content = gradientMatcher.group(2);
-                    String start   = gradientMatcher.group(1);
-                    String end     = gradientMatcher.group(3);
-
-                    finalResult = finalResult.replace(
-                            gradientMatcher.group(),
-                            color(
-                                    content,
-                                    new Color(Integer.parseInt(start, 16)),
-                                    new Color(Integer.parseInt(end, 16))
-                            )
-                    );
-                }
-
-                Matcher solidMatcher = SOLID_PATTERN.matcher(finalResult);
-
-                while (solidMatcher.find()) {
-                    String color = solidMatcher.group(1);
-
-                    Color colorized = new Color(Integer.parseInt(color, 16));
-
-                    finalResult = finalResult.replace(
-                            solidMatcher.group(),
-                            ColorUtils.getColor(
-                                    ChatColor.of(colorized),
-                                    true
-                            ) + ""
-                    );
-                }
-
                 return ChatColor.translateAlternateColorCodes('&', finalResult);
             }
 
-
-
-            if (hasLegacy() && !hasSolid()) {
+            if (hasSolid()) {
                 result = getContent();
 
                 Matcher gradientMatcher = GRADIENT_PATTERN.matcher(result);
@@ -168,6 +84,23 @@ public class StringSlimeColor extends SlimeText<String> {
                             )
                     );
                 }
+
+                Matcher solidMatcher = SOLID_PATTERN.matcher(finalResult);
+
+                while (solidMatcher.find()) {
+                    String color = solidMatcher.group(1);
+
+                    Color colorized = new Color(Integer.parseInt(color, 16));
+
+                    finalResult = finalResult.replace(
+                            solidMatcher.group(),
+                            ChatColorUtils.getColor(
+                                    ChatColor.of(colorized),
+                                    true
+                            ) + ""
+                    );
+                }
+
                 return ChatColor.translateAlternateColorCodes('&', finalResult);
             }
         }
@@ -184,17 +117,13 @@ public class StringSlimeColor extends SlimeText<String> {
 
                 finalResult = finalResult.replace(
                         solidMatcher.group(),
-                        ColorUtils.getColor(
+                        ChatColorUtils.getColor(
                                 ChatColor.of(colorized),
                                 true
                         ) + ""
                 );
             }
-            if (hasLegacy()) {
-                return ChatColor.translateAlternateColorCodes('&', finalResult);
-            } else {
-                return finalResult;
-            }
+            return ChatColor.translateAlternateColorCodes('&', finalResult);
         }
 
         return getContent();

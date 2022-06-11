@@ -5,13 +5,11 @@ import java.util.regex.Pattern;
 @SuppressWarnings({"unused", "UnusedReturnValue"})
 public abstract class SlimeText<T> {
 
-    public final static Pattern GRADIENT_PATTERN = Pattern.compile("%\\(slimecolor start:([\\dA-Fa-f]{6})\\)(.*?)\\(end-point:([\\dA-Fa-f]{6})\\)%");
+    public final static Pattern GRADIENT_PATTERN = Pattern.compile("%\\(slimecolor start:([\\dA-Fa-f]{6})\\)(.*?)\\(end-point:([\\dA-Fa-f]{6})( add:.+?)?( add:.+?)?( add:.+?)?( add:.+?)?( add:.+?)?\\)%");
 
-    public final static Pattern SOLID_PATTERN = Pattern.compile("%\\(slimecolor solid:([\\dA-Fa-f]{6})\\)(.*?)\\(end-point\\)%");
+    public final static Pattern SOLID_PATTERN = Pattern.compile("%\\(slimecolor solid:([\\dA-Fa-f]{6})\\)(.*?)\\(end-point( add:.+?)?( add:.+?)?( add:.+?)?( add:.+?)?( add:.+?)?\\)%");
 
     private boolean addGradient;
-
-    private boolean addLegacy;
 
     private boolean addSolid;
 
@@ -24,7 +22,6 @@ public abstract class SlimeText<T> {
         if (hasHexSupport && method == SlimeColor.ColorMethod.ALL) {
             applyGradient();
             applySolid();
-            applyLegacy();
             return;
         }
         check(method);
@@ -36,7 +33,6 @@ public abstract class SlimeText<T> {
             applyGradient();
             applySolid();
         }
-        applyLegacy();
     }
 
     public SlimeText(String content) {
@@ -55,10 +51,6 @@ public abstract class SlimeText<T> {
         this.addGradient = addGradient;
     }
 
-    public void setLegacy(boolean addLegacy) {
-        this.addLegacy = addLegacy;
-    }
-
     public void setSolid(boolean addSolid) {
         this.addSolid = addSolid;
     }
@@ -69,9 +61,6 @@ public abstract class SlimeText<T> {
                 applySolid();
                 break;
             case ALL:
-            case LEGACY:
-                applyLegacy();
-                break;
             case GRADIENT:
                 applyGradient();
         }
@@ -85,10 +74,6 @@ public abstract class SlimeText<T> {
         return addSolid;
     }
 
-    public boolean hasLegacy() {
-        return addLegacy;
-    }
-
     public SlimeText<T> applyGradient() {
         addGradient = true;
         return this;
@@ -96,11 +81,6 @@ public abstract class SlimeText<T> {
 
     public SlimeText<T> applySolid() {
         addSolid = true;
-        return this;
-    }
-
-    public SlimeText<T> applyLegacy() {
-        addLegacy = true;
         return this;
     }
 
