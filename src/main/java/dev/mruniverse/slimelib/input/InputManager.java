@@ -38,9 +38,9 @@ public interface InputManager {
     static <T> InputManager create(SlimePlatform platform, T plugin) {
         switch (platform) {
             case SPONGE:
-                return new SpongeInputManager(plugin);
+                return new SpongeInputManager();
             case VELOCITY:
-                return new VelocityInputManager(plugin);
+                return new VelocityInputManager();
             case BUNGEECORD:
                 return new BungeeInputManager(plugin);
             default:
