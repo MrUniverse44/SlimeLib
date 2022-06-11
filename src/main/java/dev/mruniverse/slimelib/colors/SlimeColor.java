@@ -26,9 +26,7 @@ public class SlimeColor {
         this.slimeText = getSlimeText(platform, content);
         if (HAS_RGB_SUPPORT) {
             checks(ColorMethod.ALL);
-            return;
         }
-        checks(ColorMethod.LEGACY);
     }
 
     /**
@@ -41,9 +39,7 @@ public class SlimeColor {
         this.slimeText = getSlimeText(platform, content);
         if (HAS_RGB_SUPPORT) {
             checks(method);
-            return;
         }
-        checks(ColorMethod.LEGACY);
     }
 
     /**
@@ -58,9 +54,7 @@ public class SlimeColor {
         );
         if (HAS_RGB_SUPPORT) {
             checks(method);
-            return;
         }
-        checks(ColorMethod.LEGACY);
     }
 
     /**
@@ -80,9 +74,7 @@ public class SlimeColor {
         }
         if (HAS_RGB_SUPPORT) {
             checks(method);
-            return;
         }
-        checks(ColorMethod.LEGACY);
     }
 
     /**
@@ -98,7 +90,6 @@ public class SlimeColor {
         if (method == ColorMethod.ALL) {
             execute(ColorMethod.GRADIENT);
             execute(ColorMethod.SOLID);
-            execute(ColorMethod.LEGACY);
             return;
         }
         execute(method);
@@ -111,10 +102,6 @@ public class SlimeColor {
                 break;
             case SOLID:
                 slimeText.applySolid();
-                break;
-            case ALL:
-            case LEGACY:
-                slimeText.applyLegacy();
                 break;
         }
     }
@@ -166,8 +153,7 @@ public class SlimeColor {
     public enum ColorMethod {
         ALL,
         SOLID,
-        GRADIENT,
-        LEGACY
+        GRADIENT
     }
 
     public String getContent() {
