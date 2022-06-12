@@ -155,6 +155,13 @@ public class DefaultControlBuilder implements Control {
             try (InputStream in = resource) {
                 if(in != null) {
                     Files.copy(in, fileToSave.toPath());
+                } else {
+                    logs.info("Resource is null");
+                    logs.info("Creating a empty file for " + fileToSave.getName());
+                    boolean created = fileToSave.createNewFile();
+                    if (created) {
+                        logs.info("File created!");
+                    }
                 }
             } catch (Exception exception) {
                 logs.error(String.format("A error occurred while copying the config %s to the plugin data folder. Error: %s", fileToSave.getName(), exception));

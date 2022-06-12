@@ -62,7 +62,7 @@ public class DefaultFileStorage implements FileStorage {
             File mainFolder = dataFolder;
 
             if(guardianFiles.isInDifferentFolder()) {
-                mainFolder = new File(dataFolder,guardianFiles.getFolderName());
+                mainFolder = new File(dataFolder, guardianFiles.getFolderName());
             }
 
             if (guardianFiles.loadOnPlatform(type)) {
