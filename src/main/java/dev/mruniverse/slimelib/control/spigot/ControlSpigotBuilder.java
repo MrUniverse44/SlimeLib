@@ -114,6 +114,13 @@ public class ControlSpigotBuilder implements Control {
             try (InputStream in = resource) {
                 if(in != null) {
                     Files.copy(in, fileToSave.toPath());
+                } else {
+                    logs.info("Resource is null");
+                    logs.info("Creating a empty file for " + fileToSave.getName());
+                    boolean created = fileToSave.createNewFile();
+                    if (created) {
+                        logs.info("File created!");
+                    }
                 }
             } catch (Exception exception) {
                 logs.error(
