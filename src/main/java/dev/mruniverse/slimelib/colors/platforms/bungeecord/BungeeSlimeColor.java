@@ -5,6 +5,8 @@ import dev.mruniverse.slimelib.colors.ChatColorUtils;
 import dev.mruniverse.slimelib.colors.SlimeColor;
 import dev.mruniverse.slimelib.colors.SlimeText;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 
@@ -61,6 +63,11 @@ public class BungeeSlimeColor extends SlimeText<BaseComponent> {
         if (!hasGradient() && !hasSolid()) {
             return new TextComponent(colorize(getContent()));
         }
+
+        if (!getContent().contains("%(slimecolor solid:") && !getContent().contains("%(slimecolor start:")) {
+            return new TextComponent(colorize(getContent()));
+        }
+
 
         GRADIENT_BOOLEAN_MAP.clear();
         SOLID_BOOLEAN_MAP.clear();
@@ -208,7 +215,7 @@ public class BungeeSlimeColor extends SlimeText<BaseComponent> {
 
                 String replaceText;
 
-                String[] splitContent = result.split("%\\(slimecolor start:");
+                String[] splitContent;
 
                 TextComponent textComponent = new TextComponent();
 
@@ -246,7 +253,9 @@ public class BungeeSlimeColor extends SlimeText<BaseComponent> {
                         GRADIENT_BOOLEAN_MAP.put(extra, true);
                     }
 
-                    replaceText = start + ")" + content + "(end-point:" + end;
+                    //TODO: Check
+
+                    replaceText = ")" + content + "(end-point:" + end;
 
                     List<TextComponent> componentList = new ArrayList<>();
                     List<ChatColor> colorList = new ArrayList<>();
@@ -299,6 +308,9 @@ public class BungeeSlimeColor extends SlimeText<BaseComponent> {
                         size++;
                     }
 
+                    splitContent = result.split("%\\(slimecolor start:" + start);
+
+                    int splitInt = 0;
                     for (String split : splitContent) {
                         if (split.contains(replaceText)) {
 
@@ -306,13 +318,23 @@ public class BungeeSlimeColor extends SlimeText<BaseComponent> {
 
                             componentList.stream().iterator().forEachRemaining(textComponent::addExtra);
 
-                            processSolid(textComponent, secondSplit[1]);
-
+                            if (secondSplit.length >= 2) {
+                                if (secondSplit[1].contains("%(slimecolor start:")) {
+                                    processGradient(textComponent, secondSplit[1]);
+                                } else {
+                                    processSolid(textComponent, secondSplit[1]);
+                                }
+                            }
+                            return textComponent;
                         } else {
                             processSolid(textComponent, split);
                         }
+                        splitInt++;
                     }
                 }
+
+                splitContent = result.split("%\\(slimecolor start:");
+
                 if (!findGradient) {
                     for (String split : splitContent) {
                         processSolid(textComponent, split);
@@ -418,6 +440,205 @@ public class BungeeSlimeColor extends SlimeText<BaseComponent> {
         return null;
     }
 
+    public void processGradient(TextComponent gradientComponent, String text) {
+        text = colorize(text);
+
+        Matcher gradientMatcher = GRADIENT_PATTERN.matcher(text);
+
+        String replaceText;
+
+        String[] splitContent;
+
+        boolean findGradient = false;
+
+        while (gradientMatcher.find()) {
+            String content = gradientMatcher.group(2);
+            String start   = gradientMatcher.group(1);
+            String end     = gradientMatcher.group(3);
+
+            String allGroup = gradientMatcher.group();
+
+            allGroup = allGroup.replace("%(slimecolor start:" + start, "");
+
+            int count = gradientMatcher.groupCount();
+
+            if (count >= 4) {
+                ColorExtras extra = match(gradientMatcher.group(4));
+                GRADIENT_BOOLEAN_MAP.put(extra, true);
+            }
+
+            if (count >= 5) {
+                ColorExtras extra = match(gradientMatcher.group(5));
+                GRADIENT_BOOLEAN_MAP.put(extra, true);
+            }
+
+            if (count >= 6) {
+                ColorExtras extra = match(gradientMatcher.group(6));
+                GRADIENT_BOOLEAN_MAP.put(extra, true);
+            }
+
+            if (count >= 7) {
+                ColorExtras extra = match(gradientMatcher.group(7));
+                GRADIENT_BOOLEAN_MAP.put(extra, true);
+            }
+
+            if (count >= 8) {
+                ColorExtras extra = match(gradientMatcher.group(8));
+                GRADIENT_BOOLEAN_MAP.put(extra, true);
+            }
+
+            replaceText = ")" + content + "(end-point:" + end;
+
+            List<TextComponent> componentList = new ArrayList<>();
+            List<ChatColor> colorList = new ArrayList<>();
+
+            String[] contentSplit = content.split("");
+            findGradient = true;
+
+            colorList.add(
+                    getColor(start)
+            );
+
+            colorList.add(
+                    getColor(end)
+            );
+
+            for (String character : contentSplit) {
+                componentList.add(new TextComponent(character));
+            }
+
+            int length = componentList.size();
+
+            List<ChatColor> gradient = ChatColorUtils.createGradientHSV(
+                    length,
+                    colorList
+            );
+
+            int size = 0;
+            for (TextComponent component : componentList) {
+                if (getBoolean(true, ColorExtras.BOLD)) {
+                    component.setBold(true);
+                }
+
+                if (getBoolean(true, ColorExtras.ITALIC)) {
+                    component.setItalic(true);
+                }
+
+                if (getBoolean(true, ColorExtras.MAGIC)) {
+                    component.setObfuscated(true);
+                }
+
+                if (getBoolean(true, ColorExtras.STRIKETHROUGH)) {
+                    component.setStrikethrough(true);
+                }
+
+                if (getBoolean(true, ColorExtras.UNDERLINE)) {
+                    component.setUnderlined(true);
+                }
+
+                component.setColor(gradient.get(size));
+                size++;
+            }
+
+            splitContent = text.split("%\\(slimecolor start:" + start);
+
+            int id = 0;
+            CommandSender sender = ProxyServer.getInstance().getConsole();
+
+            TextComponent empty = new TextComponent();
+            sender.sendMessage(empty);
+
+            sender.sendMessage(
+                    new TextComponent("Starting a new group replacement")
+            );
+
+            sender.sendMessage(
+                    new TextComponent("X | GROUP:" + allGroup)
+            );
+            sender.sendMessage(empty);
+
+
+            for (String split : splitContent) {
+                split = split.replace("%(slimecolor start:" + start + allGroup, "");
+                if (split.contains(replaceText)) {
+
+                    String[] secondSplit = split.split("\\(end-point:" + end + "( add:.+?)?( add:.+?)?( add:.+?)?( add:.+?)?( add:.+?)?\\)%");
+
+                    componentList.stream().iterator().forEachRemaining(gradientComponent::addExtra);
+
+                    if (secondSplit.length >= 2) {
+
+                        if (secondSplit[1].contains("%(slimecolor start:")) {
+
+                            if (secondSplit[1].contains(allGroup)) {
+                                secondSplit[1] = secondSplit[1].replace(allGroup, "")
+                                        .replace("%(slimecolor start:" + start + allGroup, "");
+
+                            }
+                            sender.sendMessage(
+                                    new TextComponent(id + " | Parsing to gradient: " + secondSplit[1])
+                            );
+
+                            sender.sendMessage(empty);
+
+                            sender.sendMessage(
+                                    new TextComponent(id + " | split of the gradient parse: " + split)
+                            );
+                            processGradient(gradientComponent, secondSplit[1]);
+                        } else {
+                            sender.sendMessage(
+                                    new TextComponent(id + " | Parsing to solid: " + secondSplit[1])
+                            );
+
+                            sender.sendMessage(empty);
+
+                            sender.sendMessage(
+                                    new TextComponent(id + " | split of the solid parse: " + split)
+                            );
+                            processSolid(gradientComponent, secondSplit[1]);
+                        }
+                    }
+                    return;
+                } else {
+                    if (!split.contains("%(slimecolor start")) {
+
+                        split = split.replace(
+                                allGroup, ""
+                        );
+
+                        sender.sendMessage(
+                                new TextComponent(id + " | Parsing to solid without gradient found: " + split)
+                        );
+
+                        sender.sendMessage(empty);
+
+                        sender.sendMessage(
+                                new TextComponent(id + " | split of the solid without parse: " + split)
+                        );
+                        processSolid(
+                                gradientComponent,
+                                split
+                        );
+                    }
+                }
+                id++;
+            }
+            sender.sendMessage(
+                    new TextComponent("Process Finished")
+            );
+        }
+
+        if (findGradient) {
+            return;
+        }
+
+        splitContent = text.split("%\\(slimecolor start:");
+
+        for (String split : splitContent) {
+            processSolid(gradientComponent, split);
+        }
+    }
+
     public ColorExtras match(String text) {
 
         if (text == null) {
@@ -429,19 +650,24 @@ public class BungeeSlimeColor extends SlimeText<BaseComponent> {
                 .replace("add:", "");
 
         switch (text) {
+            case "l":
             case "&l":
             case "bold":
                 return ColorExtras.BOLD;
             case "&o":
+            case "o":
             case "italic":
                 return ColorExtras.ITALIC;
             case "&k":
+            case "k":
             case "magic":
                 return ColorExtras.MAGIC;
             case "&m":
+            case "m":
             case "strikethrough":
                 return ColorExtras.STRIKETHROUGH;
             case "&n":
+            case "n":
             case "underline":
                 return ColorExtras.UNDERLINE;
             default:
@@ -519,7 +745,7 @@ public class BungeeSlimeColor extends SlimeText<BaseComponent> {
             for (String split : splitContent) {
                 if (split.contains(replaceText)) {
 
-                    String[] secondSplit = split.split("\\(end-point\\)%");
+                    String[] secondSplit = split.split("\\(end-point( add:.+?)?( add:.+?)?( add:.+?)?( add:.+?)?( add:.+?)?\\)%");
 
                     component.addExtra(result);
 
