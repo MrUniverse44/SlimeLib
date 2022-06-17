@@ -144,8 +144,11 @@ public class StringSlimeColor extends SlimeText<String> {
         int id = 0;
 
         for (String character : characters) {
-            builder.append(colors[id++])
-                    .append(character);
+            if (colors.length > id) {
+                builder.append(colors[id])
+                        .append(character);
+            }
+            id++;
         }
         return builder.toString();
     }
