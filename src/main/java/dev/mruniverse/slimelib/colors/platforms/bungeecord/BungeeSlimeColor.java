@@ -5,8 +5,6 @@ import dev.mruniverse.slimelib.colors.ChatColorUtils;
 import dev.mruniverse.slimelib.colors.SlimeColor;
 import dev.mruniverse.slimelib.colors.SlimeText;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 
@@ -543,20 +541,6 @@ public class BungeeSlimeColor extends SlimeText<BaseComponent> {
             splitContent = text.split("%\\(slimecolor start:" + start);
 
             int id = 0;
-            CommandSender sender = ProxyServer.getInstance().getConsole();
-
-            TextComponent empty = new TextComponent();
-            sender.sendMessage(empty);
-
-            sender.sendMessage(
-                    new TextComponent("Starting a new group replacement")
-            );
-
-            sender.sendMessage(
-                    new TextComponent("X | GROUP:" + allGroup)
-            );
-            sender.sendMessage(empty);
-
 
             for (String split : splitContent) {
                 split = split.replace("%(slimecolor start:" + start + allGroup, "");
@@ -575,26 +559,9 @@ public class BungeeSlimeColor extends SlimeText<BaseComponent> {
                                         .replace("%(slimecolor start:" + start + allGroup, "");
 
                             }
-                            sender.sendMessage(
-                                    new TextComponent(id + " | Parsing to gradient: " + secondSplit[1])
-                            );
 
-                            sender.sendMessage(empty);
-
-                            sender.sendMessage(
-                                    new TextComponent(id + " | split of the gradient parse: " + split)
-                            );
                             processGradient(gradientComponent, secondSplit[1]);
                         } else {
-                            sender.sendMessage(
-                                    new TextComponent(id + " | Parsing to solid: " + secondSplit[1])
-                            );
-
-                            sender.sendMessage(empty);
-
-                            sender.sendMessage(
-                                    new TextComponent(id + " | split of the solid parse: " + split)
-                            );
                             processSolid(gradientComponent, secondSplit[1]);
                         }
                     }
@@ -606,15 +573,6 @@ public class BungeeSlimeColor extends SlimeText<BaseComponent> {
                                 allGroup, ""
                         );
 
-                        sender.sendMessage(
-                                new TextComponent(id + " | Parsing to solid without gradient found: " + split)
-                        );
-
-                        sender.sendMessage(empty);
-
-                        sender.sendMessage(
-                                new TextComponent(id + " | split of the solid without parse: " + split)
-                        );
                         processSolid(
                                 gradientComponent,
                                 split
@@ -623,9 +581,6 @@ public class BungeeSlimeColor extends SlimeText<BaseComponent> {
                 }
                 id++;
             }
-            sender.sendMessage(
-                    new TextComponent("Process Finished")
-            );
         }
 
         if (findGradient) {
