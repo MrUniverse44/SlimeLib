@@ -198,7 +198,14 @@ public class DefaultSlimeColor extends SlimeText<Component> {
                                 textComponent = textComponent.append(component);
                             }
 
-                            textComponent = textComponent.append(createComponent(secondSplit[1]));
+                            if (secondSplit.length >= 2) {
+                                if (secondSplit[1].contains("%(slimecolor start:")) {
+                                    textComponent = processGradient(textComponent, secondSplit[1]);
+                                } else {
+                                    textComponent = textComponent.append(createComponent(secondSplit[1]));
+                                }
+                            }
+                            return textComponent;
                         } else {
                             textComponent = textComponent.append(createComponent(split));
                         }
@@ -456,15 +463,22 @@ public class DefaultSlimeColor extends SlimeText<Component> {
 
                         textComponent = textComponent.append(component);
 
-                        textComponent = textComponent.append(Component.text(legacy(secondSplit[1])));
+                        if (secondSplit.length >= 2) {
+                            if (secondSplit[1].contains("%(slimecolor solid:")) {
+                                textComponent = processSolid(textComponent, secondSplit[1]);
+                            } else {
+                                textComponent = textComponent.append(component(secondSplit[1]));
+                            }
+                        }
+                        return textComponent;
                     } else {
-                        textComponent = textComponent.append(Component.text(legacy(split)));
+                        textComponent = textComponent.append(component(split));
                     }
                 }
             }
             if (!hasSolid) {
                 for (String split : splitContent) {
-                    textComponent = textComponent.append(Component.text(legacy(split)));
+                    textComponent = textComponent.append(component(split));
                 }
             }
             return textComponent;
@@ -755,8 +769,14 @@ public class DefaultSlimeColor extends SlimeText<Component> {
 
                     textComponent = textComponent.append(result);
 
-                    textComponent = textComponent.append(createComponent(secondSplit[1]));
-
+                    if (secondSplit.length >= 2) {
+                        if (secondSplit[1].contains("%(slimecolor solid:")) {
+                            textComponent = processSolid(textComponent, secondSplit[1]);
+                        } else {
+                            textComponent = textComponent.append(createComponent(secondSplit[1]));
+                        }
+                    }
+                    return textComponent;
                 } else {
                     textComponent = textComponent.append(createComponent(split));
                 }

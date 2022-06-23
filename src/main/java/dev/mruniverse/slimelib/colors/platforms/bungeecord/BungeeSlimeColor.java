@@ -416,11 +416,16 @@ public class BungeeSlimeColor extends SlimeText<BaseComponent> {
 
                         textComponent.addExtra(component);
 
-                        textComponent.addExtra(
-                                new TextComponent(
-                                        colorize(secondSplit[1])
-                                )
-                        );
+                        if (secondSplit[1].contains("%(slimecolor solid:")) {
+                            processSolid(textComponent, secondSplit[1]);
+                        } else {
+                            textComponent.addExtra(
+                                    new TextComponent(
+                                            colorize(secondSplit[1])
+                                    )
+                            );
+                        }
+                        return textComponent;
                     } else {
                         textComponent.addExtra(
                                 new TextComponent(
@@ -704,11 +709,16 @@ public class BungeeSlimeColor extends SlimeText<BaseComponent> {
 
                     component.addExtra(result);
 
-                    component.addExtra(
-                            new TextComponent(
-                                    colorize(secondSplit[1])
-                            )
-                    );
+                    if (secondSplit[1].contains("%(slimecolor solid:")) {
+                        processSolid(component, secondSplit[1]);
+                    } else {
+                        component.addExtra(
+                                new TextComponent(
+                                        colorize(secondSplit[1])
+                                )
+                        );
+                    }
+                    return;
                 } else {
                     component.addExtra(
                             new TextComponent(
