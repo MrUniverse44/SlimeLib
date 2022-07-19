@@ -1,10 +1,9 @@
 package dev.mruniverse.slimelib.control.multiplatform;
 
 import dev.mruniverse.slimelib.logs.SlimeLogs;
-import dev.mruniverse.slimelib.utils.Configuration;
+import dev.mruniverse.slimelib.utils.PluginConfiguration;
 
-import dev.mruniverse.slimelib.utils.ConfigurationProvider;
-
+import dev.mruniverse.slimelib.utils.YamlConfiguration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import java.io.File;
@@ -23,7 +22,7 @@ public class DefaultControlBuilder implements Control {
 
     private final File file;
 
-    private Configuration configuration;
+    private PluginConfiguration configuration;
 
 
 
@@ -77,7 +76,7 @@ public class DefaultControlBuilder implements Control {
     @Override
     public void save() {
         try {
-            ConfigurationProvider.getProvider(ConfigurationProvider.Provider.YAML).save(this.configuration, this.file);
+            YamlConfiguration.save(this.configuration, this.file);
         }catch (Exception exception) {
             logs.error("Can't save file: " + file.getName());
             logs.error(exception);
@@ -87,7 +86,7 @@ public class DefaultControlBuilder implements Control {
     @Override
     public void reload() {
         try {
-            configuration = ConfigurationProvider.getProvider(ConfigurationProvider.Provider.YAML).load(file);
+            configuration = YamlConfiguration.load(file);
         }catch (Exception exception) {
             logs.error("Can't reload file: " + file.getName());
             logs.error(exception);
@@ -170,15 +169,15 @@ public class DefaultControlBuilder implements Control {
         }
     }
 
-    private Configuration loadConfig(File file) {
+    private PluginConfiguration loadConfig(File file) {
         if (!file.exists()) {
             saveConfig(file);
         }
 
-        Configuration cnf = null;
+        PluginConfiguration cnf = null;
 
         try {
-            cnf = ConfigurationProvider.getProvider(ConfigurationProvider.Provider.YAML).load(file);
+            cnf = YamlConfiguration.load(file);
         } catch (Exception exception) {
             logs.error("Can't load: " + file.getName() + ".!");
             logs.error(exception);
@@ -207,7 +206,7 @@ public class DefaultControlBuilder implements Control {
     public List<String> getContent(String path, boolean getKeys) {
         List<String> rx = new ArrayList<>();
 
-        Configuration section = configuration.getSection(path);
+        PluginConfiguration section = configuration.getSection(path);
 
         if(section == null) {
             return rx;

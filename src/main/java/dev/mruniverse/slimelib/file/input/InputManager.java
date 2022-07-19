@@ -1,10 +1,10 @@
-package dev.mruniverse.slimelib.input;
+package dev.mruniverse.slimelib.file.input;
 
 import dev.mruniverse.slimelib.SlimePlatform;
-import dev.mruniverse.slimelib.input.bungeecord.BungeeInputManager;
-import dev.mruniverse.slimelib.input.spigot.SpigotInputManager;
-import dev.mruniverse.slimelib.input.sponge.SpongeInputManager;
-import dev.mruniverse.slimelib.input.velocity.VelocityInputManager;
+import dev.mruniverse.slimelib.file.input.bungeecord.BungeeInputManager;
+import dev.mruniverse.slimelib.file.input.spigot.SpigotInputManager;
+import dev.mruniverse.slimelib.file.input.sponge.SpongeInputManager;
+import dev.mruniverse.slimelib.file.input.velocity.VelocityInputManager;
 
 import java.io.InputStream;
 
@@ -47,5 +47,9 @@ public interface InputManager {
             case SPIGOT:
                 return new SpigotInputManager(plugin);
         }
+    }
+
+    static InputManager getAutomatically() {
+        return new DefaultInputManager();
     }
 }

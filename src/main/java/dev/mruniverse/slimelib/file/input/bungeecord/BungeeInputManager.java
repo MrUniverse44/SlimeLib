@@ -1,6 +1,6 @@
-package dev.mruniverse.slimelib.input.bungeecord;
+package dev.mruniverse.slimelib.file.input.bungeecord;
 
-import dev.mruniverse.slimelib.input.InputManager;
+import dev.mruniverse.slimelib.file.input.InputManager;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.io.InputStream;

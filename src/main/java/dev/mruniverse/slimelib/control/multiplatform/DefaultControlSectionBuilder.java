@@ -2,8 +2,8 @@ package dev.mruniverse.slimelib.control.multiplatform;
 
 import dev.mruniverse.slimelib.logs.SlimeLogs;
 import dev.mruniverse.slimelib.control.Control;
-import dev.mruniverse.slimelib.utils.Configuration;
-import dev.mruniverse.slimelib.utils.ConfigurationProvider;
+import dev.mruniverse.slimelib.utils.PluginConfiguration;
+import dev.mruniverse.slimelib.utils.YamlConfiguration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import java.io.File;
@@ -13,15 +13,15 @@ import java.util.Set;
 
 public class DefaultControlSectionBuilder implements Control {
 
-    private final Configuration configuration;
+    private final PluginConfiguration configuration;
 
     private final File file;
 
     private final SlimeLogs logs;
 
-    private Configuration fileConfig;
+    private PluginConfiguration fileConfig;
 
-    public DefaultControlSectionBuilder(File file, SlimeLogs logs, Configuration fileConfig, Configuration section) {
+    public DefaultControlSectionBuilder(File file, SlimeLogs logs, PluginConfiguration fileConfig, PluginConfiguration section) {
         this.configuration = section;
         this.logs = logs;
         this.fileConfig = fileConfig;
@@ -64,7 +64,7 @@ public class DefaultControlSectionBuilder implements Control {
     @Override
     public void save() {
         try {
-            ConfigurationProvider.getProvider(ConfigurationProvider.Provider.YAML).save(this.fileConfig, this.file);
+            YamlConfiguration.save(this.fileConfig, this.file);
         }catch (Exception exception) {
             logs.error("Can't save file: " + file.getName());
             logs.error(exception);
@@ -74,7 +74,7 @@ public class DefaultControlSectionBuilder implements Control {
     @Override
     public void reload() {
         try {
-            fileConfig = ConfigurationProvider.getProvider(ConfigurationProvider.Provider.YAML).load(file);
+            fileConfig = YamlConfiguration.load(file);
         }catch (Exception exception) {
             logs.error("Can't reload file: " + file.getName());
             logs.error(exception);
@@ -100,7 +100,7 @@ public class DefaultControlSectionBuilder implements Control {
     public List<String> getContent(String path, boolean getKeys) {
         List<String> rx = new ArrayList<>();
 
-        Configuration section = configuration.getSection(path);
+        PluginConfiguration section = configuration.getSection(path);
 
         if(section == null) {
             return rx;

@@ -203,6 +203,10 @@ public class ControlBungeeBuilder implements Control {
         return rx;
     }
 
+    public List<String> getKeys(String path, boolean getKeys) {
+        return null;
+    }
+
     @Override
     public List<Integer> getIntList(String path) {
         return configuration.getIntList(path);

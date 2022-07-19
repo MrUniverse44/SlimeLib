@@ -1,11 +1,8 @@
-package dev.mruniverse.slimelib.input.sponge;
-
-import dev.mruniverse.slimelib.input.InputManager;
+package dev.mruniverse.slimelib.file.input;
 
 import java.io.InputStream;
 
-public class SpongeInputManager implements InputManager {
-
+public class DefaultInputManager implements InputManager {
     @Override
     public InputStream getInputStream(String resource) {
         return getClass().getResourceAsStream(resource);

@@ -1,20 +1,20 @@
 package dev.mruniverse.slimelib;
 
-import dev.mruniverse.slimelib.control.Control;
 
-import dev.mruniverse.slimelib.input.InputManager;
+import dev.mruniverse.slimelib.file.configuration.ConfigurationHandler;
+import dev.mruniverse.slimelib.file.configuration.ConfigurationProvider;
+import dev.mruniverse.slimelib.file.input.InputManager;
 
 import dev.mruniverse.slimelib.logs.SlimeLogs;
-import dev.mruniverse.slimelib.storage.ControlProvider;
-import dev.mruniverse.slimelib.storage.FileStorage;
-import dev.mruniverse.slimelib.storage.DefaultFileStorage;
+import dev.mruniverse.slimelib.file.storage.FileStorage;
+import dev.mruniverse.slimelib.file.storage.DefaultFileStorage;
 
 import java.io.File;
 
 @SuppressWarnings("unused")
 public final class SlimeStorage {
 
-    private ControlProvider provider;
+    private final ConfigurationProvider provider = ConfigurationProvider.newInstance();
 
     private SlimePlatform type = SlimePlatform.SPIGOT;
 
@@ -30,17 +30,18 @@ public final class SlimeStorage {
         this.type = type;
         this.logs = logs;
         this.manager = manager;
-        this.provider = ControlProvider.create(type);
     }
 
     public SlimeStorage(SlimePlatform type, SlimeLogs logs) {
         this.type = type;
         this.logs = logs;
-        this.provider = ControlProvider.create(type);
+        this.manager = InputManager.getAutomatically();
     }
 
     public SlimeStorage(SlimeLogs logs) {
+        this.type = SlimePlatform.getAutomatically();
         this.logs = logs;
+        this.manager = InputManager.getAutomatically();
     }
 
     public SlimeStorage(InputManager manager) {
@@ -63,7 +64,7 @@ public final class SlimeStorage {
         return this;
     }
 
-    public Control createControlFile(File pluginDataFolder, SlimeFiles slimeFile, String resource, boolean includeResource) {
+    public ConfigurationHandler loadConfiguration(File pluginDataFolder, SlimeFiles slimeFile, String resource, boolean includeResource) {
 
         if(logs == null) {
             return null;

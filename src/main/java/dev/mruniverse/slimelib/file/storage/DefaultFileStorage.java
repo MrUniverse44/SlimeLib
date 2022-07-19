@@ -1,9 +1,10 @@
-package dev.mruniverse.slimelib.storage;
+package dev.mruniverse.slimelib.file.storage;
 
 import dev.mruniverse.slimelib.SlimeFiles;
 import dev.mruniverse.slimelib.SlimePlatform;
-import dev.mruniverse.slimelib.control.Control;
-import dev.mruniverse.slimelib.input.InputManager;
+import dev.mruniverse.slimelib.file.configuration.ConfigurationHandler;
+import dev.mruniverse.slimelib.file.configuration.ConfigurationProvider;
+import dev.mruniverse.slimelib.file.input.InputManager;
 import dev.mruniverse.slimelib.logs.SlimeLogs;
 
 import java.io.File;
@@ -12,11 +13,11 @@ import java.util.HashMap;
 
 public class DefaultFileStorage implements FileStorage {
 
-    private final HashMap<SlimeFiles, Control> files = new HashMap<>();
+    private final HashMap<SlimeFiles, ConfigurationHandler> files = new HashMap<>();
 
     private final InputManager inputManager;
 
-    private final ControlProvider provider;
+    private final ConfigurationProvider provider;
 
     private SlimeFiles[] currentFiles;
 
@@ -32,7 +33,7 @@ public class DefaultFileStorage implements FileStorage {
         this.inputManager = inputManager;
         this.currentFiles = enums;
         this.type         = type;
-        this.provider = ControlProvider.create(type);
+        this.provider = ConfigurationProvider.newInstance();
         load();
     }
 
@@ -41,12 +42,22 @@ public class DefaultFileStorage implements FileStorage {
         this.logs         = logs;
         this.type         = type;
         this.inputManager = inputManager;
-        this.provider = ControlProvider.create(type);
+        this.provider = ConfigurationProvider.newInstance();
     }
 
     public FileStorage setEnums(SlimeFiles[] enums) {
         this.currentFiles = enums;
         return this;
+    }
+
+    @Override
+    public void replace(SlimeFiles replaced, SlimeFiles newFile) {
+        ConfigurationHandler configuration = this.files.get(newFile);
+
+        this.files.put(
+                replaced,
+                configuration
+        );
     }
 
     public void init() {
@@ -94,7 +105,7 @@ public class DefaultFileStorage implements FileStorage {
     }
 
     @Override
-    public Control getControl(SlimeFiles file) {
+    public ConfigurationHandler getConfigurationHandler(SlimeFiles file) {
         try {
             if (!files.containsKey(file)) {
                 throw new SlimeFileNotLoadedException(file);

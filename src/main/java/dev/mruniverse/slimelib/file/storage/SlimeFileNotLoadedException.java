@@ -1,4 +1,4 @@
-package dev.mruniverse.slimelib.storage;
+package dev.mruniverse.slimelib.file.storage;
 
 import dev.mruniverse.slimelib.SlimeFiles;
 

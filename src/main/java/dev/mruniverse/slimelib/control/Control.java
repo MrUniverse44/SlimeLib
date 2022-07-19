@@ -1,5 +1,11 @@
 package dev.mruniverse.slimelib.control;
 
+import dev.mruniverse.slimelib.SlimePlatform;
+import dev.mruniverse.slimelib.logs.SlimeLogs;
+import dev.mruniverse.slimelib.storage.provider.ControlBungeeProvider;
+import dev.mruniverse.slimelib.storage.provider.ControlSpigotProvider;
+import dev.mruniverse.slimelib.storage.provider.DefaultControlProvider;
+
 import java.io.File;
 import java.util.List;
 import java.util.Random;
@@ -12,6 +18,27 @@ public interface Control {
 
     default Random getRandom() {
         return RANDOM;
+    }
+
+    default Control loadControl(SlimeLogs logs, File file) {
+        return loadControl(
+                SlimePlatform.getAutomatically(),
+                logs,
+                file
+        );
+    }
+
+    default Control loadControl(SlimePlatform platform, SlimeLogs logs, File file) {
+        switch (platform) {
+            case SPIGOT:
+                return new ControlSpigotProvider().create(logs, file);
+            case BUNGEECORD:
+                return new ControlBungeeProvider().create(logs, file);
+            default:
+            case VELOCITY:
+            case SPONGE:
+                return new DefaultControlProvider().create(logs, file);
+        }
     }
 
     /**

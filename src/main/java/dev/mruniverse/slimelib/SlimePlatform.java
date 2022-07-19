@@ -1,6 +1,7 @@
 package dev.mruniverse.slimelib;
 
 import dev.mruniverse.slimelib.exceptions.SlimePlatformNotFoundException;
+import dev.mruniverse.slimelib.file.configuration.provider.Provider;
 import org.jetbrains.annotations.Nullable;
 
 public enum SlimePlatform {
@@ -29,6 +30,19 @@ public enum SlimePlatform {
         }
         new SlimePlatformNotFoundException().printStackTrace();
         return BUNGEECORD;
+    }
+
+    public Provider getProvider() {
+        switch (this) {
+            case BUNGEECORD:
+                return Provider.BUNGEE_CORD;
+            default:
+            case SPONGE:
+            case VELOCITY:
+                return Provider.DEFAULT;
+            case SPIGOT:
+                return Provider.BUKKIT;
+        }
     }
 
     private static @Nullable Class<?> getClass(String location) {

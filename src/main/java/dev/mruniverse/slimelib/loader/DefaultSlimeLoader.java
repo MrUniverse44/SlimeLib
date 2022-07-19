@@ -2,7 +2,7 @@ package dev.mruniverse.slimelib.loader;
 
 import dev.mruniverse.slimelib.SlimePlugin;
 import dev.mruniverse.slimelib.SlimeStorage;
-import dev.mruniverse.slimelib.input.InputManager;
+import dev.mruniverse.slimelib.file.input.InputManager;
 
 public class DefaultSlimeLoader<T> extends BaseSlimeLoader<T> {
 

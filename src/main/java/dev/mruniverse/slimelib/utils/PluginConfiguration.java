@@ -3,21 +3,21 @@ package dev.mruniverse.slimelib.utils;
 import java.util.*;
 
 @SuppressWarnings("unused")
-public final class Configuration {
+public final class PluginConfiguration {
     private static final char SEPARATOR = '.';
     final Map<String, Object> self;
-    private final Configuration defaults;
+    private final PluginConfiguration defaults;
 
-    public Configuration() {
+    public PluginConfiguration() {
         this(null);
     }
 
-    public Configuration(Configuration defaults)
+    public PluginConfiguration(PluginConfiguration defaults)
     {
         this(new LinkedHashMap<String, Object>(), defaults);
     }
 
-    Configuration(Map<?, ?> map, Configuration defaults)
+    PluginConfiguration(Map<?, ?> map, PluginConfiguration defaults)
     {
         this.self = new LinkedHashMap<>();
         this.defaults = defaults;
@@ -26,45 +26,42 @@ public final class Configuration {
         {
             String key = (entry.getKey() == null) ? "null" : entry.getKey().toString();
 
-            if (entry.getValue() instanceof Map)
-            {
-                this.self.put(key, new Configuration((Map<?,?>) entry.getValue(), (defaults == null) ? null : defaults.getSection(key)));
-            } else
-            {
+            if (entry.getValue() instanceof Map) {
+                this.self.put(key, new PluginConfiguration(
+                        (Map<?,?>) entry.getValue(),
+                        (defaults == null) ? null : defaults.getSection(key))
+                );
+            } else {
                 this.self.put(key, entry.getValue());
             }
         }
     }
 
-    private Configuration getSectionFor(String path)
-    {
+    private PluginConfiguration getSectionFor(String path) {
         int index = path.indexOf(SEPARATOR);
-        if (index == -1)
-        {
+        if (index == -1) {
             return this;
         }
 
         String root = path.substring(0, index);
         Object section = self.get(root);
-        if (section == null)
-        {
-            section = new Configuration((defaults == null) ? null : defaults.getSection(root));
+
+        if (section == null) {
+            section = new PluginConfiguration((defaults == null) ? null : defaults.getSection(root));
             self.put(root, section);
         }
 
-        return (Configuration) section;
+        return (PluginConfiguration) section;
     }
 
-    private String getChild(String path)
-    {
+    private String getChild(String path) {
         int index = path.indexOf(SEPARATOR);
         return (index == -1) ? path : path.substring(index + 1);
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T get(String path, T def)
-    {
-        Configuration section = getSectionFor(path);
+    public <T> T get(String path, T def) {
+        PluginConfiguration section = getSectionFor(path);
         Object val;
         if (section == this)
         {
@@ -74,7 +71,7 @@ public final class Configuration {
             val = section.get(getChild(path), def);
         }
 
-        if (val == null && def instanceof Configuration)
+        if (val == null && def instanceof PluginConfiguration)
         {
             self.put(path, def);
         }
@@ -99,10 +96,10 @@ public final class Configuration {
 
     public void set(String path, Object value) {
         if (value instanceof Map) {
-            value = new Configuration((Map<?,?>) value, (defaults == null) ? null : defaults.getSection(path));
+            value = new PluginConfiguration((Map<?,?>) value, (defaults == null) ? null : defaults.getSection(path));
         }
 
-        Configuration section = getSectionFor(path);
+        PluginConfiguration section = getSectionFor(path);
         if (section == this) {
             if (value == null) {
                 self.remove(path);
@@ -114,9 +111,9 @@ public final class Configuration {
         }
     }
 
-    public Configuration getSection(String path) {
+    public PluginConfiguration getSection(String path) {
         Object def = getDefault(path);
-        return (Configuration) get(path, (def instanceof Configuration) ? def : new Configuration((defaults == null) ? null : defaults.getSection(path)));
+        return (PluginConfiguration) get(path, (def instanceof PluginConfiguration) ? def : new PluginConfiguration((defaults == null) ? null : defaults.getSection(path)));
     }
 
     public Collection<String> getKeys() {

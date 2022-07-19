@@ -1,6 +1,6 @@
-package dev.mruniverse.slimelib.input.spigot;
+package dev.mruniverse.slimelib.file.input.spigot;
 
-import dev.mruniverse.slimelib.input.InputManager;
+import dev.mruniverse.slimelib.file.input.InputManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.InputStream;

@@ -1,6 +1,6 @@
-package dev.mruniverse.slimelib.input.velocity;
+package dev.mruniverse.slimelib.file.input.velocity;
 
-import dev.mruniverse.slimelib.input.InputManager;
+import dev.mruniverse.slimelib.file.input.InputManager;
 
 import java.io.InputStream;
 

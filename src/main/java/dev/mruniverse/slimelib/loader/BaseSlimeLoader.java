@@ -4,7 +4,7 @@ import dev.mruniverse.slimelib.SlimeFiles;
 import dev.mruniverse.slimelib.SlimePlugin;
 import dev.mruniverse.slimelib.SlimeStorage;
 import dev.mruniverse.slimelib.commands.SlimeCommands;
-import dev.mruniverse.slimelib.storage.FileStorage;
+import dev.mruniverse.slimelib.file.storage.FileStorage;
 import dev.mruniverse.slimelib.utils.SlimeHelper;
 
 @SuppressWarnings("unused")
