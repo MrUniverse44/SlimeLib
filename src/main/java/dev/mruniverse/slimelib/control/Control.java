@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-@SuppressWarnings("unused")
+@Deprecated
 public interface Control {
 
     Random RANDOM = new Random();
@@ -20,6 +20,7 @@ public interface Control {
         return RANDOM;
     }
 
+    @Deprecated
     default Control loadControl(SlimeLogs logs, File file) {
         return loadControl(
                 SlimePlatform.getAutomatically(),
@@ -28,6 +29,7 @@ public interface Control {
         );
     }
 
+    @Deprecated
     default Control loadControl(SlimePlatform platform, SlimeLogs logs, File file) {
         switch (platform) {
             case SPIGOT:
@@ -123,6 +125,7 @@ public interface Control {
      * @param def If the path doesn't exist, this will be the default result
      * @return String
      */
+    @Deprecated
     String getString(String path,String def);
 
     /**
