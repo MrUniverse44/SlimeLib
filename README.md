@@ -31,7 +31,7 @@ Dependency:
             <artifactId>SlimeLib</artifactId>
             <version>TAG</version>
             <!-- TAG = latest version, for example:
-            <version>1.0.4.6</version>
+            <version>1.0.5</version>
             -->
         </dependency>
 ```
@@ -49,7 +49,98 @@ Dependency:
 
 ## Usage examples:
 
-* Control File System - Enum Example:
+* ConfigurationProvider - Usage Example:
+
+```Java
+import dev.mruniverse.slimelib.file.configuration.ConfigurationProvider;
+import dev.mruniverse.slimelib.file.configuration.ConfigurationHandler;
+
+public class a {
+    public ConfigurationHandler load(SlimeLogs logs, File file) {
+        ConfigurationProvider provider = ConfigurationProvider.newInstance();
+        return provider.create(
+                logs,
+                file
+        );
+    }
+
+    public ConfigurationHandler load(SlimeLogs logs, File file, InputStream resource) {
+        ConfigurationProvider provider = ConfigurationProvider.newInstance();
+        return provider.create(
+                logs,
+                file,
+                resource
+        );
+    }
+}
+```
+
+* toSpecifiedConfiguration Method - Examples:
+BungeeCord:
+
+```Java
+import dev.mruniverse.slimelib.file.configuration.ConfigurationHandler;
+import net.md_5.bungee.config.Configuration;
+
+public class a {
+    public void toSpecifiedBungee(SlimeLogs logs, File file) {
+        ConfigurationProvider provider = ConfigurationProvider.newInstance();
+        
+        ConfigurationHandler handler = provider.create(
+                logs,
+                file
+        );
+        
+        Configuration configuration = handler.toSpecifiedConfiguration();
+    }
+}
+```
+Spigot:
+
+```Java
+import dev.mruniverse.slimelib.file.configuration.ConfigurationHandler;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+
+public class a {
+    public void toSpecifiedBukkit(SlimeLogs logs, File file) {
+        ConfigurationProvider provider = ConfigurationProvider.newInstance();
+
+        ConfigurationHandler handler = provider.create(
+                logs,
+                file
+        );
+
+        //NOTE: If you are calling this method, normally it will be FileConfiguration, but
+        //NOTE: If you are calling this method in a getSection it will be a ConfigurationSection
+        FileConfiguration configuration = handler.toSpecifiedConfiguration();
+
+        ConfigurationSection section = handler.toSpecifiedConfiguration();
+    }
+}
+```
+
+Other:
+
+```Java
+import dev.mruniverse.slimelib.file.configuration.ConfigurationHandler;
+import dev.mruniverse.slimelib.utils.PluginConfiguration;
+
+public class a {
+    public void toSpecifiedBukkit(SlimeLogs logs, File file) {
+        ConfigurationProvider provider = ConfigurationProvider.newInstance();
+
+        ConfigurationHandler handler = provider.create(
+                logs,
+                file
+        );
+
+        PluginConfiguration configuration = handler.toSpecifiedConfiguration();
+    }
+}
+```
+
+* Control & Configuration Handler File System - Enum Example:
 
 ```Java
 package dev.mruniverse.slimelib.examples;
