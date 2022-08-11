@@ -1,7 +1,7 @@
 package dev.mruniverse.slimelib.file.configuration.handlers.other;
 
 import dev.mruniverse.slimelib.colors.SlimeColor;
-import dev.mruniverse.slimelib.colors.platforms.StringSlimeColor;
+import dev.mruniverse.slimelib.colors.platforms.velocity.DefaultSlimeColor;
 import dev.mruniverse.slimelib.file.configuration.ConfigurationHandler;
 import dev.mruniverse.slimelib.file.configuration.TextDecoration;
 import dev.mruniverse.slimelib.utils.PluginConfiguration;
@@ -185,11 +185,11 @@ public class PluginConfigurationSectionHandler extends ConfigurationHandler {
             case LEGACY:
                 return legacyColor(message);
             case ALL:
-                return new StringSlimeColor(message, true, SlimeColor.ColorMethod.ALL).build();
+                return new DefaultSlimeColor(message, true, SlimeColor.ColorMethod.ALL).toString();
             case SOLID:
-                return new StringSlimeColor(message, true, SlimeColor.ColorMethod.SOLID).build();
+                return new DefaultSlimeColor(message, true, SlimeColor.ColorMethod.SOLID).toString();
             case GRADIENT:
-                return new StringSlimeColor(message, true, SlimeColor.ColorMethod.GRADIENT).build();
+                return new DefaultSlimeColor(message, true, SlimeColor.ColorMethod.GRADIENT).toString();
         }
     }
 
@@ -213,17 +213,17 @@ public class PluginConfigurationSectionHandler extends ConfigurationHandler {
                 return list;
             case ALL:
                 list.replaceAll(
-                        line -> line = new StringSlimeColor(line, true, SlimeColor.ColorMethod.ALL).build()
+                        line -> line = new DefaultSlimeColor(line, true, SlimeColor.ColorMethod.ALL).toString()
                 );
                 return list;
             case SOLID:
                 list.replaceAll(
-                        line -> line = new StringSlimeColor(line, true, SlimeColor.ColorMethod.SOLID).build()
+                        line -> line = new DefaultSlimeColor(line, true, SlimeColor.ColorMethod.SOLID).toString()
                 );
                 return list;
             case GRADIENT:
                 list.replaceAll(
-                        line -> line = new StringSlimeColor(line, true, SlimeColor.ColorMethod.GRADIENT).build()
+                        line -> line = new DefaultSlimeColor(line, true, SlimeColor.ColorMethod.GRADIENT).toString()
                 );
                 return list;
         }

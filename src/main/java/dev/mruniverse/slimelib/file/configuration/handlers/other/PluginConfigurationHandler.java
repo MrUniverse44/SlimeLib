@@ -1,7 +1,7 @@
 package dev.mruniverse.slimelib.file.configuration.handlers.other;
 
 import dev.mruniverse.slimelib.colors.SlimeColor;
-import dev.mruniverse.slimelib.colors.platforms.StringSlimeColor;
+import dev.mruniverse.slimelib.colors.platforms.velocity.DefaultSlimeColor;
 import dev.mruniverse.slimelib.file.configuration.ConfigurationHandler;
 import dev.mruniverse.slimelib.file.configuration.TextDecoration;
 import dev.mruniverse.slimelib.file.configuration.handlers.util.FileUtils;
@@ -241,28 +241,28 @@ public class PluginConfigurationHandler extends ConfigurationHandler {
             case STRIP_COLORS:
                 return LegacyComponentSerializer.legacyAmpersand().deserialize(getString(path, def)).content();
             case GRADIENT:
-                return new StringSlimeColor(
+                return new DefaultSlimeColor(
                         getString(path, def),
                         true,
                         SlimeColor.ColorMethod.GRADIENT
-                ).build();
+                ).toString();
             case SOLID:
-                return new StringSlimeColor(
+                return new DefaultSlimeColor(
                         getString(path, def),
                         true,
                         SlimeColor.ColorMethod.SOLID
-                ).build();
+                ).toString();
             case ALL:
-                return new StringSlimeColor(
+                return new DefaultSlimeColor(
                         getString(path, def),
                         true,
                         SlimeColor.ColorMethod.ALL
-                ).build();
+                ).toString();
             case LEGACY:
-                return new StringSlimeColor(
+                return new DefaultSlimeColor(
                         getString(path, def),
                         false
-                ).build();
+                ).toString();
         }
     }
 

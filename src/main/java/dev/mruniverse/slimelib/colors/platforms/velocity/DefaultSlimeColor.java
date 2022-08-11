@@ -529,6 +529,13 @@ public class DefaultSlimeColor extends SlimeText<Component> {
         return LegacyComponentSerializer.legacyAmpersand().deserialize(content);
     }
 
+    @Override
+    public String toString() {
+        Component build = build();
+
+        return LegacyComponentSerializer.legacySection().serialize(build);
+    }
+
     private Component processGradient(Component gradientComponent, String paramText) {
 
         Matcher gradientMatcher = GRADIENT_PATTERN.matcher(paramText);
