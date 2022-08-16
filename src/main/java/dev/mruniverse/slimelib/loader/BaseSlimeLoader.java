@@ -4,6 +4,8 @@ import dev.mruniverse.slimelib.SlimeFiles;
 import dev.mruniverse.slimelib.SlimePlugin;
 import dev.mruniverse.slimelib.SlimeStorage;
 import dev.mruniverse.slimelib.commands.SlimeCommands;
+import dev.mruniverse.slimelib.events.EventManager;
+import dev.mruniverse.slimelib.events.internal.EventExecutor;
 import dev.mruniverse.slimelib.file.storage.FileStorage;
 import dev.mruniverse.slimelib.utils.SlimeHelper;
 
@@ -12,6 +14,8 @@ public abstract class BaseSlimeLoader<T> {
     private final SlimePlugin<T> plugin;
 
     private final SlimeCommands<T> commands;
+
+    private final EventManager<?> events;
 
     private SlimeStorage storage = null;
 
@@ -22,6 +26,12 @@ public abstract class BaseSlimeLoader<T> {
         commands = new SlimeCommands<>(
                 plugin,
                 plugin.getServerType()
+        );
+        events = new EventManager<>(
+                EventExecutor.fromType(
+                        plugin.getServerType(),
+                        plugin.getPlugin()
+                )
         );
     }
 
@@ -40,6 +50,10 @@ public abstract class BaseSlimeLoader<T> {
 
     public SlimeCommands<T> getCommands() {
         return commands;
+    }
+
+    public EventManager<?> getEvents() {
+        return events;
     }
 
     public SlimePlugin<T> getPlugin() {

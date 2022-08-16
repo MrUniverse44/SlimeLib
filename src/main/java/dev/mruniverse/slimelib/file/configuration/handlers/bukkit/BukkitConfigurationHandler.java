@@ -13,6 +13,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -232,7 +233,13 @@ public class BukkitConfigurationHandler extends ConfigurationHandler {
 
     @Override
     public void save() {
-
+        try {
+            configuration.save(
+                    getFile()
+            );
+        } catch (IOException exception) {
+            getLogs().error("Can't save file " + getFile().getName(), exception);
+        }
     }
 
     @Override
