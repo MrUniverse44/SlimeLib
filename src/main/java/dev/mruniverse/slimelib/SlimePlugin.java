@@ -41,7 +41,7 @@ public interface SlimePlugin<T> extends SlimePluginResource {
         return getLoader().getCommands();
     }
 
-    default EventManager<T> getEventManager() throws SlimeLoaderException {
+    default EventManager<?> getEventManager() throws SlimeLoaderException {
         if (getLoader() == null) {
             throw new SlimeLoaderException("Events can't be initialize because the Loader of the main class is not set!");
         }
