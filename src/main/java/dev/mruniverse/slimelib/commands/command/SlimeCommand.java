@@ -1,7 +1,6 @@
 package dev.mruniverse.slimelib.commands.command;
 
-import dev.mruniverse.slimelib.commands.sender.Sender;
-import org.jetbrains.annotations.NotNull;
+import dev.mruniverse.slimelib.source.SlimeSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ public interface SlimeCommand {
      * @param commandLabel the command-alias used
      * @param args arguments of the command executed
      */
-    void execute(Sender sender, String commandLabel, String[] args);
+    void execute(SlimeSource sender, String commandLabel, String[] args);
 
     /**
      * Add Tab Complete to your command
@@ -39,7 +38,7 @@ public interface SlimeCommand {
      * @return List - the tab complete arguments
      */
     @SuppressWarnings("unused")
-    default List<String> onTabComplete(Sender sender, String commandLabel, String[] args) {
+    default List<String> onTabComplete(SlimeSource sender, String commandLabel, String[] args) {
         return array;
     }
 }

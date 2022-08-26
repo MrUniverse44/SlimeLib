@@ -1,11 +1,13 @@
-package dev.mruniverse.slimelib.commands.sender.console;
+package dev.mruniverse.slimelib.source.console;
 
-import dev.mruniverse.slimelib.commands.sender.Sender;
+import dev.mruniverse.slimelib.source.SlimeSource;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
 
-public class SlimeConsoleSpigot implements Sender {
+import java.util.UUID;
+
+public class SlimeConsoleSpigot implements SlimeSource<ConsoleCommandSender> {
 
     private final ConsoleCommandSender sender = Bukkit.getServer().getConsoleSender();
 
@@ -30,8 +32,18 @@ public class SlimeConsoleSpigot implements Sender {
     }
 
     @Override
+    public ConsoleCommandSender getOriginalSource() {
+        return sender;
+    }
+
+    @Override
     public String getName() {
         return "Console";
+    }
+
+    @Override
+    public UUID getUniqueId() {
+        return UUID.randomUUID();
     }
 
     @Override

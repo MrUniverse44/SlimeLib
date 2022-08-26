@@ -1,9 +1,9 @@
 package dev.mruniverse.slimelib.commands.spigot;
 
 import dev.mruniverse.slimelib.commands.command.SlimeCommand;
-import dev.mruniverse.slimelib.commands.sender.Sender;
-import dev.mruniverse.slimelib.commands.sender.console.SlimeConsoleSpigot;
-import dev.mruniverse.slimelib.commands.sender.player.SlimePlayer;
+import dev.mruniverse.slimelib.source.SlimeSource;
+import dev.mruniverse.slimelib.source.console.SlimeConsoleSpigot;
+import dev.mruniverse.slimelib.source.player.SlimePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -35,7 +35,7 @@ public class SlimeSpigotCommand extends Command implements TabCompleter {
         return true;
     }
 
-    private Sender cast(CommandSender sender) {
+    private SlimeSource<?> cast(CommandSender sender) {
         if (sender instanceof Player) {
             return new SlimePlayer((Player)sender);
         }

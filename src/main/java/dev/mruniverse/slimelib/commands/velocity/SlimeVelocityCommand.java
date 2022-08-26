@@ -6,9 +6,9 @@ import com.velocitypowered.api.command.SimpleCommand;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import dev.mruniverse.slimelib.commands.command.SlimeCommand;
-import dev.mruniverse.slimelib.commands.sender.Sender;
-import dev.mruniverse.slimelib.commands.sender.console.SlimeConsoleVelocity;
-import dev.mruniverse.slimelib.commands.sender.player.SlimeVelocityPlayer;
+import dev.mruniverse.slimelib.source.SlimeSource;
+import dev.mruniverse.slimelib.source.console.SlimeConsoleVelocity;
+import dev.mruniverse.slimelib.source.player.SlimeVelocityPlayer;
 
 import java.util.List;
 
@@ -66,7 +66,7 @@ public class SlimeVelocityCommand implements SimpleCommand {
         }
     }
 
-    private Sender cast(CommandSource sender) {
+    private SlimeSource<?> cast(CommandSource sender) {
         if (sender instanceof Player) {
             return new SlimeVelocityPlayer((Player)sender);
         }

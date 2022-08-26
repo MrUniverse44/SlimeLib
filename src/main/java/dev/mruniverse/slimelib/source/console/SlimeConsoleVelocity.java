@@ -1,24 +1,19 @@
-package dev.mruniverse.slimelib.commands.sender.player;
+package dev.mruniverse.slimelib.source.console;
 
-import com.velocitypowered.api.proxy.Player;
-import dev.mruniverse.slimelib.commands.sender.Sender;
+import com.velocitypowered.api.proxy.ConsoleCommandSource;
+import com.velocitypowered.api.proxy.ProxyServer;
+import dev.mruniverse.slimelib.source.SlimeSource;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import java.util.UUID;
 
-public class SlimeVelocityPlayer implements Sender {
+public class SlimeConsoleVelocity implements SlimeSource<ConsoleCommandSource> {
 
-    Player player;
+    private final ConsoleCommandSource player;
 
-    String name;
-
-    UUID uuid;
-
-    public SlimeVelocityPlayer(Player player) {
-        this.player = player;
-        this.name = player.getUsername();
-        this.uuid = player.getUniqueId();
+    public SlimeConsoleVelocity(ProxyServer server) {
+        this.player = server.getConsoleCommandSource();
     }
 
     /**
@@ -33,25 +28,27 @@ public class SlimeVelocityPlayer implements Sender {
 
     @Override
     public boolean isPlayer() {
-        return true;
-    }
-
-    @Override
-    public boolean isConsoleSender() {
         return false;
     }
 
     @Override
+    public boolean isConsoleSender() {
+        return true;
+    }
+
+    @Override
+    public ConsoleCommandSource getOriginalSource() {
+        return player;
+    }
+
+    @Override
     public String getName() {
-        return name;
+        return "Console";
     }
 
+    @Override
     public UUID getUniqueId() {
-        return uuid;
-    }
-
-    public String getId() {
-        return uuid.toString().replace("-", "");
+        return UUID.randomUUID();
     }
 
     @Override
@@ -90,8 +87,9 @@ public class SlimeVelocityPlayer implements Sender {
         return LegacyComponentSerializer.builder().character('&').build().deserialize(message);
     }
 
-    public Player get() {
+    public ConsoleCommandSource get() {
         return player;
     }
 }
+
 

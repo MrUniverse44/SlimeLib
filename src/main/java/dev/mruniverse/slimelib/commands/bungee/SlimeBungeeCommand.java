@@ -1,10 +1,10 @@
 package dev.mruniverse.slimelib.commands.bungee;
 
 import dev.mruniverse.slimelib.commands.command.SlimeCommand;
-import dev.mruniverse.slimelib.commands.sender.Sender;
-import dev.mruniverse.slimelib.commands.sender.console.SlimeConsoleBungee;
+import dev.mruniverse.slimelib.source.SlimeSource;
+import dev.mruniverse.slimelib.source.console.SlimeConsoleBungee;
 
-import dev.mruniverse.slimelib.commands.sender.player.SlimeProxiedPlayer;
+import dev.mruniverse.slimelib.source.player.SlimeProxiedPlayer;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -34,7 +34,7 @@ public class SlimeBungeeCommand extends Command implements TabExecutor {
         ProxyServer.getInstance().getPluginManager().unregisterCommand(this);
     }
 
-    private Sender cast(CommandSender sender) {
+    private SlimeSource cast(CommandSender sender) {
         if (sender instanceof ProxiedPlayer) {
             return new SlimeProxiedPlayer((ProxiedPlayer)sender);
         }

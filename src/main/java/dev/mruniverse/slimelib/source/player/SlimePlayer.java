@@ -1,21 +1,20 @@
-package dev.mruniverse.slimelib.commands.sender.player;
+package dev.mruniverse.slimelib.source.player;
 
-import dev.mruniverse.slimelib.commands.sender.Sender;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.connection.ProxiedPlayer;
+import dev.mruniverse.slimelib.source.SlimeSource;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class SlimeProxiedPlayer implements Sender {
+public class SlimePlayer implements SlimeSource<Player> {
 
-    ProxiedPlayer player;
+    private final Player player;
 
-    String name;
+    private final String name;
 
-    UUID uuid;
+    private final UUID uuid;
 
-    public SlimeProxiedPlayer(ProxiedPlayer player) {
+    public SlimePlayer(Player player) {
         this.player = player;
         this.name = player.getName();
         this.uuid = player.getUniqueId();
@@ -42,10 +41,16 @@ public class SlimeProxiedPlayer implements Sender {
     }
 
     @Override
+    public Player getOriginalSource() {
+        return player;
+    }
+
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public UUID getUniqueId() {
         return uuid;
     }
@@ -56,40 +61,26 @@ public class SlimeProxiedPlayer implements Sender {
 
     @Override
     public void sendMessage(String message) {
-        player.sendMessage(
-                new TextComponent(
-                        message
-                )
-        );
+        player.sendMessage(message);
     }
 
     @Override
     public void sendMessage(String[] message) {
-        for(String text : message) {
-            player.sendMessage(
-                    new TextComponent(
-                            text
-                    )
-            );
-        }
+        player.sendMessage(message);
     }
 
     @Override
     public void sendColoredMessage(String message) {
         player.sendMessage(
-                new TextComponent(
-                        color(message)
-                )
+                color(message)
         );
     }
 
     @Override
     public void sendColoredMessage(String[] message) {
-        for(String text : message) {
+        for (String text : message) {
             player.sendMessage(
-                    new TextComponent(
-                            color(text)
-                    )
+                    color(text)
             );
         }
     }
@@ -98,8 +89,7 @@ public class SlimeProxiedPlayer implements Sender {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
-    public ProxiedPlayer get() {
+    public Player get() {
         return player;
     }
 }
-

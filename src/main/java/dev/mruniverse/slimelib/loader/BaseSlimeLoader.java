@@ -2,10 +2,10 @@ package dev.mruniverse.slimelib.loader;
 
 import dev.mruniverse.slimelib.SlimeFiles;
 import dev.mruniverse.slimelib.SlimePlugin;
-import dev.mruniverse.slimelib.SlimeStorage;
 import dev.mruniverse.slimelib.commands.SlimeCommands;
 import dev.mruniverse.slimelib.events.EventManager;
 import dev.mruniverse.slimelib.events.internal.EventExecutor;
+import dev.mruniverse.slimelib.file.storage.DefaultFileStorage;
 import dev.mruniverse.slimelib.file.storage.FileStorage;
 import dev.mruniverse.slimelib.utils.SlimeHelper;
 
@@ -15,10 +15,6 @@ public abstract class BaseSlimeLoader<T> {
 
     private final SlimeCommands<T> commands;
 
-    private final EventManager<?> events;
-
-    private SlimeStorage storage = null;
-
     private FileStorage files = null;
 
     public BaseSlimeLoader(SlimePlugin<T> plugin) {
@@ -27,21 +23,18 @@ public abstract class BaseSlimeLoader<T> {
                 plugin,
                 plugin.getServerType()
         );
-        events = new EventManager<>(
-                EventExecutor.fromType(
-                        plugin.getServerType(),
-                        plugin.getPlugin()
-                )
-        );
     }
 
     public <O extends Enum<O> & SlimeFiles> void setFiles(Class<O> clazz) {
-        fileStorage(getStorage().createStorage(getPlugin().getDataFolder())
-                .setEnums(SlimeHelper.process(clazz)));
-    }
-
-    public void storage(SlimeStorage storage) {
-        this.storage = storage;
+        fileStorage(
+                new DefaultFileStorage(
+                        getPlugin()
+                ).setEnums(
+                        SlimeHelper.process(
+                                clazz
+                        )
+                )
+        );
     }
 
     public void fileStorage(FileStorage files) {
@@ -52,16 +45,8 @@ public abstract class BaseSlimeLoader<T> {
         return commands;
     }
 
-    public EventManager<?> getEvents() {
-        return events;
-    }
-
     public SlimePlugin<T> getPlugin() {
         return plugin;
-    }
-
-    public SlimeStorage getStorage() {
-        return storage;
     }
 
     public FileStorage getFiles() {
@@ -73,15 +58,9 @@ public abstract class BaseSlimeLoader<T> {
      *
      * This will init the loader.
      */
-    public void init() {
+    public abstract void init();
 
-    }
+    public abstract void shutdown();
 
-    public void shutdown() {
-
-    }
-
-    public void reload() {
-
-    }
+    public abstract void reload();
 }

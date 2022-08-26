@@ -1,17 +1,24 @@
-package dev.mruniverse.slimelib.commands.sender.console;
+package dev.mruniverse.slimelib.source.player;
 
-import dev.mruniverse.slimelib.commands.sender.Sender;
+import dev.mruniverse.slimelib.source.SlimeSource;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
-public class SlimeConsoleBungee implements Sender {
+import java.util.UUID;
 
-    CommandSender console;
+public class SlimeProxiedPlayer implements SlimeSource<ProxiedPlayer> {
 
-    public SlimeConsoleBungee() {
-        this.console = ProxyServer.getInstance().getConsole();
+    private final ProxiedPlayer player;
+
+    private final String name;
+
+    private final UUID uuid;
+
+    public SlimeProxiedPlayer(ProxiedPlayer player) {
+        this.player = player;
+        this.name = player.getName();
+        this.uuid = player.getUniqueId();
     }
 
     /**
@@ -21,27 +28,41 @@ public class SlimeConsoleBungee implements Sender {
      */
     @Override
     public boolean hasPermission(String permission) {
-        return console.hasPermission(permission);
+        return player.hasPermission(permission);
     }
 
     @Override
     public boolean isPlayer() {
-        return false;
-    }
-
-    @Override
-    public boolean isConsoleSender() {
         return true;
     }
 
     @Override
+    public boolean isConsoleSender() {
+        return false;
+    }
+
+    @Override
+    public ProxiedPlayer getOriginalSource() {
+        return player;
+    }
+
+    @Override
     public String getName() {
-        return "Console";
+        return name;
+    }
+
+    @Override
+    public UUID getUniqueId() {
+        return uuid;
+    }
+
+    public String getId() {
+        return uuid.toString().replace("-", "");
     }
 
     @Override
     public void sendMessage(String message) {
-        console.sendMessage(
+        player.sendMessage(
                 new TextComponent(
                         message
                 )
@@ -51,7 +72,7 @@ public class SlimeConsoleBungee implements Sender {
     @Override
     public void sendMessage(String[] message) {
         for(String text : message) {
-            console.sendMessage(
+            player.sendMessage(
                     new TextComponent(
                             text
                     )
@@ -61,7 +82,7 @@ public class SlimeConsoleBungee implements Sender {
 
     @Override
     public void sendColoredMessage(String message) {
-        console.sendMessage(
+        player.sendMessage(
                 new TextComponent(
                         color(message)
                 )
@@ -71,7 +92,7 @@ public class SlimeConsoleBungee implements Sender {
     @Override
     public void sendColoredMessage(String[] message) {
         for(String text : message) {
-            console.sendMessage(
+            player.sendMessage(
                     new TextComponent(
                             color(text)
                     )
@@ -83,9 +104,8 @@ public class SlimeConsoleBungee implements Sender {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
-    public CommandSender get() {
-        return console;
+    public ProxiedPlayer get() {
+        return player;
     }
 }
-
 

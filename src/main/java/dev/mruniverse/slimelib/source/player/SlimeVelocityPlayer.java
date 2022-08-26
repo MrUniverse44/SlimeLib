@@ -1,17 +1,24 @@
-package dev.mruniverse.slimelib.commands.sender.console;
+package dev.mruniverse.slimelib.source.player;
 
-import com.velocitypowered.api.proxy.ConsoleCommandSource;
-import com.velocitypowered.api.proxy.ProxyServer;
-import dev.mruniverse.slimelib.commands.sender.Sender;
+import com.velocitypowered.api.proxy.Player;
+import dev.mruniverse.slimelib.source.SlimeSource;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
-public class SlimeConsoleVelocity implements Sender {
+import java.util.UUID;
 
-    ConsoleCommandSource player;
+public class SlimeVelocityPlayer implements SlimeSource<Player> {
 
-    public SlimeConsoleVelocity(ProxyServer server) {
-        this.player = server.getConsoleCommandSource();
+    private final Player player;
+
+    private final String name;
+
+    private final UUID uuid;
+
+    public SlimeVelocityPlayer(Player player) {
+        this.player = player;
+        this.name = player.getUsername();
+        this.uuid = player.getUniqueId();
     }
 
     /**
@@ -26,17 +33,30 @@ public class SlimeConsoleVelocity implements Sender {
 
     @Override
     public boolean isPlayer() {
-        return false;
-    }
-
-    @Override
-    public boolean isConsoleSender() {
         return true;
     }
 
     @Override
+    public boolean isConsoleSender() {
+        return false;
+    }
+
+    @Override
+    public Player getOriginalSource() {
+        return player;
+    }
+
+    @Override
     public String getName() {
-        return "Console";
+        return name;
+    }
+
+    public UUID getUniqueId() {
+        return uuid;
+    }
+
+    public String getId() {
+        return uuid.toString().replace("-", "");
     }
 
     @Override
@@ -75,9 +95,8 @@ public class SlimeConsoleVelocity implements Sender {
         return LegacyComponentSerializer.builder().character('&').build().deserialize(message);
     }
 
-    public ConsoleCommandSource get() {
+    public Player get() {
         return player;
     }
 }
-
 

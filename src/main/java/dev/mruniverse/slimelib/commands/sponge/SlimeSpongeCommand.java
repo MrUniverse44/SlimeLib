@@ -1,9 +1,9 @@
 package dev.mruniverse.slimelib.commands.sponge;
 
 import dev.mruniverse.slimelib.commands.command.SlimeCommand;
-import dev.mruniverse.slimelib.commands.sender.Sender;
-import dev.mruniverse.slimelib.commands.sender.console.SlimeConsoleSponge;
-import dev.mruniverse.slimelib.commands.sender.player.SlimeSpongePlayer;
+import dev.mruniverse.slimelib.source.SlimeSource;
+import dev.mruniverse.slimelib.source.console.SlimeConsoleSponge;
+import dev.mruniverse.slimelib.source.player.SlimeSpongePlayer;
 import org.spongepowered.api.command.CommandExecutor;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.parameter.CommandContext;
@@ -31,7 +31,7 @@ public class SlimeSpongeCommand implements CommandExecutor {
         return CommandResult.success();
     }
 
-    private Sender cast(CommandContext context) {
+    private SlimeSource<?> cast(CommandContext context) {
         Cause source = context.cause().cause();
         Optional<Player> optional = source.first(Player.class);
         if (optional.isPresent()) {

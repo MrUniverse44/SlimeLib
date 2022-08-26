@@ -1,23 +1,24 @@
-package dev.mruniverse.slimelib.commands.sender.player;
+package dev.mruniverse.slimelib.source.player;
 
-import dev.mruniverse.slimelib.commands.sender.Sender;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
+import dev.mruniverse.slimelib.source.SlimeSource;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.spongepowered.api.entity.living.player.Player;
 
 import java.util.UUID;
 
-public class SlimePlayer implements Sender {
+public class SlimeSpongePlayer implements SlimeSource<Player> {
 
-    Player player;
+    private final Player player;
 
-    String name;
+    private final String name;
 
-    UUID uuid;
+    private final UUID uuid;
 
-    public SlimePlayer(Player player) {
+    public SlimeSpongePlayer(Player player) {
         this.player = player;
-        this.name = player.getName();
-        this.uuid = player.getUniqueId();
+        this.name = player.name();
+        this.uuid = player.uniqueId();
     }
 
     /**
@@ -27,7 +28,7 @@ public class SlimePlayer implements Sender {
      */
     @Override
     public boolean hasPermission(String permission) {
-        return player.hasPermission(permission);
+        return false;
     }
 
     @Override
@@ -41,10 +42,16 @@ public class SlimePlayer implements Sender {
     }
 
     @Override
+    public Player getOriginalSource() {
+        return player;
+    }
+
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public UUID getUniqueId() {
         return uuid;
     }
@@ -55,12 +62,18 @@ public class SlimePlayer implements Sender {
 
     @Override
     public void sendMessage(String message) {
-        player.sendMessage(message);
+        player.sendMessage(
+                Component.text(message)
+        );
     }
 
     @Override
     public void sendMessage(String[] message) {
-        player.sendMessage(message);
+        for (String text : message) {
+            player.sendMessage(
+                    Component.text(text)
+            );
+        }
     }
 
     @Override
@@ -79,8 +92,8 @@ public class SlimePlayer implements Sender {
         }
     }
 
-    private String color(String message) {
-        return ChatColor.translateAlternateColorCodes('&', message);
+    private Component color(String message) {
+        return LegacyComponentSerializer.builder().character('&').build().deserialize(message);
     }
 
     public Player get() {

@@ -1,19 +1,11 @@
 package dev.mruniverse.slimelib.loader;
 
 import dev.mruniverse.slimelib.SlimePlugin;
-import dev.mruniverse.slimelib.SlimeStorage;
-import dev.mruniverse.slimelib.file.input.InputManager;
 
 public class DefaultSlimeLoader<T> extends BaseSlimeLoader<T> {
 
-    public DefaultSlimeLoader(SlimePlugin<T> plugin, InputManager inputManager) {
+    public DefaultSlimeLoader(SlimePlugin<T> plugin) {
         super(plugin);
-
-        super.storage(new SlimeStorage(
-                plugin.getServerType(),
-                plugin.getLogs(),
-                inputManager
-        ));
     }
 
     @Override

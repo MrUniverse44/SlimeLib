@@ -1,24 +1,19 @@
-package dev.mruniverse.slimelib.commands.sender.player;
+package dev.mruniverse.slimelib.source.console;
 
-import dev.mruniverse.slimelib.commands.sender.Sender;
+import dev.mruniverse.slimelib.source.SlimeSource;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.Server;
+import org.spongepowered.api.Sponge;
 
 import java.util.UUID;
 
-public class SlimeSpongePlayer implements Sender {
+public class SlimeConsoleSponge implements SlimeSource<Server> {
 
-    Player player;
+    private final Server server;
 
-    String name;
-
-    UUID uuid;
-
-    public SlimeSpongePlayer(Player player) {
-        this.player = player;
-        this.name = player.name();
-        this.uuid = player.uniqueId();
+    public SlimeConsoleSponge() {
+        this.server = Sponge.server();
     }
 
     /**
@@ -28,35 +23,37 @@ public class SlimeSpongePlayer implements Sender {
      */
     @Override
     public boolean hasPermission(String permission) {
-        return false;
-    }
-
-    @Override
-    public boolean isPlayer() {
         return true;
     }
 
     @Override
-    public boolean isConsoleSender() {
+    public boolean isPlayer() {
         return false;
     }
 
     @Override
+    public boolean isConsoleSender() {
+        return true;
+    }
+
+    @Override
+    public Server getOriginalSource() {
+        return server;
+    }
+
+    @Override
     public String getName() {
-        return name;
+        return "Console";
     }
 
+    @Override
     public UUID getUniqueId() {
-        return uuid;
-    }
-
-    public String getId() {
-        return uuid.toString().replace("-", "");
+        return UUID.randomUUID();
     }
 
     @Override
     public void sendMessage(String message) {
-        player.sendMessage(
+        server.sendMessage(
                 Component.text(message)
         );
     }
@@ -64,7 +61,7 @@ public class SlimeSpongePlayer implements Sender {
     @Override
     public void sendMessage(String[] message) {
         for (String text : message) {
-            player.sendMessage(
+            server.sendMessage(
                     Component.text(text)
             );
         }
@@ -72,7 +69,7 @@ public class SlimeSpongePlayer implements Sender {
 
     @Override
     public void sendColoredMessage(String message) {
-        player.sendMessage(
+        server.sendMessage(
                 color(message)
         );
     }
@@ -80,7 +77,7 @@ public class SlimeSpongePlayer implements Sender {
     @Override
     public void sendColoredMessage(String[] message) {
         for (String text : message) {
-            player.sendMessage(
+            server.sendMessage(
                     color(text)
             );
         }
@@ -90,7 +87,7 @@ public class SlimeSpongePlayer implements Sender {
         return LegacyComponentSerializer.builder().character('&').build().deserialize(message);
     }
 
-    public Player get() {
-        return player;
+    public Server get() {
+        return server;
     }
 }

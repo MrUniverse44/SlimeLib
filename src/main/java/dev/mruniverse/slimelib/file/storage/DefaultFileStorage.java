@@ -2,9 +2,10 @@ package dev.mruniverse.slimelib.file.storage;
 
 import dev.mruniverse.slimelib.SlimeFiles;
 import dev.mruniverse.slimelib.SlimePlatform;
+import dev.mruniverse.slimelib.SlimePlugin;
 import dev.mruniverse.slimelib.file.configuration.ConfigurationHandler;
 import dev.mruniverse.slimelib.file.configuration.ConfigurationProvider;
-import dev.mruniverse.slimelib.file.input.InputManager;
+import dev.mruniverse.slimelib.file.input.DefaultInputManager;
 import dev.mruniverse.slimelib.logs.SlimeLogs;
 
 import java.io.File;
@@ -15,7 +16,8 @@ public class DefaultFileStorage implements FileStorage {
 
     private final HashMap<SlimeFiles, ConfigurationHandler> files = new HashMap<>();
 
-    private final InputManager inputManager;
+
+    private final DefaultInputManager inputManager = new DefaultInputManager();
 
     private final ConfigurationProvider provider;
 
@@ -27,22 +29,11 @@ public class DefaultFileStorage implements FileStorage {
 
     private final SlimeLogs logs;
 
-    public DefaultFileStorage(SlimeLogs logs, SlimePlatform type, File dataFolder, SlimeFiles[] enums, InputManager inputManager) {
-        this.dataFolder   = dataFolder;
-        this.logs         = logs;
-        this.inputManager = inputManager;
-        this.currentFiles = enums;
-        this.type         = type;
-        this.provider = ConfigurationProvider.newInstance();
-        load();
-    }
-
-    public DefaultFileStorage(SlimeLogs logs, SlimePlatform type, File dataFolder, InputManager inputManager) {
-        this.dataFolder   = dataFolder;
-        this.logs         = logs;
-        this.type         = type;
-        this.inputManager = inputManager;
-        this.provider = ConfigurationProvider.newInstance();
+    public <T> DefaultFileStorage(SlimePlugin<T> plugin) {
+        this.dataFolder = plugin.getDataFolder();
+        this.provider   = ConfigurationProvider.newInstance();
+        this.type       = plugin.getServerType();
+        this.logs       = plugin.getLogs();
     }
 
     public FileStorage setEnums(SlimeFiles[] enums) {
@@ -83,8 +74,14 @@ public class DefaultFileStorage implements FileStorage {
                         guardianFiles.getFileName()
                 );
 
+                String src = guardianFiles.getResourceFileName(type);
+
+                if (!src.startsWith("/")) {
+                    src = "/" + src;
+                }
+
                 InputStream resource = inputManager.getInputStream(
-                        guardianFiles.getResourceFileName(type)
+                        src
                 );
 
                 files.put(
