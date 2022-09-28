@@ -10,6 +10,11 @@ public class SlimeLoggerVelocity extends SlimeLogs {
 
     private final ProxyServer server;
 
+    public SlimeLoggerVelocity(Object server) {
+        super();
+        this.server = (ProxyServer) server;
+    }
+
     public SlimeLoggerVelocity(ProxyServer server) {
         super();
         this.server = server;

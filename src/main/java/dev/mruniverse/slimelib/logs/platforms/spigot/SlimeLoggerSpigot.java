@@ -2,21 +2,33 @@ package dev.mruniverse.slimelib.logs.platforms.spigot;
 
 import dev.mruniverse.slimelib.logs.SlimeLogger;
 import dev.mruniverse.slimelib.logs.SlimeLogs;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Server;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class SlimeLoggerSpigot extends SlimeLogs {
 
-    private final JavaPlugin plugin;
+    private final Server server;
 
     public SlimeLoggerSpigot(JavaPlugin plugin) {
         super();
-        this.plugin = plugin;
+        this.server = plugin.getServer();
     }
 
     public SlimeLoggerSpigot(JavaPlugin plugin, SlimeLogger logger) {
         super(logger);
-        this.plugin = plugin;
+        this.server = plugin.getServer();
+    }
+
+    public SlimeLoggerSpigot(SlimeLogger logger) {
+        super(logger);
+        this.server = Bukkit.getServer();
+    }
+
+    public SlimeLoggerSpigot() {
+        super();
+        this.server = Bukkit.getServer();
     }
 
     private String color(String message) {
@@ -25,7 +37,7 @@ public class SlimeLoggerSpigot extends SlimeLogs {
 
     @Override
     public void send(String message) {
-        plugin.getServer().getConsoleSender().sendMessage(
+        server.getConsoleSender().sendMessage(
                 color(message)
         );
     }

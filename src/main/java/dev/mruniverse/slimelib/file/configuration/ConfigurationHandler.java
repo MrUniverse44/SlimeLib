@@ -2,6 +2,7 @@ package dev.mruniverse.slimelib.file.configuration;
 
 import dev.mruniverse.slimelib.SlimePlatform;
 import dev.mruniverse.slimelib.colors.SlimeColor;
+import dev.mruniverse.slimelib.file.input.DefaultInputManager;
 import dev.mruniverse.slimelib.logs.SlimeLogs;
 
 import java.io.File;
@@ -38,16 +39,47 @@ public abstract class ConfigurationHandler {
 
     public abstract void load();
 
-    public static ConfigurationHandler loadControl(SlimeLogs logs, File file) {
-        return loadControl(
+    public static ConfigurationHandler loadConfiguration(SlimeLogs logs, File file) {
+        return loadConfiguration(
                 SlimePlatform.getAutomatically(),
                 logs,
                 file
         );
     }
 
-    public static ConfigurationHandler loadControl(SlimePlatform platform, SlimeLogs logs, File file) {
+    public static ConfigurationHandler loadConfiguration(SlimeLogs logs, File file, String resource) {
+        return loadConfiguration(
+                SlimePlatform.getAutomatically(),
+                logs,
+                file,
+                new DefaultInputManager().getInputStream(resource)
+        );
+    }
+
+    public static ConfigurationHandler loadConfiguration(SlimeLogs logs, File file, InputStream resource) {
+        return loadConfiguration(
+                SlimePlatform.getAutomatically(),
+                logs,
+                file,
+                resource
+        );
+    }
+
+    public static ConfigurationHandler loadConfiguration(SlimePlatform platform, SlimeLogs logs, File file) {
         return platform.getProvider().getNewInstance().create(logs, file);
+    }
+
+    public static ConfigurationHandler loadConfiguration(SlimePlatform platform, SlimeLogs logs, File file, InputStream resource) {
+        return platform.getProvider().getNewInstance().create(logs, file, resource);
+    }
+
+    public static ConfigurationHandler loadConfiguration(SlimePlatform platform, SlimeLogs logs, File file, String resource) {
+        return loadConfiguration(
+                platform,
+                logs,
+                file,
+                new DefaultInputManager().getInputStream(resource)
+        );
     }
 
     public abstract <T> T toSpecifiedConfiguration();

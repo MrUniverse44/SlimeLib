@@ -3,21 +3,33 @@ package dev.mruniverse.slimelib.logs.platforms.bungee;
 import dev.mruniverse.slimelib.logs.SlimeLogger;
 import dev.mruniverse.slimelib.logs.SlimeLogs;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Plugin;
 
 public class SlimeLoggerBungee extends SlimeLogs {
 
-    private final Plugin plugin;
+    private final CommandSender server;
 
     public SlimeLoggerBungee(Plugin plugin) {
         super();
-        this.plugin = plugin;
+        this.server = plugin.getProxy().getConsole();
     }
 
     public SlimeLoggerBungee(Plugin plugin, SlimeLogger logger) {
         super(logger);
-        this.plugin = plugin;
+        this.server = plugin.getProxy().getConsole();
+    }
+
+    public SlimeLoggerBungee() {
+        super();
+        this.server = ProxyServer.getInstance().getConsole();
+    }
+
+    public SlimeLoggerBungee(SlimeLogger logger) {
+        super(logger);
+        this.server = ProxyServer.getInstance().getConsole();
     }
 
     private String color(String message) {
@@ -26,7 +38,7 @@ public class SlimeLoggerBungee extends SlimeLogs {
 
     @Override
     public void send(String message) {
-        plugin.getProxy().getConsole().sendMessage(
+        server.sendMessage(
                 new TextComponent(
                         color(message)
                 )
