@@ -22,6 +22,11 @@ public class SlimeConsoleSpigot implements SlimeSource<ConsoleCommandSender> {
     }
 
     @Override
+    public ConsoleCommandSender get() {
+        return sender;
+    }
+
+    @Override
     public boolean isPlayer() {
         return false;
     }
@@ -44,6 +49,11 @@ public class SlimeConsoleSpigot implements SlimeSource<ConsoleCommandSender> {
     @Override
     public UUID getUniqueId() {
         return UUID.randomUUID();
+    }
+
+    @Override
+    public String getId() {
+        return UUID.randomUUID().toString().replace("-", "");
     }
 
     @Override

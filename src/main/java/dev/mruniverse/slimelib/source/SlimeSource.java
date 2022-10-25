@@ -10,6 +10,8 @@ public interface SlimeSource<T> {
 
     UUID getUniqueId();
 
+    String getId();
+
     boolean isConsoleSender();
 
     boolean isPlayer();
@@ -29,4 +31,5 @@ public interface SlimeSource<T> {
      */
     boolean hasPermission(String permission);
 
+    T get();
 }

@@ -1,6 +1,7 @@
 package dev.mruniverse.slimelib.source.player;
 
 import dev.mruniverse.slimelib.source.SlimeSource;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -8,14 +9,11 @@ import java.util.UUID;
 
 public class SlimePlayer implements SlimeSource<Player> {
 
-    private final Player player;
-
     private final String name;
 
     private final UUID uuid;
 
     public SlimePlayer(Player player) {
-        this.player = player;
         this.name = player.getName();
         this.uuid = player.getUniqueId();
     }
@@ -27,7 +25,7 @@ public class SlimePlayer implements SlimeSource<Player> {
      */
     @Override
     public boolean hasPermission(String permission) {
-        return player.hasPermission(permission);
+        return get().hasPermission(permission);
     }
 
     @Override
@@ -42,7 +40,7 @@ public class SlimePlayer implements SlimeSource<Player> {
 
     @Override
     public Player getOriginalSource() {
-        return player;
+        return get();
     }
 
     @Override
@@ -61,17 +59,17 @@ public class SlimePlayer implements SlimeSource<Player> {
 
     @Override
     public void sendMessage(String message) {
-        player.sendMessage(message);
+        get().sendMessage(message);
     }
 
     @Override
     public void sendMessage(String[] message) {
-        player.sendMessage(message);
+        get().sendMessage(message);
     }
 
     @Override
     public void sendColoredMessage(String message) {
-        player.sendMessage(
+        get().sendMessage(
                 color(message)
         );
     }
@@ -79,7 +77,7 @@ public class SlimePlayer implements SlimeSource<Player> {
     @Override
     public void sendColoredMessage(String[] message) {
         for (String text : message) {
-            player.sendMessage(
+            get().sendMessage(
                     color(text)
             );
         }
@@ -89,7 +87,8 @@ public class SlimePlayer implements SlimeSource<Player> {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
+    @Override
     public Player get() {
-        return player;
+        return Bukkit.getPlayer(uuid);
     }
 }

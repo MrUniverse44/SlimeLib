@@ -52,6 +52,11 @@ public class SlimeConsoleBungee implements SlimeSource<CommandSender> {
     }
 
     @Override
+    public String getId() {
+        return UUID.randomUUID().toString().replace("-", "");
+    }
+
+    @Override
     public void sendMessage(String message) {
         console.sendMessage(
                 new TextComponent(

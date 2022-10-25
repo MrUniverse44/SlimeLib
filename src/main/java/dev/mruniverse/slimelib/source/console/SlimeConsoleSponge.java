@@ -52,6 +52,11 @@ public class SlimeConsoleSponge implements SlimeSource<Server> {
     }
 
     @Override
+    public String getId() {
+        return UUID.randomUUID().toString().replace("-", "");
+    }
+
+    @Override
     public void sendMessage(String message) {
         server.sendMessage(
                 Component.text(message)
