@@ -1,4 +1,4 @@
-package dev.mruniverse.slimelib.utils;
+package dev.mruniverse.slimelib.utils.configuration;
 
 import com.google.common.base.Charsets;
 import com.google.gson.Gson;

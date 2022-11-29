@@ -1,8 +1,6 @@
-package dev.mruniverse.slimelib.utils.plugininfo.sponge;
+package dev.mruniverse.slimelib.utils.plugin.data.sponge;
 
-import dev.mruniverse.slimelib.utils.plugininfo.SlimePluginInformationSource;
-import org.spongepowered.api.Sponge;
-import org.spongepowered.plugin.metadata.PluginMetadata;
+import dev.mruniverse.slimelib.utils.plugin.data.SlimePluginInformationSource;
 
 import java.util.Collections;
 import java.util.Set;

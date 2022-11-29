@@ -1,4 +1,4 @@
-package dev.mruniverse.slimelib.utils.plugininfo;
+package dev.mruniverse.slimelib.utils.plugin.data;
 
 import java.util.Set;
 

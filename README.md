@@ -124,7 +124,7 @@ Other:
 
 ```Java
 import dev.mruniverse.slimelib.file.configuration.ConfigurationHandler;
-import dev.mruniverse.slimelib.utils.PluginConfiguration;
+import dev.mruniverse.slimelib.utils.configuration.PluginConfiguration;
 
 public class a {
     public void toSpecifiedBukkit(SlimeLogs logs, File file) {

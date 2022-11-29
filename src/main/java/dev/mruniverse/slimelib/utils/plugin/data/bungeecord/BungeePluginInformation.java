@@ -1,6 +1,6 @@
-package dev.mruniverse.slimelib.utils.plugininfo.bungeecord;
+package dev.mruniverse.slimelib.utils.plugin.data.bungeecord;
 
-import dev.mruniverse.slimelib.utils.plugininfo.SlimePluginInformationSource;
+import dev.mruniverse.slimelib.utils.plugin.data.SlimePluginInformationSource;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.Set;

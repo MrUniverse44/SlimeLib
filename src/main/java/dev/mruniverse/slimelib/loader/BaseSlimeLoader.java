@@ -15,13 +15,21 @@ public abstract class BaseSlimeLoader<T> {
 
     private final SlimeCommands<T> commands;
 
+    private final EventManager<?> events;
+
     private FileStorage files = null;
 
     public BaseSlimeLoader(SlimePlugin<T> plugin) {
         this.plugin = plugin;
-        commands = new SlimeCommands<>(
+        this.commands = new SlimeCommands<>(
                 plugin,
                 plugin.getServerType()
+        );
+        this.events = new EventManager<>(
+                EventExecutor.fromType(
+                        plugin.getServerType(),
+                        plugin.getPlugin()
+                )
         );
     }
 
@@ -35,6 +43,10 @@ public abstract class BaseSlimeLoader<T> {
                         )
                 )
         );
+    }
+
+    public EventManager<?> getEvents() {
+        return events;
     }
 
     public void fileStorage(FileStorage files) {

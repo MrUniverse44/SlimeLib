@@ -1,6 +1,7 @@
 package dev.mruniverse.slimelib;
 
 import dev.mruniverse.slimelib.commands.SlimeCommands;
+import dev.mruniverse.slimelib.events.EventManager;
 import dev.mruniverse.slimelib.exceptions.SlimeLoaderException;
 import dev.mruniverse.slimelib.file.configuration.ConfigurationHandler;
 import dev.mruniverse.slimelib.loader.BaseSlimeLoader;
@@ -38,6 +39,11 @@ public interface SlimePlugin<T> extends SlimePluginResource {
             new SlimeLoaderException("Commands can't be initialize because the Loader of the main class is not set!").printStackTrace();
         }
         return getLoader().getCommands();
+    }
+
+    @SuppressWarnings("unused")
+    default EventManager<?> getEventManager() {
+        return getLoader().getEvents();
     }
 
     SlimeLogs getLogs();

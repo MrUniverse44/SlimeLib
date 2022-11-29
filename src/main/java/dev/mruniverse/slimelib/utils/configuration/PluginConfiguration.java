@@ -1,4 +1,4 @@
-package dev.mruniverse.slimelib.utils;
+package dev.mruniverse.slimelib.utils.configuration;
 
 import java.util.*;
 

@@ -1,9 +1,9 @@
 package dev.mruniverse.slimelib.control.multiplatform;
 
 import dev.mruniverse.slimelib.logs.SlimeLogs;
-import dev.mruniverse.slimelib.utils.PluginConfiguration;
+import dev.mruniverse.slimelib.utils.configuration.PluginConfiguration;
 
-import dev.mruniverse.slimelib.utils.YamlConfiguration;
+import dev.mruniverse.slimelib.utils.configuration.YamlConfiguration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import java.io.File;

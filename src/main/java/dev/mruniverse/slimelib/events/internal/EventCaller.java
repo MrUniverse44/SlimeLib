@@ -1,7 +1,5 @@
 package dev.mruniverse.slimelib.events.internal;
 
-import dev.mruniverse.slimelib.events.EventManager;
-
 public abstract class EventCaller<T> {
 
     private final EventExecutor<T> manager;

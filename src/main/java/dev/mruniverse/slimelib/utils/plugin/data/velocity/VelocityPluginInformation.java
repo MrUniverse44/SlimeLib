@@ -1,6 +1,6 @@
-package dev.mruniverse.slimelib.utils.plugininfo.velocity;
+package dev.mruniverse.slimelib.utils.plugin.data.velocity;
 
-import dev.mruniverse.slimelib.utils.plugininfo.SlimePluginInformationSource;
+import dev.mruniverse.slimelib.utils.plugin.data.SlimePluginInformationSource;
 
 import java.util.Collections;
 import java.util.Set;

@@ -1,6 +1,6 @@
-package dev.mruniverse.slimelib.utils.plugininfo.spigot;
+package dev.mruniverse.slimelib.utils.plugin.data.spigot;
 
-import dev.mruniverse.slimelib.utils.plugininfo.SlimePluginInformationSource;
+import dev.mruniverse.slimelib.utils.plugin.data.SlimePluginInformationSource;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashSet;

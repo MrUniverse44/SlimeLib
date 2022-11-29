@@ -7,6 +7,7 @@ import dev.mruniverse.slimelib.event.PluginLoadEvent;
 import dev.mruniverse.slimelib.event.PluginUnloadEvent;
 import dev.mruniverse.slimelib.loader.BaseSlimeLoader;
 import dev.mruniverse.slimelib.loader.DefaultSlimeLoader;
+import dev.mruniverse.slimelib.logs.SlimeLogger;
 import dev.mruniverse.slimelib.logs.SlimeLogs;
 
 import java.io.File;
@@ -21,17 +22,40 @@ public abstract class SlimeCore<T> implements SlimePlugin<T> {
     private final T plugin;
 
     public SlimeCore(SlimeLogs logs, File folder, T plugin) {
+        this(SlimePlatform.getAutomatically(), logs, null, folder, plugin);
+    }
+
+    public SlimeCore(SlimePlatform platform, File folder, T plugin) {
+        this(platform, null, null, folder, plugin);
+    }
+
+    public SlimeCore(SlimePlatform platform, SlimeLogs logs, File folder, T plugin) {
+        this(platform, logs, null, folder, plugin);
+    }
+
+    public SlimeCore(SlimePlatform platform, SlimeLogs logs, BaseSlimeLoader<T> loader, File folder, T plugin) {
+        this.type        = platform;
+
+        if (logs != null) {
+            this.logs = logs;
+        } else {
+            this.logs = SlimeLogger.createLogs(platform, this, "SlimeCore");
+        }
+
         this.information = new SlimePluginInformation(
-                SlimePlatform.getAutomatically(),
+                type,
                 plugin
         );
+
         this.folder      = folder;
         this.plugin      = plugin;
-        this.loader      = new DefaultSlimeLoader<>(
-                this
-        );
-        this.logs        = logs;
-        this.type        = SlimePlatform.getAutomatically();
+
+        if (loader != null) {
+            this.loader = loader;
+        } else {
+            this.loader = new DefaultSlimeLoader<>(this);
+        }
+
         onEvent(
                 new PluginLoadEvent(
                         this

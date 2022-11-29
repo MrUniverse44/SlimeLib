@@ -6,8 +6,8 @@ import dev.mruniverse.slimelib.file.configuration.ConfigurationHandler;
 import dev.mruniverse.slimelib.file.configuration.TextDecoration;
 import dev.mruniverse.slimelib.file.configuration.handlers.util.FileUtils;
 import dev.mruniverse.slimelib.logs.SlimeLogs;
-import dev.mruniverse.slimelib.utils.PluginConfiguration;
-import dev.mruniverse.slimelib.utils.YamlConfiguration;
+import dev.mruniverse.slimelib.utils.configuration.PluginConfiguration;
+import dev.mruniverse.slimelib.utils.configuration.YamlConfiguration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import java.io.File;

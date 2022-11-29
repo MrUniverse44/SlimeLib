@@ -1,10 +1,10 @@
 package dev.mruniverse.slimelib;
 
-import dev.mruniverse.slimelib.utils.plugininfo.SlimePluginInformationSource;
-import dev.mruniverse.slimelib.utils.plugininfo.bungeecord.BungeePluginInformation;
-import dev.mruniverse.slimelib.utils.plugininfo.spigot.SpigotPluginInformation;
-import dev.mruniverse.slimelib.utils.plugininfo.sponge.SpongePluginInformation;
-import dev.mruniverse.slimelib.utils.plugininfo.velocity.VelocityPluginInformation;
+import dev.mruniverse.slimelib.utils.plugin.data.SlimePluginInformationSource;
+import dev.mruniverse.slimelib.utils.plugin.data.bungeecord.BungeePluginInformation;
+import dev.mruniverse.slimelib.utils.plugin.data.spigot.SpigotPluginInformation;
+import dev.mruniverse.slimelib.utils.plugin.data.sponge.SpongePluginInformation;
+import dev.mruniverse.slimelib.utils.plugin.data.velocity.VelocityPluginInformation;
 
 import java.util.Set;
 

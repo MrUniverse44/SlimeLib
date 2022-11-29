@@ -4,7 +4,7 @@ import dev.mruniverse.slimelib.colors.SlimeColor;
 import dev.mruniverse.slimelib.colors.platforms.velocity.DefaultSlimeColor;
 import dev.mruniverse.slimelib.file.configuration.ConfigurationHandler;
 import dev.mruniverse.slimelib.file.configuration.TextDecoration;
-import dev.mruniverse.slimelib.utils.PluginConfiguration;
+import dev.mruniverse.slimelib.utils.configuration.PluginConfiguration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 import java.util.ArrayList;
