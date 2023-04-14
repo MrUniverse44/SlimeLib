@@ -31,7 +31,7 @@ Dependency:
             <artifactId>SlimeLib</artifactId>
             <version>TAG</version>
             <!-- TAG = latest version, for example:
-            <version>1.0.8</version>
+            <version>1.0.9</version>
             -->
         </dependency>
 ```
@@ -52,8 +52,8 @@ Dependency:
 * ConfigurationProvider - Usage Example:
 
 ```Java
-import dev.mruniverse.slimelib.file.configuration.ConfigurationProvider;
-import dev.mruniverse.slimelib.file.configuration.ConfigurationHandler;
+import configuration.file.me.blueslime.slimelib.ConfigurationProvider;
+import configuration.file.me.blueslime.slimelib.ConfigurationHandler;
 
 public class a {
     public ConfigurationHandler load(SlimeLogs logs, File file) {
@@ -79,18 +79,18 @@ public class a {
 BungeeCord:
 
 ```Java
-import dev.mruniverse.slimelib.file.configuration.ConfigurationHandler;
+import configuration.file.me.blueslime.slimelib.ConfigurationHandler;
 import net.md_5.bungee.config.Configuration;
 
 public class a {
     public void toSpecifiedBungee(SlimeLogs logs, File file) {
         ConfigurationProvider provider = ConfigurationProvider.newInstance();
-        
+
         ConfigurationHandler handler = provider.create(
                 logs,
                 file
         );
-        
+
         Configuration configuration = handler.toSpecifiedConfiguration();
     }
 }
@@ -98,7 +98,7 @@ public class a {
 Spigot:
 
 ```Java
-import dev.mruniverse.slimelib.file.configuration.ConfigurationHandler;
+import configuration.file.me.blueslime.slimelib.ConfigurationHandler;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -123,8 +123,8 @@ public class a {
 Other:
 
 ```Java
-import dev.mruniverse.slimelib.file.configuration.ConfigurationHandler;
-import dev.mruniverse.slimelib.utils.configuration.PluginConfiguration;
+import configuration.file.me.blueslime.slimelib.ConfigurationHandler;
+import configuration.utils.me.blueslime.slimelib.PluginConfiguration;
 
 public class a {
     public void toSpecifiedBukkit(SlimeLogs logs, File file) {
@@ -145,12 +145,12 @@ public class a {
 ```Java
 package dev.mruniverse.slimelib.examples;
 
-import dev.mruniverse.slimelib.SlimeFiles;
+import me.blueslime.slimelib.SlimeFiles;
 
 public enum SlimeFile implements SlimeFiles {
     FILE1("Tests.yml"),
-    FILE2("Tests2.yml","Tests","Tests.yml"),
-    FILE3("Tests3.yml","Tests3.yml",true);
+    FILE2("Tests2.yml", "Tests", "Tests.yml"),
+    FILE3("Tests3.yml", "Tests3.yml", true);
 
     private final boolean differentFolder;
 
@@ -167,16 +167,16 @@ public enum SlimeFile implements SlimeFiles {
         this.folder = "";
     }
 
-    SlimeFile(String file,String folder,String resource) {
+    SlimeFile(String file, String folder, String resource) {
         this.file = file;
         this.resource = resource;
         this.differentFolder = true;
         this.folder = folder;
     }
 
-    SlimeFile(String file,String folderOrResource,boolean isResource) {
+    SlimeFile(String file, String folderOrResource, boolean isResource) {
         this.file = file;
-        if(isResource) {
+        if (isResource) {
             this.resource = folderOrResource;
             this.folder = "";
             this.differentFolder = false;
