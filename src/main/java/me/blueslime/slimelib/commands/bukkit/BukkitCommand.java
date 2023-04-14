@@ -3,11 +3,11 @@ package me.blueslime.slimelib.commands.bukkit;
 import me.blueslime.slimelib.SlimePlugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class SpigotCommand {
+public class BukkitCommand {
     private final SlimePlugin<JavaPlugin> plugin;
 
     @SuppressWarnings("unchecked")
-    public <T> SpigotCommand(SlimePlugin<T> plugin) {
+    public <T> BukkitCommand(SlimePlugin<T> plugin) {
         this.plugin = (SlimePlugin<JavaPlugin>) plugin;
     }
 

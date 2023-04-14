@@ -4,7 +4,7 @@ import me.blueslime.slimelib.SlimePlatform;
 import me.blueslime.slimelib.SlimePlugin;
 import me.blueslime.slimelib.commands.bungee.BungeeCommand;
 import me.blueslime.slimelib.commands.command.SlimeCommand;
-import me.blueslime.slimelib.commands.bukkit.SpigotCommand;
+import me.blueslime.slimelib.commands.bukkit.BukkitCommand;
 import me.blueslime.slimelib.commands.velocity.VelocityCommand;
 
 public interface SlimeCommandPlatform {
@@ -19,7 +19,7 @@ public interface SlimeCommandPlatform {
             case BUNGEECORD:
                 return new BungeeCommand(plugin).get();
             case BUKKIT:
-                return new SpigotCommand(plugin).get();
+                return new BukkitCommand(plugin).get();
             case VELOCITY:
                 return new VelocityCommand(plugin).get();
         }

@@ -61,18 +61,36 @@ public class BukkitSlimeCommands<T extends JavaPlugin> implements SlimeCommandPl
 
         SlimeBukkitCommand slimeCommand = new SlimeBukkitCommand(command, description, usage);
 
-        commandMap.register(
+        boolean registered = commandMap.register(
                 commandName,
                 plugin.getDescription().getName(),
                 slimeCommand
         );
+
+        if (!registered) {
+            Bukkit.getConsoleSender().sendMessage(
+                    "[SlimeLib] Command: " + command.getCommand() + " (with aliases: " + command.getAliases() + ") was not registered because the fallback prefix is already used"
+            );
+            Bukkit.getConsoleSender().sendMessage("[SlimeLib] Trying again...");
+
+            registered = commandMap.register(
+                    plugin.getDescription().getName(),
+                    slimeCommand
+            );
+
+            if (!registered) {
+                Bukkit.getConsoleSender().sendMessage("[SlimeLib] can't register the command: " + command.getCommand() + " maybe the command is being registered from other plugin :(");
+                return;
+            }
+        }
+
 
         commandsMap.put(
                 commandName,
                 slimeCommand
         );
 
-        Bukkit.getConsoleSender().sendMessage("SlimeLib registered command: " + command.getCommand() + " with aliases: " + command.getAliases() + " without issues.");
+        Bukkit.getConsoleSender().sendMessage("[SlimeLib] SlimeLib registered command: " + command.getCommand() + " with aliases: " + command.getAliases() + " without issues.");
     }
 
     /**
@@ -89,12 +107,14 @@ public class BukkitSlimeCommands<T extends JavaPlugin> implements SlimeCommandPl
     private void init() {
         try {
             final Server server = plugin.getPlugin().getServer();
-            final Method getCommandMap = server.getClass().getDeclaredMethod("getCommandMap");
+            final Method getCommandMap = server.getClass().getMethod("getCommandMap");
+
             getCommandMap.setAccessible(true);
 
             this.commandMap = (CommandMap) getCommandMap.invoke(server);
 
             final Field knownCommands = SimpleCommandMap.class.getDeclaredField("knownCommands");
+
             knownCommands.setAccessible(true);
 
             this.registeredCommandMap = (Map<String, org.bukkit.command.Command>) knownCommands.get(commandMap);
