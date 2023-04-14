@@ -41,45 +41,17 @@ Dependency:
 ```XML
                             <relocations>
                                 <relocation>
-                                    <pattern>dev.mruniverse.slimelib</pattern>
+                                    <pattern>me.blueslime.slimelib</pattern>
                                     <shadedPattern>(Your Package)</shadedPattern>
                                 </relocation>
                             </relocations>
-```
-
-## Usage examples:
-
-* ConfigurationProvider - Usage Example:
-
-```Java
-import configuration.file.me.blueslime.slimelib.ConfigurationProvider;
-import configuration.file.me.blueslime.slimelib.ConfigurationHandler;
-
-public class a {
-    public ConfigurationHandler load(SlimeLogs logs, File file) {
-        ConfigurationProvider provider = ConfigurationProvider.newInstance();
-        return provider.create(
-                logs,
-                file
-        );
-    }
-
-    public ConfigurationHandler load(SlimeLogs logs, File file, InputStream resource) {
-        ConfigurationProvider provider = ConfigurationProvider.newInstance();
-        return provider.create(
-                logs,
-                file,
-                resource
-        );
-    }
-}
 ```
 
 * toSpecifiedConfiguration Method - Examples:
 BungeeCord:
 
 ```Java
-import configuration.file.me.blueslime.slimelib.ConfigurationHandler;
+import me.blueslime.slimelib.file.configuration.ConfigurationHandler;
 import net.md_5.bungee.config.Configuration;
 
 public class a {
@@ -98,7 +70,7 @@ public class a {
 Spigot:
 
 ```Java
-import configuration.file.me.blueslime.slimelib.ConfigurationHandler;
+import me.blueslime.slimelib.file.configuration.ConfigurationHandler;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -123,8 +95,8 @@ public class a {
 Other:
 
 ```Java
-import configuration.file.me.blueslime.slimelib.ConfigurationHandler;
-import configuration.utils.me.blueslime.slimelib.PluginConfiguration;
+import me.blueslime.slimelib.file.configuration.ConfigurationHandler;
+import me.blueslime.slimelib.utils.configuration.PluginConfiguration;
 
 public class a {
     public void toSpecifiedBukkit(SlimeLogs logs, File file) {
@@ -143,7 +115,7 @@ public class a {
 * Control & Configuration Handler File System - Enum Example:
 
 ```Java
-package dev.mruniverse.slimelib.examples;
+package me.blueslime.slimelib.examples;
 
 import me.blueslime.slimelib.SlimeFiles;
 
