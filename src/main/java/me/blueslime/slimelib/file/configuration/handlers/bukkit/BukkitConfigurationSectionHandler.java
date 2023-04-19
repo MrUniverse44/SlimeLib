@@ -23,7 +23,8 @@ public class BukkitConfigurationSectionHandler extends ConfigurationHandler {
         super(
                 configurationHandler.getLogs(),
                 configurationHandler.getFile(),
-                configurationHandler.getResource()
+                configurationHandler.getResource(),
+                !configurationHandler.hasLogs()
         );
         this.sectionHandler = null;
         this.configurationHandler = configurationHandler;
@@ -41,7 +42,8 @@ public class BukkitConfigurationSectionHandler extends ConfigurationHandler {
         super(
                 sectionHandler.getLogs(),
                 sectionHandler.getFile(),
-                sectionHandler.getResource()
+                sectionHandler.getResource(),
+                !sectionHandler.hasLogs()
         );
         this.sectionHandler = sectionHandler;
         this.configurationHandler = null;

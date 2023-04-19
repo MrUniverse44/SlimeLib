@@ -21,7 +21,8 @@ public class BungeeConfigurationSectionHandler extends ConfigurationHandler {
         super(
                 configurationHandler.getLogs(),
                 configurationHandler.getFile(),
-                configurationHandler.getResource()
+                configurationHandler.getResource(),
+                !configurationHandler.hasLogs()
         );
         this.configurationHandler = configurationHandler;
         this.sectionHandler = null;
@@ -35,7 +36,8 @@ public class BungeeConfigurationSectionHandler extends ConfigurationHandler {
         super(
                 configurationHandler.getLogs(),
                 configurationHandler.getFile(),
-                configurationHandler.getResource()
+                configurationHandler.getResource(),
+                !configurationHandler.hasLogs()
         );
         this.configurationHandler = null;
         this.sectionHandler = configurationHandler;

@@ -22,7 +22,8 @@ public class PluginConfigurationSectionHandler extends ConfigurationHandler {
         super(
                 main.getLogs(),
                 main.getFile(),
-                main.getResource()
+                main.getResource(),
+                !main.hasLogs()
         );
         this.configuration = section;
         this.main = main;
@@ -32,7 +33,8 @@ public class PluginConfigurationSectionHandler extends ConfigurationHandler {
         super(
                 main.getLogs(),
                 main.getFile(),
-                main.getResource()
+                main.getResource(),
+                !main.hasLogs()
         );
         this.configuration = section;
         this.section = main;

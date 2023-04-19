@@ -209,7 +209,7 @@ public abstract class ConfigurationHandler {
         return getString(TextDecoration.NONE, path, def);
     }
 
-    protected boolean hasLogs() {
+    public boolean hasLogs() {
         return logsEvent;
     }
 
