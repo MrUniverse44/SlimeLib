@@ -18,11 +18,12 @@ public class BukkitConfigurationProvider implements ConfigurationProvider {
      * @return Controller file
      */
     @Override
-    public ConfigurationHandler create(SlimeLogs logs, File file, InputStream resource) {
+    public ConfigurationHandler create(SlimeLogs logs, File file, InputStream resource, boolean withoutLogs) {
         return new BukkitConfigurationHandler(
                 logs,
                 file,
-                resource
+                resource,
+                withoutLogs
         );
     }
 
@@ -34,10 +35,11 @@ public class BukkitConfigurationProvider implements ConfigurationProvider {
      * @return Controller file
      */
     @Override
-    public ConfigurationHandler create(SlimeLogs logs, File file) {
+    public ConfigurationHandler create(SlimeLogs logs, File file, boolean withoutLogs) {
         return new BukkitConfigurationHandler(
                 logs,
-                file
+                file,
+                withoutLogs
         );
     }
 }

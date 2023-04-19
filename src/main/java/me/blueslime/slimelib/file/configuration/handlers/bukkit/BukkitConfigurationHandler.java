@@ -23,12 +23,12 @@ public class BukkitConfigurationHandler extends ConfigurationHandler {
 
     private FileConfiguration configuration;
 
-    public BukkitConfigurationHandler(SlimeLogs logs, File file, InputStream resource) {
-        super(logs, file, resource);
+    public BukkitConfigurationHandler(SlimeLogs logs, File file, InputStream resource, boolean withoutLogs) {
+        super(logs, file, resource, withoutLogs);
     }
 
-    public BukkitConfigurationHandler(SlimeLogs logs, File file) {
-        super(logs, file);
+    public BukkitConfigurationHandler(SlimeLogs logs, File file, boolean withoutLogs) {
+        super(logs, file, withoutLogs);
     }
 
     @Override
@@ -60,6 +60,7 @@ public class BukkitConfigurationHandler extends ConfigurationHandler {
         return configuration.getStringList(path);
     }
 
+    @SuppressWarnings("UnusedAssignment")
     @Override
     public List<String> getStringList(TextDecoration decoration, String path) {
         List<String> list = configuration.getStringList(path);
@@ -155,15 +156,19 @@ public class BukkitConfigurationHandler extends ConfigurationHandler {
         try {
             cnf = YamlConfiguration.loadConfiguration(file);
         } catch (Exception e) {
-            getLogs().warn(
-                    String.format(
-                            "A error occurred while loading the settings file. Error: %s",
-                            new ConfigurationException(e)
-                    )
-            );
+            if (hasLogs()) {
+                getLogs().warn(
+                        String.format(
+                                "A error occurred while loading the settings file. Error: %s",
+                                new ConfigurationException(e)
+                        )
+                );
+            }
         }
 
-        getLogs().info(String.format("&7File &e%s &7has been loaded", file.getName()));
+        if (hasLogs()) {
+            getLogs().info(String.format("&7File &e%s &7has been loaded", file.getName()));
+        }
         return cnf;
     }
 
@@ -179,10 +184,12 @@ public class BukkitConfigurationHandler extends ConfigurationHandler {
                     getFile()
             );
         } catch (Exception exception) {
-            getLogs().error(
-                    "Can't reload file: " + getFile().getName(),
-                    new ConfigurationException(exception)
-            );
+            if (hasLogs()) {
+                getLogs().error(
+                        "Can't reload file: " + getFile().getName(),
+                        new ConfigurationException(exception)
+                );
+            }
         }
     }
 
@@ -238,7 +245,9 @@ public class BukkitConfigurationHandler extends ConfigurationHandler {
                     getFile()
             );
         } catch (IOException exception) {
-            getLogs().error("Can't save file " + getFile().getName(), exception);
+            if (hasLogs()) {
+                getLogs().error("Can't save file " + getFile().getName(), exception);
+            }
         }
     }
 

@@ -22,17 +22,21 @@ public abstract class ConfigurationHandler {
 
     private final File file;
 
-    public ConfigurationHandler(SlimeLogs logs, File file, InputStream resource) {
+    private final boolean logsEvent;
+
+    public ConfigurationHandler(SlimeLogs logs, File file, InputStream resource, boolean withoutLogs) {
         this.file = file;
         this.logs = logs;
         this.resource = resource;
+        this.logsEvent = !withoutLogs;
         load();
     }
 
-    public ConfigurationHandler(SlimeLogs logs, File file) {
+    public ConfigurationHandler(SlimeLogs logs, File file, boolean withoutLogs) {
         this.file = file;
         this.logs = logs;
         this.resource = null;
+        this.logsEvent = !withoutLogs;
         load();
     }
 
@@ -203,6 +207,10 @@ public abstract class ConfigurationHandler {
      */
     public String getString(String path, String def) {
         return getString(TextDecoration.NONE, path, def);
+    }
+
+    protected boolean hasLogs() {
+        return logsEvent;
     }
 
     /**

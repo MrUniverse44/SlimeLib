@@ -23,12 +23,12 @@ public class BungeeConfigurationHandler extends ConfigurationHandler {
 
     private Configuration configuration;
 
-    public BungeeConfigurationHandler(SlimeLogs logs, File file, InputStream resource) {
-        super(logs, file, resource);
+    public BungeeConfigurationHandler(SlimeLogs logs, File file, InputStream resource, boolean withoutLogs) {
+        super(logs, file, resource, withoutLogs);
     }
 
-    public BungeeConfigurationHandler(SlimeLogs logs, File file) {
-        super(logs, file);
+    public BungeeConfigurationHandler(SlimeLogs logs, File file, boolean withoutLogs) {
+        super(logs, file, withoutLogs);
     }
 
     @Override
@@ -47,10 +47,12 @@ public class BungeeConfigurationHandler extends ConfigurationHandler {
         try {
             ConfigurationProvider.getProvider(YamlConfiguration.class).save(configuration, getFile());
         }catch (Exception exception) {
-            getLogs().error(
-                    "Can't save file: " + getFile().getName(),
-                    new ConfigurationException(exception)
-            );
+            if (hasLogs()) {
+                getLogs().error(
+                        "Can't save file: " + getFile().getName(),
+                        new ConfigurationException(exception)
+                );
+            }
         }
     }
 
@@ -85,10 +87,12 @@ public class BungeeConfigurationHandler extends ConfigurationHandler {
         try {
             configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(getFile());
         } catch (Exception exception) {
-            getLogs().error(
-                    "Can't reload file: " + getFile().getName(),
-                    new ConfigurationException(exception)
-            );
+            if (hasLogs()) {
+                getLogs().error(
+                        "Can't reload file: " + getFile().getName(),
+                        new ConfigurationException(exception)
+                );
+            }
         }
     }
 
@@ -101,15 +105,19 @@ public class BungeeConfigurationHandler extends ConfigurationHandler {
         try {
             cnf = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
         } catch (Exception e) {
-            getLogs().warn(
-                    String.format(
-                            "A error occurred while loading the settings file. Error: %s",
-                            new ConfigurationException(e)
-                    )
-            );
+            if (hasLogs()) {
+                getLogs().warn(
+                        String.format(
+                                "A error occurred while loading the settings file. Error: %s",
+                                new ConfigurationException(e)
+                        )
+                );
+            }
         }
 
-        getLogs().info(String.format("&7File &e%s &7has been loaded", file.getName()));
+        if (hasLogs()) {
+            getLogs().info(String.format("&7File &e%s &7has been loaded", file.getName()));
+        }
         return cnf;
     }
 

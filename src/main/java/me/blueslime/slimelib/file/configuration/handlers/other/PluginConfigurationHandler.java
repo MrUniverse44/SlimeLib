@@ -20,13 +20,13 @@ public class PluginConfigurationHandler extends ConfigurationHandler {
     private PluginConfiguration configuration;
 
 
-    public PluginConfigurationHandler(SlimeLogs logs, File file, InputStream resource) {
-        super(logs, file, resource);
+    public PluginConfigurationHandler(SlimeLogs logs, File file, InputStream resource, boolean withoutLogs) {
+        super(logs, file, resource, withoutLogs);
         load();
     }
 
-    public PluginConfigurationHandler(SlimeLogs logs, File file) {
-        super(logs, file);
+    public PluginConfigurationHandler(SlimeLogs logs, File file, boolean withoutLogs) {
+        super(logs, file, withoutLogs);
         load();
     }
 
@@ -35,8 +35,10 @@ public class PluginConfigurationHandler extends ConfigurationHandler {
         try {
             YamlConfiguration.save(this.configuration, getFile());
         } catch (Exception exception) {
-            getLogs().error("Can't save file: " + getFile().getName());
-            getLogs().error(exception);
+            if (hasLogs()) {
+                getLogs().error("Can't save file: " + getFile().getName());
+                getLogs().error(exception);
+            }
         }
     }
 
@@ -45,8 +47,10 @@ public class PluginConfigurationHandler extends ConfigurationHandler {
         try {
             configuration = YamlConfiguration.load(getFile());
         } catch (Exception exception) {
-            getLogs().error("Can't reload file: " + getFile().getName());
-            getLogs().error(exception);
+            if (hasLogs()) {
+                getLogs().error("Can't reload file: " + getFile().getName());
+                getLogs().error(exception);
+            }
         }
     }
 
@@ -119,11 +123,15 @@ public class PluginConfigurationHandler extends ConfigurationHandler {
         try {
             cnf = YamlConfiguration.load(file);
         } catch (Exception exception) {
-            getLogs().error("Can't load: " + file.getName() + ".!");
-            getLogs().error(exception);
+            if (hasLogs()) {
+                getLogs().error("Can't load: " + file.getName() + ".!");
+                getLogs().error(exception);
+            }
         }
 
-        getLogs().info(String.format("&7File &e%s &7has been loaded", file.getName()));
+        if (hasLogs()) {
+            getLogs().info(String.format("&7File &e%s &7has been loaded", file.getName()));
+        }
         return cnf;
     }
 

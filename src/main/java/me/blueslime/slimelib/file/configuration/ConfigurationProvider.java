@@ -25,20 +25,43 @@ public interface ConfigurationProvider {
     }
 
     /**
-     * Create a controller file.
+     * Create a controller file, logs are enabled by default.
      * @param logs Slime Logs
      * @param file File to load
      * @param resource Resource file
      * @return Controller file
      */
-    ConfigurationHandler create(SlimeLogs logs, File file, InputStream resource);
+    default ConfigurationHandler create(SlimeLogs logs, File file, InputStream resource) {
+        return create(logs, file, resource, false);
+    }
 
     /**
      * Create a controller file.
      * @param logs Slime Logs
      * @param file File to load
+     * @param resource Resource file
+     * @param withoutLogs toggle logs in the file loader
      * @return Controller file
      */
-    ConfigurationHandler create(SlimeLogs logs, File file);
+    ConfigurationHandler create(SlimeLogs logs, File file, InputStream resource, boolean withoutLogs);
+
+    /**
+     * Create a controller file, logs are enabled by default.
+     * @param logs Slime Logs
+     * @param file File to load
+     * @return Controller file
+     */
+    default ConfigurationHandler create(SlimeLogs logs, File file) {
+        return create(logs, file, false);
+    }
+
+    /**
+     * Create a controller file.
+     * @param logs Slime Logs
+     * @param file File to load
+     * @param withoutLogs toggle logs in the file loader
+     * @return Controller file
+     */
+    ConfigurationHandler create(SlimeLogs logs, File file, boolean withoutLogs);
 
 }

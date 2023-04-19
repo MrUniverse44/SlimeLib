@@ -19,11 +19,12 @@ public class BungeeConfigurationProvider implements ConfigurationProvider {
      * @return Controller file
      */
     @Override
-    public ConfigurationHandler create(SlimeLogs logs, File file, InputStream resource) {
+    public ConfigurationHandler create(SlimeLogs logs, File file, InputStream resource, boolean withoutLogs) {
         return new BungeeConfigurationHandler(
                 logs,
                 file,
-                resource
+                resource,
+                withoutLogs
         );
     }
 
@@ -35,10 +36,11 @@ public class BungeeConfigurationProvider implements ConfigurationProvider {
      * @return Controller file
      */
     @Override
-    public ConfigurationHandler create(SlimeLogs logs, File file) {
+    public ConfigurationHandler create(SlimeLogs logs, File file, boolean withoutLogs) {
         return new BungeeConfigurationHandler(
                 logs,
-                file
+                file,
+                withoutLogs
         );
     }
 
