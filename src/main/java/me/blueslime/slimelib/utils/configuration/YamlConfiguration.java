@@ -13,6 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -22,16 +23,18 @@ import org.yaml.snakeyaml.representer.Representer;
 public class YamlConfiguration {
 
     private static final ThreadLocal<Yaml> yaml = ThreadLocal.withInitial(() -> {
-        Representer representer = new Representer() {
+        Representer representer = new Representer(new DumperOptions()) {
             {
                 representers.put(PluginConfiguration.class, data -> represent(((PluginConfiguration) data).self));
             }
         };
 
-        DumperOptions options = new DumperOptions();
-        options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+        DumperOptions dumperOptions = new DumperOptions();
+        dumperOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
 
-        return new Yaml(new Constructor(), representer, options);
+        LoaderOptions loaderOptions = new LoaderOptions();
+
+        return new Yaml(new Constructor(loaderOptions), representer, dumperOptions);
     });
 
     public static void save(PluginConfiguration config, File file) throws IOException {
@@ -57,8 +60,7 @@ public class YamlConfiguration {
         }
     }
 
-    public static PluginConfiguration load(Reader reader)
-    {
+    public static PluginConfiguration load(Reader reader) {
         return load(reader, null);
     }
 
@@ -71,8 +73,7 @@ public class YamlConfiguration {
         return new PluginConfiguration(map, defaults);
     }
 
-    public static PluginConfiguration load(InputStream is)
-    {
+    public static PluginConfiguration load(InputStream is) {
         return load(is, null);
     }
 
@@ -87,14 +88,12 @@ public class YamlConfiguration {
         return new PluginConfiguration(map, defaults);
     }
 
-    public static PluginConfiguration load(String string)
-    {
+    public static PluginConfiguration load(String string) {
         return load(string, null);
     }
 
     @SuppressWarnings("unchecked")
     public static PluginConfiguration load(String string, PluginConfiguration defaults) {
-
         Map<String, Object> map = yaml.get().loadAs(string, LinkedHashMap.class);
 
         if (map == null) {

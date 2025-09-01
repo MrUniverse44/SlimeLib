@@ -8,8 +8,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -30,7 +28,7 @@ public class SlimeBukkitCommand extends Command implements TabCompleter {
      * @return true if the command was successful, otherwise false
      */
     @Override
-    public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
+    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         command.execute(cast(sender), commandLabel, args);
         return true;
     }
@@ -55,9 +53,8 @@ public class SlimeBukkitCommand extends Command implements TabCompleter {
      * @return A List of possible completions for the final argument, or null
      * to default to the command executor
      */
-    @Nullable
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         return this.command.onTabComplete(
                 cast(sender),
                 alias,

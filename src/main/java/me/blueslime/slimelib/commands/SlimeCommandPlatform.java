@@ -19,6 +19,8 @@ public interface SlimeCommandPlatform {
             case BUNGEECORD:
                 return new BungeeCommand(plugin).get();
             case BUKKIT:
+            case PAPER:
+            case SPIGOT:
                 return new BukkitCommand(plugin).get();
             case VELOCITY:
                 return new VelocityCommand(plugin).get();

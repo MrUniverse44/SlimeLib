@@ -9,7 +9,6 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -521,7 +520,10 @@ public class DefaultSlimeColor extends SlimeText<Component> {
         }
     }
 
-    private @NotNull String legacy(String content) {
+    private String legacy(String content) {
+        if (content == null || content.isEmpty()) {
+            return "";
+        }
         return LegacyComponentSerializer.builder().character('&').build().deserialize(content).content();
     }
 

@@ -1,5 +1,7 @@
 package me.blueslime.slimelib.logs;
 
+import lombok.Getter;
+import lombok.Setter;
 import me.blueslime.slimelib.SlimePlatform;
 import me.blueslime.slimelib.SlimePlugin;
 import me.blueslime.slimelib.logs.platforms.bungee.LoggerBungee;
@@ -11,6 +13,8 @@ import me.blueslime.slimelib.logs.platforms.sponge.SlimeLoggerSponge;
 import me.blueslime.slimelib.logs.platforms.velocity.LoggerVelocity;
 import me.blueslime.slimelib.logs.platforms.velocity.SlimeLoggerVelocity;
 
+@Setter
+@Getter
 @SuppressWarnings("unused")
 public class SlimeLogger {
 
@@ -31,17 +35,19 @@ public class SlimeLogger {
     }
 
     public static <T> SlimeLogs createLogs(SlimePlugin<T> plugin) {
-        SlimePlatform platform = SlimePlatform.getAutomatically();
+        SlimePlatform platform = SlimePlatform.getDetected();
         switch (platform) {
-            case BUNGEECORD:
-                return new LoggerBungee(plugin).getNewInstance();
             case VELOCITY:
                 return new LoggerVelocity(plugin).getNewInstance();
             case SPONGE:
                 return new LoggerSponge().getNewInstance();
-            default:
+            case SPIGOT:
+            case PAPER:
             case BUKKIT:
                 return new LoggerSpigot(plugin).getNewInstance();
+            case BUNGEECORD:
+            default:
+                return new LoggerBungee(plugin).getNewInstance();
         }
     }
 
@@ -51,17 +57,19 @@ public class SlimeLogger {
      * @return SlimeLogs
      */
     public static SlimeLogs fromLegacy(Object proxyServer) {
-        SlimePlatform platform = SlimePlatform.getAutomatically();
+        SlimePlatform platform = SlimePlatform.getDetected();
         switch (platform) {
-            case BUNGEECORD:
-                return new SlimeLoggerBungee();
             case VELOCITY:
                 return new SlimeLoggerVelocity(proxyServer);
             case SPONGE:
                 return new SlimeLoggerSponge();
-            default:
+            case SPIGOT:
+            case PAPER:
             case BUKKIT:
                 return new SlimeLoggerSpigot();
+            case BUNGEECORD:
+            default:
+                return new SlimeLoggerBungee();
         }
     }
 
@@ -78,77 +86,53 @@ public class SlimeLogger {
 
     public static <T> SlimeLogs createLogs(SlimePlatform platform, SlimePlugin<T> plugin, String pluginName) {
         switch (platform) {
-            case BUNGEECORD:
-                return new LoggerBungee(plugin).getNewInstance(pluginName);
             case VELOCITY:
                 return new LoggerVelocity(plugin).getNewInstance(pluginName);
             case SPONGE:
                 return new LoggerSponge().getNewInstance(pluginName);
-            default:
+            case SPIGOT:
+            case PAPER:
             case BUKKIT:
                 return new LoggerSpigot(plugin).getNewInstance(pluginName);
+            case BUNGEECORD:
+            default:
+                return new LoggerBungee(plugin).getNewInstance(pluginName);
         }
     }
 
     public static <T> SlimeLogs createLogs(SlimePlugin<T> plugin, String pluginName) {
-        SlimePlatform platform = SlimePlatform.getAutomatically();
+        SlimePlatform platform = SlimePlatform.getDetected();
         switch (platform) {
-            case BUNGEECORD:
-                return new LoggerBungee(plugin).getNewInstance(pluginName);
             case VELOCITY:
                 return new LoggerVelocity(plugin).getNewInstance(pluginName);
             case SPONGE:
                 return new LoggerSponge().getNewInstance(pluginName);
-            default:
+            case SPIGOT:
+            case PAPER:
             case BUKKIT:
                 return new LoggerSpigot(plugin).getNewInstance(pluginName);
+            case BUNGEECORD:
+            default:
+                return new LoggerBungee(plugin).getNewInstance(pluginName);
+
         }
     }
 
     public static <T> SlimeLogs createLogs(SlimePlatform platform, SlimePlugin<T> plugin) {
         switch (platform) {
-            case BUNGEECORD:
-                return new LoggerBungee(plugin).getNewInstance();
             case VELOCITY:
                 return new LoggerVelocity(plugin).getNewInstance();
             case SPONGE:
                 return new LoggerSponge().getNewInstance();
-            default:
+            case SPIGOT:
+            case PAPER:
             case BUKKIT:
                 return new LoggerSpigot(plugin).getNewInstance();
+            case BUNGEECORD:
+            default:
+                return new LoggerBungee(plugin).getNewInstance();
+
         }
-    }
-
-    public SlimeLoggerProperties getProperties() {
-        return properties;
-    }
-
-    public String getContainIdentifier() {
-        return containIdentifier;
-    }
-
-    public String getHidePackage() {
-        return hidePackage;
-    }
-
-    public String getPluginName() {
-        return pluginName;
-    }
-
-    public void setContainIdentifier(String containIdentifier) {
-        this.containIdentifier = containIdentifier;
-    }
-
-    public void setHidePackage(String hidePackage) {
-        this.hidePackage = hidePackage;
-    }
-
-    public void setPluginName(String pluginName) {
-        this.pluginName = pluginName;
-    }
-
-    public void setProperties(SlimeLoggerProperties properties) {
-        this.properties = properties;
     }
 
 }

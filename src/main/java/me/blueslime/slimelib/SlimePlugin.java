@@ -13,7 +13,7 @@ import me.blueslime.slimelib.logs.SlimeLogs;
  */
 public interface SlimePlugin<T> extends SlimePluginResource {
 
-    SlimePlatform platform = SlimePlatform.getAutomatically();
+    SlimePlatform platform = SlimePlatform.getDetected();
 
     SlimePluginInformation getPluginInformation();
 

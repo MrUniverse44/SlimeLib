@@ -44,7 +44,7 @@ public abstract class ConfigurationHandler {
 
     public static ConfigurationHandler loadConfiguration(SlimeLogs logs, File file) {
         return loadConfiguration(
-                SlimePlatform.getAutomatically(),
+                SlimePlatform.getDetected(),
                 logs,
                 file
         );
@@ -52,7 +52,7 @@ public abstract class ConfigurationHandler {
 
     public static ConfigurationHandler loadConfiguration(SlimeLogs logs, File file, String resource) {
         return loadConfiguration(
-                SlimePlatform.getAutomatically(),
+                SlimePlatform.getDetected(),
                 logs,
                 file,
                 DefaultInputManager.init().getInputStream(resource)
@@ -61,7 +61,7 @@ public abstract class ConfigurationHandler {
 
     public static ConfigurationHandler loadConfiguration(SlimeLogs logs, File file, InputStream resource) {
         return loadConfiguration(
-                SlimePlatform.getAutomatically(),
+                SlimePlatform.getDetected(),
                 logs,
                 file,
                 resource
@@ -149,7 +149,7 @@ public abstract class ConfigurationHandler {
      */
     public SlimeColor getSlimeColor(TextDecoration decoration, String path, String def) {
         return new SlimeColor(
-                SlimePlatform.getAutomatically(),
+                SlimePlatform.getDetected(),
                 getString(path, def),
                 decoration.toColorMethod()
         );
@@ -173,7 +173,7 @@ public abstract class ConfigurationHandler {
      */
     public List<SlimeColor> getSlimeColorList(TextDecoration decoration, String path) {
 
-        SlimePlatform platform = SlimePlatform.getAutomatically();
+        SlimePlatform platform = SlimePlatform.getDetected();
 
         List<String> stringList = getStringList(path);
 

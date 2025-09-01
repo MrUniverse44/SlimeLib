@@ -33,6 +33,8 @@ public class SlimePluginInformation {
                 source = new VelocityPluginInformation(plugin);
                 break;
             default:
+            case SPIGOT:
+            case PAPER:
             case BUKKIT:
                 source = new BukkitPluginInformation(plugin);
                 break;

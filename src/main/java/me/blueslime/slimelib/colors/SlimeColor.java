@@ -49,7 +49,7 @@ public class SlimeColor {
      */
     public SlimeColor(String content, ColorMethod method) {
         this.slimeText = getSlimeText(
-                SlimePlatform.getAutomatically(),
+                SlimePlatform.getDetected(),
                 content
         );
         if (HAS_RGB_SUPPORT) {
@@ -68,7 +68,7 @@ public class SlimeColor {
             this.slimeText = new StringSlimeColor(content);
         } else {
             this.slimeText = getSlimeText(
-                    SlimePlatform.getAutomatically(),
+                    SlimePlatform.getDetected(),
                     content
             );
         }
@@ -143,6 +143,8 @@ public class SlimeColor {
             default:
             case BUNGEECORD:
             case BUKKIT:
+            case PAPER:
+            case SPIGOT:
                 return new BungeeSlimeColor(content, HAS_RGB_SUPPORT);
             case VELOCITY:
             case SPONGE:

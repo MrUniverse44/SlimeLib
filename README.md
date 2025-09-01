@@ -10,7 +10,7 @@ creation of multi-platform plugins.
 * BungeeCord, Spigot and Velocity Support
 * Command System
 * Some Utils for a fast plugin developing
-* 1.8.X - 1.19.X
+* 1.8.X - 1.21.X
 * Yaml Files
 * Updater for SpigotMC & GitHub
 * Logs
@@ -31,7 +31,7 @@ Dependency:
             <artifactId>SlimeLib</artifactId>
             <version>TAG</version>
             <!-- TAG = latest version, for example:
-            <version>1.0.9</version>
+            <version>1.1.0</version>
             -->
         </dependency>
 ```
@@ -54,7 +54,7 @@ BungeeCord:
 import me.blueslime.slimelib.file.configuration.ConfigurationHandler;
 import net.md_5.bungee.config.Configuration;
 
-public class a {
+public class ExampleBungee {
     public void toSpecifiedBungee(SlimeLogs logs, File file) {
         ConfigurationProvider provider = ConfigurationProvider.newInstance();
 
@@ -74,7 +74,7 @@ import me.blueslime.slimelib.file.configuration.ConfigurationHandler;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
-public class a {
+public class ExampleBukkit {
     public void toSpecifiedBukkit(SlimeLogs logs, File file) {
         ConfigurationProvider provider = ConfigurationProvider.newInstance();
 
@@ -98,7 +98,7 @@ Other:
 import me.blueslime.slimelib.file.configuration.ConfigurationHandler;
 import me.blueslime.slimelib.utils.configuration.PluginConfiguration;
 
-public class a {
+public class ExampleOther {
     public void toSpecifiedBukkit(SlimeLogs logs, File file) {
         ConfigurationProvider provider = ConfigurationProvider.newInstance();
 

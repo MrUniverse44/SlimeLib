@@ -12,15 +12,17 @@ import java.io.InputStream;
 public interface ConfigurationProvider {
 
     static ConfigurationProvider newInstance() {
-        switch (SlimePlatform.getAutomatically()) {
+        switch (SlimePlatform.getDetected()) {
             case SPONGE:
             case VELOCITY:
                 return new DefaultConfigurationProvider();
-            default:
-            case BUNGEECORD:
-                return new BungeeConfigurationProvider();
             case BUKKIT:
+            case PAPER:
+            case SPIGOT:
                 return new BukkitConfigurationProvider();
+            case BUNGEECORD:
+            default:
+                return new BungeeConfigurationProvider();
         }
     }
 

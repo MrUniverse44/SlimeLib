@@ -1,5 +1,6 @@
 package me.blueslime.slimelib.commands;
 
+import lombok.Getter;
 import me.blueslime.slimelib.SlimePlatform;
 import me.blueslime.slimelib.SlimePlugin;
 import me.blueslime.slimelib.commands.command.SlimeCommand;
@@ -9,6 +10,7 @@ import me.blueslime.slimelib.commands.manager.DefaultSlimeCommandManager;
 @SuppressWarnings("unused")
 public class SlimeCommands<T> {
 
+    @Getter
     private final SlimeCommandManager manager;
 
     private final SlimeCommandPlatform platform;
@@ -22,12 +24,8 @@ public class SlimeCommands<T> {
         this.manager = new DefaultSlimeCommandManager();
         this.platform = SlimeCommandPlatform.fromMode(
                 plugin,
-                SlimePlatform.getAutomatically()
+                SlimePlatform.getDetected()
         );
-    }
-
-    public SlimeCommandManager getManager() {
-        return manager;
     }
 
     public void register(SlimeCommand command) {
