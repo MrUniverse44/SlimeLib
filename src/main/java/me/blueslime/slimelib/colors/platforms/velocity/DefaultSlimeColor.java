@@ -499,25 +499,14 @@ public class DefaultSlimeColor extends SlimeText<Component> {
                 .replace(" ", "")
                 .replace("add:", "");
 
-        switch (text) {
-            case "&l":
-            case "bold":
-                return ColorExtras.BOLD;
-            case "&o":
-            case "italic":
-                return ColorExtras.ITALIC;
-            case "&k":
-            case "magic":
-                return ColorExtras.MAGIC;
-            case "&m":
-            case "strikethrough":
-                return ColorExtras.STRIKETHROUGH;
-            case "&n":
-            case "underline":
-                return ColorExtras.UNDERLINE;
-            default:
-                return ColorExtras.RESET;
-        }
+        return switch (text) {
+            case "&l", "bold" -> ColorExtras.BOLD;
+            case "&o", "italic" -> ColorExtras.ITALIC;
+            case "&k", "magic" -> ColorExtras.MAGIC;
+            case "&m", "strikethrough" -> ColorExtras.STRIKETHROUGH;
+            case "&n", "underline" -> ColorExtras.UNDERLINE;
+            default -> ColorExtras.RESET;
+        };
     }
 
     private String legacy(String content) {

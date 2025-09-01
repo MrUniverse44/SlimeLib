@@ -11,17 +11,10 @@ public enum TextDecoration {
     ALL;
 
     public SlimeColor.ColorMethod toColorMethod() {
-        switch (this) {
-            default:
-            case STRIP_COLORS:
-            case LEGACY:
-            case NONE:
-            case ALL:
-                return SlimeColor.ColorMethod.ALL;
-            case SOLID:
-                return SlimeColor.ColorMethod.SOLID;
-            case GRADIENT:
-                return SlimeColor.ColorMethod.GRADIENT;
-        }
+        return switch (this) {
+            case SOLID -> SlimeColor.ColorMethod.SOLID;
+            case GRADIENT -> SlimeColor.ColorMethod.GRADIENT;
+            default -> SlimeColor.ColorMethod.ALL;
+        };
     }
 }

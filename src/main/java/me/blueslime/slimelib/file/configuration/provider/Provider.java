@@ -8,14 +8,10 @@ public enum Provider {
     DEFAULT;
 
     public ConfigurationProvider getNewInstance() {
-        switch (this) {
-            case BUKKIT:
-                return new BukkitConfigurationProvider();
-            default:
-            case DEFAULT:
-                return new DefaultConfigurationProvider();
-            case BUNGEE_CORD:
-                return new BungeeConfigurationProvider();
-        }
+        return switch (this) {
+            case BUKKIT -> new BukkitConfigurationProvider();
+            case BUNGEE_CORD -> new BungeeConfigurationProvider();
+            default -> new DefaultConfigurationProvider();
+        };
     }
 }

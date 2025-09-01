@@ -97,22 +97,11 @@ public enum SlimePlatform {
     }
 
     public Provider getProvider() {
-        switch (this) {
-            case SPONGE:
-            case VELOCITY:
-            case FORGE:
-            case FABRIC:
-            case NEO_FORGE:
-                return Provider.DEFAULT;
-            case PAPER:
-            case SPIGOT:
-            case BUKKIT:
-                return Provider.BUKKIT;
-            case BUNGEECORD:
-            default:
-                return Provider.BUNGEE_CORD;
-
-        }
+        return switch (this) {
+            case SPONGE, VELOCITY, FORGE, FABRIC, NEO_FORGE -> Provider.DEFAULT;
+            case PAPER, SPIGOT, BUKKIT -> Provider.BUKKIT;
+            default -> Provider.BUNGEE_CORD;
+        };
     }
 
     private static Class<?> getClass(String location) {

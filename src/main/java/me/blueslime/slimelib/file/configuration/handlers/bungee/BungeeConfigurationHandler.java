@@ -139,21 +139,14 @@ public class BungeeConfigurationHandler extends ConfigurationHandler {
     @Override
     public String getString(TextDecoration decoration, String path, String def) {
         String message = configuration.getString(path, def);
-        switch (decoration) {
-            default:
-            case NONE:
-                return message;
-            case STRIP_COLORS:
-                return ChatColor.stripColor(message);
-            case LEGACY:
-                return ChatColor.translateAlternateColorCodes('&', message);
-            case ALL:
-                return new StringSlimeColor(message, true, SlimeColor.ColorMethod.ALL).build();
-            case SOLID:
-                return new StringSlimeColor(message, true, SlimeColor.ColorMethod.SOLID).build();
-            case GRADIENT:
-                return new StringSlimeColor(message, true, SlimeColor.ColorMethod.GRADIENT).build();
-        }
+        return switch (decoration) {
+            case STRIP_COLORS -> ChatColor.stripColor(message);
+            case LEGACY -> ChatColor.translateAlternateColorCodes('&', message);
+            case ALL -> new StringSlimeColor(message, true, SlimeColor.ColorMethod.ALL).build();
+            case SOLID -> new StringSlimeColor(message, true, SlimeColor.ColorMethod.SOLID).build();
+            case GRADIENT -> new StringSlimeColor(message, true, SlimeColor.ColorMethod.GRADIENT).build();
+            default -> message;
+        };
     }
 
     @Override
@@ -164,36 +157,39 @@ public class BungeeConfigurationHandler extends ConfigurationHandler {
     @Override
     public List<String> getStringList(TextDecoration decoration, String path) {
         List<String> list = configuration.getStringList(path);
-        switch (decoration) {
-            default:
-            case NONE:
-                return list;
-            case STRIP_COLORS:
+        return switch (decoration) {
+            case STRIP_COLORS -> {
                 list.replaceAll(
                         line -> line = ChatColor.stripColor(line)
                 );
-                return list;
-            case LEGACY:
+                yield list;
+            }
+            case LEGACY -> {
                 list.replaceAll(
                         line -> line = ChatColor.translateAlternateColorCodes('&', line)
                 );
-                return list;
-            case ALL:
+                yield list;
+            }
+            case ALL -> {
                 list.replaceAll(
                         line -> line = new StringSlimeColor(line, true, SlimeColor.ColorMethod.ALL).build()
                 );
-                return list;
-            case SOLID:
+                yield list;
+            }
+            case SOLID -> {
                 list.replaceAll(
                         line -> line = new StringSlimeColor(line, true, SlimeColor.ColorMethod.SOLID).build()
                 );
-                return list;
-            case GRADIENT:
+                yield list;
+            }
+            case GRADIENT -> {
                 list.replaceAll(
                         line -> line = new StringSlimeColor(line, true, SlimeColor.ColorMethod.GRADIENT).build()
                 );
-                return list;
-        }
+                yield list;
+            }
+            default -> list;
+        };
     }
 
     @Override

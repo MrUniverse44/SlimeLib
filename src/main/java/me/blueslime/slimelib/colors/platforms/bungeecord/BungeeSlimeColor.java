@@ -609,30 +609,14 @@ public class BungeeSlimeColor extends SlimeText<BaseComponent> {
                 .replace(" ", "")
                 .replace("add:", "");
 
-        switch (text) {
-            case "l":
-            case "&l":
-            case "bold":
-                return ColorExtras.BOLD;
-            case "&o":
-            case "o":
-            case "italic":
-                return ColorExtras.ITALIC;
-            case "&k":
-            case "k":
-            case "magic":
-                return ColorExtras.MAGIC;
-            case "&m":
-            case "m":
-            case "strikethrough":
-                return ColorExtras.STRIKETHROUGH;
-            case "&n":
-            case "n":
-            case "underline":
-                return ColorExtras.UNDERLINE;
-            default:
-                return ColorExtras.RESET;
-        }
+        return switch (text) {
+            case "l", "&l", "bold" -> ColorExtras.BOLD;
+            case "&o", "o", "italic" -> ColorExtras.ITALIC;
+            case "&k", "k", "magic" -> ColorExtras.MAGIC;
+            case "&m", "m", "strikethrough" -> ColorExtras.STRIKETHROUGH;
+            case "&n", "n", "underline" -> ColorExtras.UNDERLINE;
+            default -> ColorExtras.RESET;
+        };
     }
 
     private void processSolid(TextComponent component, String paramText) {

@@ -145,36 +145,39 @@ public class BungeeConfigurationSectionHandler extends ConfigurationHandler {
     @Override
     public List<String> getStringList(TextDecoration decoration, String path) {
         List<String> list = configuration.getStringList(path);
-        switch (decoration) {
-            default:
-            case NONE:
-                return list;
-            case STRIP_COLORS:
+        return switch (decoration) {
+            case STRIP_COLORS -> {
                 list.replaceAll(
                         line -> line = ChatColor.stripColor(line)
                 );
-                return list;
-            case LEGACY:
+                yield list;
+            }
+            case LEGACY -> {
                 list.replaceAll(
                         line -> line = ChatColor.translateAlternateColorCodes('&', line)
                 );
-                return list;
-            case ALL:
+                yield list;
+            }
+            case ALL -> {
                 list.replaceAll(
                         line -> line = new StringSlimeColor(line, true, SlimeColor.ColorMethod.ALL).build()
                 );
-                return list;
-            case SOLID:
+                yield list;
+            }
+            case SOLID -> {
                 list.replaceAll(
                         line -> line = new StringSlimeColor(line, true, SlimeColor.ColorMethod.SOLID).build()
                 );
-                return list;
-            case GRADIENT:
+                yield list;
+            }
+            case GRADIENT -> {
                 list.replaceAll(
                         line -> line = new StringSlimeColor(line, true, SlimeColor.ColorMethod.GRADIENT).build()
                 );
-                return list;
-        }
+                yield list;
+            }
+            default -> list;
+        };
     }
 
     @Override

@@ -1,5 +1,10 @@
 package me.blueslime.slimelib.logs;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 @SuppressWarnings("unused")
 public class SlimeLoggerProperties {
     private Prefixes prefixes;
@@ -10,27 +15,13 @@ public class SlimeLoggerProperties {
         this.exceptionProperties = new ExceptionProperties();
     }
 
-    public Prefixes getPrefixes() {
-        return prefixes;
-    }
-
-    public ExceptionProperties getExceptionProperties() {
-        return exceptionProperties;
-    }
-
-    public void setExceptionProperties(ExceptionProperties properties) {
-        this.exceptionProperties = properties;
-    }
-
-    public void setPrefixes(Prefixes prefixes) {
-        this.prefixes = prefixes;
-    }
-
     public static class ExceptionProperties {
         public String BASE_COLOR = "&b";
         public String CODE_COLOR = "&b";
     }
 
+    @Setter
+    @Getter
     public static class Prefixes {
         private Issue issue;
         private Warn warn;
@@ -46,45 +37,25 @@ public class SlimeLoggerProperties {
 
         /**
          * Change the "SlimeLib" from prefixes
-         * @param content the new text
+         * @param newName the new text
          */
-        public void changeMainText(String content) {
-            issue.setPrefix(issue.getPrefix().replace("SlimeLib", content));
-            warn.setPrefix(warn.getPrefix().replace("SlimeLib", content));
-            debug.setPrefix(debug.getPrefix().replace("SlimeLib", content));
-            info.setPrefix(info.getPrefix().replace("SlimeLib", content));
+        public void changeMainText(String newName) {
+            issue.setPrefix(issue.getPrefix().replace("SlimeLib", newName));
+            warn.setPrefix(warn.getPrefix().replace("SlimeLib", newName));
+            debug.setPrefix(debug.getPrefix().replace("SlimeLib", newName));
+            info.setPrefix(info.getPrefix().replace("SlimeLib", newName));
         }
 
-        public void setIssue(Issue issue) {
-            this.issue = issue;
-        }
-
-        public void setWarn(Warn warn) {
-            this.warn = warn;
-        }
-
-        public void setDebug(Debug debug) {
-            this.debug = debug;
-        }
-
-        public void setInfo(Info info) {
-            this.info = info;
-        }
-
-        public Debug getDebug() {
-            return debug;
-        }
-
-        public Info getInfo() {
-            return info;
-        }
-
-        public Issue getIssue() {
-            return issue;
-        }
-
-        public Warn getWarn() {
-            return warn;
+        /**
+         * Change the "SlimeLib" from prefixes
+         * @param oldName is the current name
+         * @param newName the new text
+         */
+        public void changeMainText(String oldName, String newName) {
+            issue.setPrefix(issue.getPrefix().replace(oldName, newName));
+            warn.setPrefix(warn.getPrefix().replace(oldName, newName));
+            debug.setPrefix(debug.getPrefix().replace(oldName, newName));
+            info.setPrefix(info.getPrefix().replace(oldName, newName));
         }
 
         public static class Issue extends SlimePrefix {
